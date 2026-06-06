@@ -1,0 +1,27 @@
+html,
+body,
+#root {
+    margin: 0;
+    width: 100%;
+    min-height: 100%;
+}
+
+body {
+    font-family: Roboto, sans-serif;
+    font-weight: bold;
+    background-color: #151819;
+    color: white;
+}
+
+.App {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+}
+
+.PageContent {
+    flex: 1;
+    min-height: 100vh;
+    padding: 20px;
+    box-sizing: border-box;
+}

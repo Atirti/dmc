@@ -1,0 +1,27 @@
+
+
+.itemsMenu {
+    width: 100%;
+}
+
+.itemsMenuList {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 30px;
+    overflow-x: auto;
+}
+
+.itemsMenuListItem {
+    color: white;
+    text-align: center;
+    flex: 0 0 auto;
+}
+
+.itemsMenuListItem img {
+    width: 240px;
+    height: 240px;
+    object-fit: cover;
+    display: block;
+}
