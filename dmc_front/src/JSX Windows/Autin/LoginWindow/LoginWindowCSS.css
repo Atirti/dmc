@@ -1,0 +1,124 @@
+.loginPage {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loginWindow{
+    width: 400px;
+    max-width: 90%;
+    background-color: #131313;
+    border-radius: 25px;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.header{
+    text-align: center;
+    font-weight: bold;
+    font-size: 30px;
+    color: white;
+    margin-bottom: 25px;
+}
+
+/* Контейнер полей */
+.Inputs{
+    width: 100%;
+}
+
+.Login, .Password{
+    margin-bottom: 20px;
+}
+
+.inputLogin, .inputPassword{
+    position: relative;
+    width: 100%;
+}
+
+.loginWindow input{
+    width: 100%;
+    padding: 0.7rem 0.4rem;
+    outline: none;
+    border: 1px solid gray;
+    border-radius: 5px;
+    font-size: 1rem;
+    background-color: transparent;
+    color: white;
+    box-sizing: border-box;
+}
+
+.loginWindow label{
+    position: absolute;
+    top: 50%;
+    left: 1rem;
+    transform: translateY(-50%);
+    background-color: #131313;
+    border-radius: 5px;
+    padding: 0 0.3rem;
+    transform-origin: top left;
+    transition: 0.15s ease-out;
+    pointer-events: none;
+    color: gray;
+}
+
+.loginWindow input:focus + label{
+    top: 0;
+    color: #2E4578;
+    transform: scale(0.9) translateY(-50%);
+}
+
+.loginWindow input:focus{
+    border-color: #2E4578;
+}
+
+.loginWindow input:not(:placeholder-shown) + label{
+    top: 0;
+    transform: scale(0.9) translateY(-50%);
+}
+
+/*Регистрация*/
+.registration{
+    display: flex;
+    justify-content: center;
+    color: white;
+    margin: 15px 0;
+}
+
+.Register{
+    color: #4f7cff;
+    padding-left: 5px;
+    text-decoration: underline;
+    transition: 0.3s;
+}
+
+.Register:hover{
+    color: #2E4578;
+}
+
+.ButtonContainer{
+    width: 100%;
+}
+
+/* Кнопка входа*/
+.loginButton{
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #2E4578;
+    border-radius: 12px;
+    background: #0f1112;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.loginButton:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px #2E4578;
+}
+
+.loginButton:active{
+    transform: translateY(0);
+}

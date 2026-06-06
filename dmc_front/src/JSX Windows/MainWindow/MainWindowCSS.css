@@ -1,12 +1,9 @@
 .MainWindow {
-    width: 100%;
-    min-height: 100%;
-    background-color: #151819;
+    min-height: 100vh;
     display: flex;
-    align-items: flex-start;
-    justify-content: flex-start;
-    text-align: center;
-    padding: 20px;
-    margin-left: 100px;
-    margin-top: 150px;
+}
+
+.mainMenu{
+    display: flex;
+    margin: 10% 10% 10% 5%;
 }

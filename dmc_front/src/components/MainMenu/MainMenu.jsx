@@ -1,27 +1,22 @@
-import babai from "../../assets/OK.ico";
 import "./MainMenuCSS.css";
-
-const itemsList = [
-    {
-        item_name: "5090RTX ZOTAC",
-        item_image: babai,
-    },
-];
+import {NavLink} from "react-router-dom";
+import {itemsList} from "../../Data/ItemList.jsx";
 
 function MainMenu() {
     return (
-            <div className="MainMenu">
+            <main className="MainMenu">
                 <div className="itemsMenu" id="itemsMenu">
                     <div className="itemsMenuList">
-                        {itemsList.map((item, index) => (
-                                <div key={index} className="itemsMenuListItem">
-                                    <img src={item.item_image} alt={item.item_name} />
-                                    <p>{item.item_name}</p>
-                                </div>
+                        {itemsList.map((item) => (
+                                <NavLink to={`/home/item/${item.id}`} key={item.id} className="itemsMenuListItem">
+                                    <img src={item.picture_url}/>
+                                    <p className="itemPrice">{item.price} Рублей</p>
+                                    <p className="itemTitle">{item.title}</p>
+                                </NavLink>
                         ))}
                     </div>
                 </div>
-            </div>
+            </main>
     );
 }
 

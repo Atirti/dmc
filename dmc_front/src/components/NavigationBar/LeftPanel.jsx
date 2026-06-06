@@ -1,7 +1,4 @@
-import { MdAccountCircle } from "react-icons/md";
-import { MdHome } from "react-icons/md";
-import { MdShoppingCart } from "react-icons/md";
-import { MdLogout } from "react-icons/md";
+import { MdAccountCircle, MdHome,MdShoppingCart,MdLogout } from "react-icons/md";
 import { NavLink } from "react-router-dom";
 import "./LeftPanelCSS.css";
 
@@ -18,10 +15,10 @@ function LeftPanel() {
                     <NavLink to="/cart" className={({ isActive }) => isActive ? "active" : ""}>
                         <MdShoppingCart size={25}/>Корзина<i className="dot"></i></NavLink>
                 </div>
-                <a href="/logout" className="Exit">
+                <NavLink to="/" className="Exit">
                     <MdLogout size={25}/>
                     Выход
-                </a>
+                </NavLink>
             </div>
     );
 }
