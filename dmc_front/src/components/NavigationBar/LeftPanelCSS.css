@@ -1,0 +1,83 @@
+.LeftPanel {
+    padding-top: 10px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    width: 100px;
+    min-width: 100px;
+    height: 100vh;
+
+    overflow: hidden;
+}
+
+.LeftPanel .active {
+    padding-right: 4px;
+    border-right: 2px white solid;
+}
+
+.menu {
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.menu a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+
+    padding-top: 20px;
+
+    text-decoration: none;
+    position: relative;
+    font-size: 16px;
+    color: white;
+    cursor: pointer;
+}
+
+.menu a:hover {
+    color: hsl(0 0% 58%);
+    transition: 0.3s;
+}
+
+.Exit {
+    margin-top: auto;
+    margin-bottom: 5vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    text-decoration: none;
+    color: white;
+    cursor: pointer;
+}
+
+.Exit:hover {
+    color: hsl(0 0% 58%);
+    transition: 0.3s;
+}
+
+.shopTitle {
+    display: flex;
+    font-size: 30px;
+    margin: 20px;
+}
+
+.dot {
+    position: absolute;
+
+    min-width: 10px;
+    min-height: 10px;
+
+    background-color: #2e4477;
+    border-radius: 5px;
+
+    top: 8px;
+    right: 8px;
+}
