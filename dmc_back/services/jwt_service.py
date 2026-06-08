@@ -2,14 +2,16 @@ import jwt
 import datetime
 import secrets
 from fastapi import HTTPException, status
+from sqlalchemy.orm import Session
 
 
 class JwtService:
-    def __init__(self, secrets_dct: dict):
+    def __init__(self, secrets_dct: dict, db: Session):
         self.secret = secrets_dct["secret"]
         self.algorithm = secrets_dct["algorithm"]
         self.exp_minutes = secrets_dct["exp_minutes"]
         self.refresh_exp_days = secrets_dct["refresh_exp_days"]
+        self.db = db
 
 
     def create_token_pair(self, user_id: int, username: str) -> dict[str, str]:
