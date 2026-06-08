@@ -1,7 +1,6 @@
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from base import Base
-from category import Category
+from .base import Base
 
 
 class Product(Base):
@@ -14,4 +13,4 @@ class Product(Base):
     count_in_stock: Mapped[int]
 
     category_id: Mapped[int] = mapped_column(ForeignKey('categories.id'))
-    category: Mapped[Category] = relationship("Category", lazy="joined", back_populates="products")
+    category: Mapped["Category"] = relationship("Category", lazy="joined", back_populates="products")
