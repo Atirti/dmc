@@ -5,5 +5,7 @@ passlib[bcrypt]
 pydantic
 pydantic-settings
 sqlalchemy
-alembic
 asyncpg
+
+alembic
+psycopg2-binary
