@@ -23,12 +23,19 @@ class Settings(BaseSettings):
     )
 
 
+    def get_db_async_url(self) -> str:
+        """
+        get db url from environment variables
+        :return db url for async connection
+        """
+        return f"postgresql+asyncpg://{self.DB_USER}:{self.DB_PASSWORD}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
+
     def get_db_url(self) -> str:
         """
         get db url from environment variables
         :return db url for async connection
         """
-        return f"postgresql+asyncpg://{self.DB_USER}:{self.DB_PASSWORD}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}?sslmode=require"
+        return f"postgresql://{self.DB_USER}:{self.DB_PASSWORD}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
 
 
     def get_jwt_secret(self) -> dict:
