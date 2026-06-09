@@ -1,0 +1,127 @@
+.registerPage {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.registerWindow {
+    width: 400px;
+    max-width: 90%;
+    background-color: #131313;
+    border-radius: 25px;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.header {
+    text-align: center;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 25px;
+}
+.logo {
+    font-size: 30px;
+    margin-bottom: 5px;
+}
+
+.text {
+    font-size: 22px;
+    color: #bfc7d5;
+}
+
+.Inputs {
+    width: 100%;
+}
+
+.Login .Password {
+    margin-bottom: 20px;
+}
+
+.Login, .inputPassword, .inputPassword2 {
+    position: relative;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.registerWindow input {
+    width: 100%;
+    padding: 0.7rem 0.4rem;
+    outline: none;
+    border: 1px solid gray;
+    border-radius: 5px;
+    font-size: 1rem;
+    background-color: transparent;
+    color: white;
+    box-sizing: border-box;
+}
+
+.registerWindow label {
+    position: absolute;
+    top: 50%;
+    left: 1rem;
+    transform: translateY(-50%);
+    background-color: #151819;
+    border-radius: 5px;
+    padding: 0 0.3rem;
+    transform-origin: top left;
+    transition: 0.15s ease-out;
+    pointer-events: none;
+    color: gray;
+}
+
+.registerWindow input:focus + label {
+    top: 0;
+    color: #2E4578;
+    transform: scale(0.9) translateY(-50%);
+}
+
+.registerWindow input:focus {
+    border-color: #2E4578;
+}
+
+.registerWindow input:not(:placeholder-shown) + label {
+    top: 0;
+    transform: scale(0.9) translateY(-50%);
+}
+.LoginExitst {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    margin: 15px 0;
+}
+
+.LoginExitst a {
+    color: #2E4578;
+    padding-left: 5px;
+    text-decoration: underline;
+    transition: 0.3s;
+}
+
+.LoginExitst a:hover {
+    color: #2E4578;
+}
+
+.registerButton {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #2E4578;
+    border-radius: 12px;
+    background: #0f1112;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.registerButton:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px #2E4578;
+}
+
+.registerButton:active{
+    transform: translateY(0);
+}

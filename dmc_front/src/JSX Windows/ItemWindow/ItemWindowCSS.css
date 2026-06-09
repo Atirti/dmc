@@ -1,0 +1,104 @@
+.itemWindow {
+    min-height: 100vh;
+    width: 100%;
+    overflow-x: hidden;
+    color: white;
+    display: flex;
+}
+
+.itemContent {
+    width: 100vw;
+    flex: 1;
+    min-height: 100%;
+    display: flex;
+    gap: 40px;
+    padding: 10% 10% 10% 15%;
+    box-sizing: border-box;
+    justify-content: center;
+    align-items: center;
+}
+
+.itemImageBlock {
+    flex: 0 1 400px;
+}
+
+.itemImage {
+    width: 400px;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 20px;
+    background-color: #323232;
+    flex-shrink: 0;
+}
+
+.itemPanel {
+    max-width: 80%;
+}
+
+.itemPageTitle {
+    margin: 0 0 16px;
+    font-size: 32px;
+    font-weight: bold;
+    color: white;
+}
+
+.itemPagePrice {
+    padding: 0 0 5% 0;
+    font-size: 24px;
+    font-weight: bold;
+    color: #2E4578;
+}
+
+.Description{
+    padding: 5% 0 1% 0;
+    font-size: 22px;
+    font-weight: bold;
+    line-height: 1.5;
+    color: #d0d0d0;
+}
+
+.itemDescription {
+    font-size: 20px;
+    line-height: 1.5;
+    color: #d0d0d0;
+}
+.toCartButton{
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #2E4578;
+    border-radius: 12px;
+    background: #0f1112;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.toCartButton:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px #2E4578;
+}
+
+.toCartButton:active{
+    transform: translateY(+2px);
+}
+@media (max-width: 700px) {
+    .itemContent {
+        flex-direction: column;
+        align-items: stretch;
+        padding-left: 20%;
+    }
+    .itemImageBlock {
+        width: 100%;
+    }
+
+    .itemImage {
+        max-width: 400px;
+        margin: 0 auto;
+    }
+
+    .itemPanel {
+        max-width: 100%;
+        width: 100%;
+    }
+}

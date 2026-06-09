@@ -1,11 +1,13 @@
 import "./MainWindowCSS.css";
 import MainMenu from "../../components/MainMenu/MainMenu.jsx";
+import LeftPanel from "../../components/NavigationBar/LeftPanel.jsx";
 
 
 function MainWindow() {
     return (
             <div className="MainWindow">
-                <MainMenu />
+                <LeftPanel/>
+                <div className="mainMenu"><MainMenu /></div>
             </div>
     );
 }

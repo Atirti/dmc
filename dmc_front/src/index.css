@@ -5,7 +5,10 @@
     box-sizing: border-box;
 }
 body{
-    min-height: 100vh;
+    min-height: 400px;
+    width: 100%;
+    overflow-x: hidden;
+    background: radial-gradient(#151819, #000000);
 }
 a{
     text-decoration: none;
