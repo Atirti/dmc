@@ -48,6 +48,6 @@ class RefreshTokenRepository:
             select(User)
             .join(RefreshToken, RefreshToken.user_id == User.id)
             .where(RefreshToken.token == refresh_token,
-                   RefreshToken.expires_at > datetime.now(timezone.utc))
+                   RefreshToken.expires_at > datetime.now(timezone.utc).replace(tzinfo=None))
         )
         return user.scalar_one_or_none()

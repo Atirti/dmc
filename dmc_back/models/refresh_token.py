@@ -8,7 +8,7 @@ class RefreshToken(Base):
     __tablename__ = 'refresh_tokens'
 
     user_id: Mapped[int] = mapped_column(ForeignKey('users.id', ondelete='CASCADE'))
-    user: Mapped["User"] = relationship("User", lazy="joined")
+    user: Mapped["User"] = relationship("User")
 
     token: Mapped[str] = mapped_column(unique=True)
     expires_at: Mapped[datetime]
