@@ -14,7 +14,7 @@ db = database.Database(Settings.get_db_async_url())
 
 
 async def get_db():
-    async for session in db.get_sesion():
+    async with db.session_factory() as session:
         yield session
 
 def get_jwt_service(db: AsyncSession = Depends(get_db)) -> JwtService:
