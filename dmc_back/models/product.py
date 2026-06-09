@@ -13,4 +13,4 @@ class Product(Base):
     count_in_stock: Mapped[int]
 
     category_id: Mapped[int] = mapped_column(ForeignKey('categories.id'))
-    category: Mapped["Category"] = relationship("Category", lazy="joined", back_populates="products")
+    category: Mapped["Category"] = relationship("Category", back_populates="products")

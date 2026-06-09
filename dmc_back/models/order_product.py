@@ -7,10 +7,10 @@ class OrderProduct(Base):
     __tablename__ = 'orders_products'
 
     order_id: Mapped[int] = mapped_column(ForeignKey('orders.id', ondelete='CASCADE'))
-    order: Mapped["Order"] = relationship('Order',  lazy="joined")
+    order: Mapped["Order"] = relationship('Order')
 
     product_id: Mapped[int | None] = mapped_column(ForeignKey('products.id', ondelete='SET NULL'))
-    product: Mapped[Optional["Product"]] = relationship('Product', lazy="joined")
+    product: Mapped[Optional["Product"]] = relationship('Product')
 
     count: Mapped[int]
 
