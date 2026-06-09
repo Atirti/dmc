@@ -46,3 +46,6 @@ class TokenRequest(BaseModel):
 class TokenResponse(BaseModel):
     jwt_token: str
     refresh_token: str
+
+class LogoutRequest(BaseModel):
+    refresh_token: str
