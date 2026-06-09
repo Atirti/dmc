@@ -15,13 +15,13 @@ function App() {
     return (
             <div className="App">
                 <main className="pageContent">
-                <Routes>
-                    <Route path="/registration" element={<RegisterWindow/>}/>
-                    <Route path="/home" element={<MainWindow/>} />
-                    <Route path="/cart" element={<Cart/>} />
-                    <Route path="/profile" element={<Profile />}/>
-                    <Route path="/home/item/:id" element={<ItemWindow/>}/>
-                </Routes>
+                    <Routes>
+                        <Route path="/registration" element={<RegisterWindow/>}/>
+                        <Route path="/home" element={<MainWindow/>} />
+                        <Route path="/cart" element={<Cart/>} />
+                        <Route path="/profile" element={<Profile />}/>
+                        <Route path="/home/item/:id" element={<ItemWindow/>}/>
+                    </Routes>
                 </main>
             </div>
     );
