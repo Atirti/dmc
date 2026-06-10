@@ -17,13 +17,15 @@ async def get_db():
     async with db.session_factory() as session:
         yield session
 
+
 def get_jwt_service(db: AsyncSession = Depends(get_db)) -> JwtService:
     return JwtService(Settings.get_jwt_secret(), RefreshTokenRepository(db))
 
-def get_current_user(token: str = Depends(oauth2_scheme),
-                     jwt_service: JwtService = Depends(get_jwt_service)) -> dict:
-    return jwt_service.decode(token)
 
 def get_auth_service(db: AsyncSession = Depends(get_db)) -> AuthService:
     return AuthService(UserRepository(db))
 
+
+def get_current_user(token: str = Depends(oauth2_scheme),
+                     jwt_service: JwtService = Depends(get_jwt_service)) -> dict:
+    return jwt_service.decode(token)

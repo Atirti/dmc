@@ -5,6 +5,7 @@ from repositories import UserRepository
 
 from fastapi import HTTPException, status
 
+
 class AuthService:
     def __init__(self, repository: UserRepository):
         self.__user_repository = repository

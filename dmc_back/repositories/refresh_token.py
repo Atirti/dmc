@@ -31,12 +31,15 @@ class RefreshTokenRepository:
         )
         await self.db.commit()
 
-    async def delete_refresh_token(self, refresh_token: str) -> None:
-        """
-        delete field
-        """
+    async def delete_refresh_token(self, refresh_token: str, user_id: int) -> None:
         await self.db.execute(
-            delete(RefreshToken).where(RefreshToken.token == refresh_token)
+            delete(RefreshToken).where(RefreshToken.token == refresh_token, RefreshToken.user_id == user_id)
+        )
+        await self.db.commit()
+
+    async def delete_all_refresh_tokens(self, user_id: int) -> None:
+        await self.db.execute(
+            delete(RefreshToken).where(RefreshToken.user_id == user_id)
         )
         await self.db.commit()
 

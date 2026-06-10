@@ -59,14 +59,13 @@ class JwtService:
                                                                    dct['refresh_exp_date'])
         return tokens_pair
 
-    async def delete_refresh_token(self, refresh_token: str) -> None:
-        """
-        delete refresh token in database
-        """
-        await self.__refresh_token_repository.delete_refresh_token(refresh_token)
+    async def delete_refresh_token(self, refresh_token: str, user_id: int) -> None:
+        await self.__refresh_token_repository.delete_refresh_token(refresh_token, user_id)
 
+    async def delete_all_refresh_tokens(self, user_id: int) -> None:
+        await self.__refresh_token_repository.delete_all_refresh_tokens(user_id)
 
-    def decode(self, token ) -> dict:
+    def decode(self, token) -> dict:
         """
         decodes jwt token and returns user id and username
         """
@@ -78,4 +77,3 @@ class JwtService:
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token expired")
         except jwt.InvalidTokenError:
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token")
-
