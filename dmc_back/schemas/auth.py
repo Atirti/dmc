@@ -1,5 +1,5 @@
 from pydantic import BaseModel, field_validator, ValidationInfo
-from string import ascii_letters, digits, punctuation
+from string import ascii_letters, digits, punctuation, ascii_lowercase, ascii_uppercase
 
 
 class LoginRequest(BaseModel):
@@ -21,6 +21,25 @@ class LoginRequest(BaseModel):
         if len(v) < 8:
             raise ValueError("Password must be at least 8 characters")
 
+        low = False
+        up = False
+        digit = False
+        punct = False
+
+        for ch in v:
+
+            if ch in ascii_lowercase:
+                low = True
+            if ch in ascii_uppercase:
+                up = True
+            if ch in punctuation:
+                punct = True
+            if ch in digits:
+                digit = True
+
+        if not (low and up and digit and punct):
+            raise ValueError("Password must contains lower and upper case letters, digits and punctuation")
+
         return v
 
     @field_validator("username")
@@ -34,11 +53,6 @@ class LoginRequest(BaseModel):
 
         return v
 
-class LoginResponse(BaseModel):
-    jwt_token: str
-    refresh_token: str
-
-
 class TokenRequest(BaseModel):
     refresh_token: str
 
@@ -46,6 +60,7 @@ class TokenRequest(BaseModel):
 class TokenResponse(BaseModel):
     jwt_token: str
     refresh_token: str
+
 
 class LogoutRequest(BaseModel):
     refresh_token: str

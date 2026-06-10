@@ -1,4 +1,5 @@
 import os, sys
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from logging.config import fileConfig
@@ -11,11 +12,9 @@ from config import settings
 from alembic import context
 from models import *
 
-
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 alembic_config = context.config
-
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
@@ -27,6 +26,7 @@ if alembic_config.config_file_name is not None:
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
 target_metadata = Base.metadata
+
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
@@ -46,7 +46,7 @@ def run_migrations_offline() -> None:
     script output.
 
     """
-    url = settings.get_db_async_url()
+    url = settings.settings.get_db_url()
     context.configure(
         url=url,
         target_metadata=target_metadata,
