@@ -11,6 +11,11 @@ class AuthService:
         self.__user_repository = repository
 
     async def login(self, username, password) -> User:
+        """
+        Find user
+        check password if user exists
+        else raise Exception
+        """
         user = await self.__user_repository.get_user_by_login(username)
 
         if user is not None:
@@ -19,6 +24,10 @@ class AuthService:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect username or password")
 
     async def registration(self, username, password) -> User:
+        """
+        Checks if user not exists
+        then create new user
+        """
         existing = await self.__user_repository.get_user_by_login(username)
         if existing:
             raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Username already taken")
