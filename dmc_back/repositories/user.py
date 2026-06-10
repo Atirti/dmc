@@ -23,5 +23,6 @@ class UserRepository:
             .returning(User)
             )
         await self.db.commit()
-
-        return result.scalar_one()
+        user = result.scalar_one()
+        await self.db.refresh(user)
+        return user
