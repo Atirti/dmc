@@ -1,15 +1,15 @@
 from fastapi import APIRouter, Depends
-from schemas.auth import LoginRequest, TokenRequest, LoginResponse, TokenResponse, LogoutRequest
+from schemas.auth import LoginRequest, TokenRequest, TokenResponse, LogoutRequest
 import dependencies
 from services import AuthService, JwtService
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
 
-@router.post("/login", response_model=LoginResponse)
+@router.post("/login", response_model=TokenResponse)
 async def login(user_model: LoginRequest,
                 auth_service: AuthService = Depends(dependencies.get_auth_service),
-                jwt_service: JwtService = Depends(dependencies.get_jwt_service)) -> LoginResponse:
+                jwt_service: JwtService = Depends(dependencies.get_jwt_service)) -> TokenResponse:
     """
     returns jwt_token and refresh_token
     """
@@ -19,10 +19,10 @@ async def login(user_model: LoginRequest,
     return dct
 
 
-@router.post("/registration", response_model=LoginResponse)
+@router.post("/registration", response_model=TokenResponse)
 async def registration(user_model: LoginRequest,
                        auth_service: AuthService = Depends(dependencies.get_auth_service),
-                       jwt_service: JwtService = Depends(dependencies.get_jwt_service)) -> LoginResponse:
+                       jwt_service: JwtService = Depends(dependencies.get_jwt_service)) -> TokenResponse:
     """
     returns jwt_token and refresh_token
     """

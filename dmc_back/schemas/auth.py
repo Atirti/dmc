@@ -53,12 +53,6 @@ class LoginRequest(BaseModel):
 
         return v
 
-
-class LoginResponse(BaseModel):
-    jwt_token: str
-    refresh_token: str
-
-
 class TokenRequest(BaseModel):
     refresh_token: str
 
