@@ -1,25 +1,22 @@
-from fastapi import APIRouter
+from urllib import response
 
+from fastapi import APIRouter
+from fastapi.params import Depends
+
+import dependencies
+from services import ProductsService
+from schemas.products import ProductsRequest
 
 router = APIRouter(prefix="/products", tags=["products"])
 
 
 @router.get("/")
-def get_products_category(limit: int = 20, last_product_id: int = None, sort: str = "date", order: str = "desc", category_id: int = None):
-    """
-    :param limit: count of products
-    :param last_product_id: id of last product
-    :param sort: date or price
-    :param order: asc or desc
-    :param category_id: category id, None for all categories
-    :return:
-    """
-    pass
+async def get_products_category(request: ProductsRequest = Depends(),
+                                product_service: ProductsService = Depends(dependencies.get_product_service)):
 
-@router.get("/categories}")
-def get_categories():
-    """
+    return await product_service.get_products(request)
 
-    :return:
-    """
-    pass
+
+@router.get("/categories")
+async def get_categories(product_service: ProductsService = Depends(dependencies.get_product_service)):
+    return await product_service.get_categories()
