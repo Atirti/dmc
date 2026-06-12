@@ -53,6 +53,7 @@ class LoginRequest(BaseModel):
 
         return v
 
+
 class TokenRequest(BaseModel):
     refresh_token: str
 
