@@ -3,7 +3,7 @@ from schemas.auth import LoginRequest, TokenRequest, TokenResponse, LogoutReques
 import dependencies
 from services import AuthService, JwtService
 
-router = APIRouter(prefix="/auth", tags=["auth"])
+router = APIRouter(tags=["auth"])
 
 
 @router.post("/login", response_model=TokenResponse)
