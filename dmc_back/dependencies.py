@@ -1,5 +1,5 @@
 import jwt
-from fastapi.security import OAuth2PasswordBearer
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -9,7 +9,7 @@ import config
 import database
 
 Settings = config.Settings()
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+oauth2_scheme = HTTPBearer()
 db = database.Database(Settings.get_db_async_url())
 
 
@@ -18,18 +18,18 @@ async def get_db():
         yield session
 
 
-def get_jwt_service(db: AsyncSession = Depends(get_db)) -> JwtService:
+async def get_jwt_service(db: AsyncSession = Depends(get_db)) -> JwtService:
     return JwtService(Settings.get_jwt_secret(), RefreshTokenRepository(db))
 
 
-def get_auth_service(db: AsyncSession = Depends(get_db)) -> AuthService:
+async def get_auth_service(db: AsyncSession = Depends(get_db)) -> AuthService:
     return AuthService(UserRepository(db))
 
 
-def get_product_service(db: AsyncSession = Depends(get_db)) -> ProductsService:
+async def get_product_service(db: AsyncSession = Depends(get_db)) -> ProductsService:
     return ProductsService(ProductRepository(db), CategoryRepository(db))
 
 
-def get_current_user(token: str = Depends(oauth2_scheme),
+async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(oauth2_scheme),
                      jwt_service: JwtService = Depends(get_jwt_service)) -> dict:
-    return jwt_service.decode(token)
+    return jwt_service.decode(credentials.credentials)
