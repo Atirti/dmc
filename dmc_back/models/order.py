@@ -11,3 +11,5 @@ class Order(Base):
 
     status: Mapped[str]
     address: Mapped[str]
+
+    price: Mapped[float]
