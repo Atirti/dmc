@@ -1,5 +1,21 @@
 from pydantic import BaseModel, field_validator
 
+
+class ProductModel(BaseModel):
+    id: int
+    title: str
+    description: str
+    price: float | int
+    picture_url: str | None
+    count_in_stock: int
+    category_id: int
+
+
+class CategoryModel(BaseModel):
+    id: int
+    title: str
+
+
 class ProductsRequest(BaseModel):
     limit: int = 20
     offset: int = 0
