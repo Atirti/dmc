@@ -13,4 +13,5 @@ class Order(Base):
     address: Mapped[str]
 
     price: Mapped[float]
-    address: Mapped[str]
+
+    order_products: Mapped[list["OrderProduct"]] = relationship("OrderProduct", back_populates="order")

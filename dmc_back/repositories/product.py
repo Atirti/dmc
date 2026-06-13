@@ -62,3 +62,11 @@ class ProductRepository:
         )
 
         return result.scalars().all()
+
+    async def get_by_ids(self, ids: list[int]):
+        result = await self.__db.execute(
+            select(Product)
+            .where(Product.id.in_(ids))
+        )
+
+        return result.scalars().all()
