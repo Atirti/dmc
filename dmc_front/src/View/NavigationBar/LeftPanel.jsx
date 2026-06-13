@@ -1,5 +1,5 @@
 import { MdAccountCircle, MdHome, MdShoppingCart} from "react-icons/md";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink} from "react-router-dom";
 import "./LeftPanelCSS.css";
 
 

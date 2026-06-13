@@ -1,8 +1,5 @@
 const api_url = "http://127.0.0.1:8000"
 
-const sort_order = {'Desc': 1,'Asc': 2}
-
-
 export async function getItemsRequest(_limit=20,_offset=0,_order="desc",_sort="date"){
     const params = new URLSearchParams({
         limit : _limit,
