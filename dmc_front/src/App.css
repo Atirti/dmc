@@ -8,6 +8,7 @@
 .PageContent {
     flex: 1;
     min-height: 100vh;
+    min-width: 100%;
     padding: 20px;
     box-sizing: border-box;
 }

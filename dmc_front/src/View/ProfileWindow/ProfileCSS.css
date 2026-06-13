@@ -1,0 +1,55 @@
+.Profile {
+    display: flex;
+    flex-direction: row;
+    min-height: 100vh;
+    min-width: 100%;
+}
+.Profile main{
+    flex: 1;
+}
+
+.profilePage{
+    width: 100%;
+    min-height: 100vh;
+    padding-top: 30%;
+    padding-left: 30%;
+    box-sizing: border-box;
+    display: flex;
+}
+.profilePageHeader {
+    align-items: flex-start;
+    display: flex;
+    flex-direction: row;
+    gap:20px;
+}
+
+.profileImg{
+    width: 100px;
+    min-height: 100px;
+    color: #d0d0d0;
+    flex-shrink: 0;
+}
+.profileUserStuff{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px
+}
+
+.Exit {
+    display: flex;
+    gap: 10px;
+    flex-direction: row;
+    align-items: center;
+    text-decoration: none;
+    color: white;
+    cursor: pointer;
+    border-color: #2E4578;
+    border-radius: 10px;
+    background-color: transparent;
+}
+
+.Exit:hover {
+    color: hsl(0 0% 58%);
+    transition: 0.3s;
+}

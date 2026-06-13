@@ -1,6 +1,6 @@
 import "./ItemWindowCSS.css";
-import LeftPanel from "../../components/NavigationBar/LeftPanel.jsx";
-import { itemsList } from "../../Data/ItemList.jsx";
+import LeftPanel from "../../View/NavigationBar/LeftPanel.jsx";
+import { itemsList } from "../../Models/Data/ItemList.jsx";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 

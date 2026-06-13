@@ -1,5 +1,5 @@
 import {Navigate, Outlet, useLocation} from "react-router-dom";
-import { useAuth } from "./AuthContext";
+import { useAuth } from "./Autentification/AuthContext.jsx";
 
 export function PublicRoute() {
     const { isAuth, loading } = useAuth();
@@ -23,7 +23,7 @@ export  function ProtectedRoute() {
     }
 
     if (!isAuth) {
-        return <Navigate to="/home" replace state={{ from: location }} />;
+        return <Navigate to="/" replace state={{ from: location }} />;
     }
 
     return <Outlet />;

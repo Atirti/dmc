@@ -1,7 +1,7 @@
 import "./LoginWindowCSS.css";
 import {NavLink, useLocation, useNavigate} from "react-router-dom";
 import {useState} from "react";
-import {useAuth} from "../../../APIStuff/Autentification/AuthContext.jsx";
+import {useAuth} from "../../../Controll/APIStuff/Autentification/AuthContext.jsx";
 
 
 export default function LoginWindow() {

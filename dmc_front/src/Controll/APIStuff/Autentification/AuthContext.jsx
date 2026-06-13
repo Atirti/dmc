@@ -35,8 +35,15 @@ export function AuthProvider({ children }) {
     }
 
     async function logout() {
-        await logoutRequest();
-        setIsAuth(false);
+        try{
+            await logoutRequest();
+        }
+        catch(error){
+            console.log("Logout Error: ",error);
+        }
+        finally {
+            setIsAuth(false);
+        }
     }
 
     return (

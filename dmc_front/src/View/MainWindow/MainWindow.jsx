@@ -1,6 +1,6 @@
 import "./MainWindowCSS.css";
-import MainMenu from "../../components/MainMenu/MainMenu.jsx";
-import LeftPanel from "../../components/NavigationBar/LeftPanel.jsx";
+import MainMenu from "../MainMenu/MainMenu.jsx";
+import LeftPanel from "../NavigationBar/LeftPanel.jsx";
 
 
 function MainWindow() {

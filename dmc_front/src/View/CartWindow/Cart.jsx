@@ -1,5 +1,5 @@
 import "./CartCSS.css";
-import LeftPanel from "../../components/NavigationBar/LeftPanel.jsx";
+import LeftPanel from "../NavigationBar/LeftPanel.jsx";
 import babai from "../../assets/OK.ico";
 function Cart() {
     const cartItems = [
@@ -38,7 +38,7 @@ function Cart() {
                         <div className="cartItems">
                             {cartItems.map((item) => (
                                     <div className="cartItem" key={item.id}>
-                                        <img className="cartItemImage" src={item.picture_url}/>
+                                        <img className="cartItemImage" src={item.picture_url} alt={item.name} />
                                         <div className="cartItemInfo">
                                             <div className="cartItemTitle">{item.title}</div>
                                             <div className="cartItemPrice">{item.price} ₽</div>
