@@ -1,11 +1,27 @@
 import "./LoginWindowCSS.css";
-import {NavLink, useNavigate} from "react-router-dom";
+import {NavLink, useLocation, useNavigate} from "react-router-dom";
+import {useState} from "react";
+import {useAuth} from "../../../APIStuff/Autentification/AuthContext.jsx";
+
 
 export default function LoginWindow() {
     const navigate = useNavigate();
+    const location = useLocation();
+    const { login: authLogin } = useAuth();
+    const [error, setError] = useState("");
+    const [login, setLogin] = useState("");
+    const [password, setPassword] = useState("");
+    const from = location.state?.from?.pathname || "/home";
 
-    function handleNavigate() {
-        navigate("/home");
+    async function handleLogin(event) {
+        event.preventDefault();
+        try {
+            setError("");
+            await authLogin(login, password);
+            navigate(from, { replace: true });
+        } catch (error) {
+            setError(error.message);
+        }
     }
 
     return (
@@ -19,14 +35,17 @@ export default function LoginWindow() {
                     <div className="Inputs">
                         <div className="Login">
                             <div className="inputLogin">
-                                <input placeholder=" " type="text" />
+                                <input placeholder=" " type="text" value={login}
+                                       onChange={(event) => setLogin(event.target.value)}/>
                                 <label>Логин</label>
                             </div>
                         </div>
 
                         <div className="Password">
                             <div className="inputPassword">
-                                <input placeholder=" " type="password" />
+                                <input placeholder=" " type="password"
+                                       value={password}
+                                       onChange={(event) => setPassword(event.target.value)}/>
                                 <label>Пароль</label>
                             </div>
                         </div>
@@ -34,13 +53,14 @@ export default function LoginWindow() {
 
                     <div className="registration">
                         Нет аккаунта?
-                        <NavLink className="Register" to="/Registration">Зарегистрироваться</NavLink>
+                        <NavLink className="Register" to="/registration">Зарегистрироваться</NavLink>
                     </div>
 
                     <div className="ButtonContainer">
-                        <button className="loginButton" onClick={handleNavigate}>
+                        <button className="loginButton" onClick={handleLogin}>
                             Войти
                         </button>
+                        {error && <div className="errorMessage">{error}</div>}
                     </div>
                 </div>
             </div>
