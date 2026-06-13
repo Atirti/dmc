@@ -1,23 +1,24 @@
 import "./LoginWindowCSS.css";
-import {NavLink, useNavigate} from "react-router-dom";
+import {NavLink, useLocation, useNavigate} from "react-router-dom";
 import {useState} from "react";
-import {loginRequest} from "../../../APIStuff/auth.js";
+import {useAuth} from "../../../APIStuff/Auten/AuthContext.jsx";
 
 
 export default function LoginWindow() {
     const navigate = useNavigate();
+    const location = useLocation();
+    const { login: authLogin } = useAuth();
     const [error, setError] = useState("");
     const [login, setLogin] = useState("");
     const [password, setPassword] = useState("");
+    const from = location.state?.from?.pathname || "/home";
 
-    async function handleLogin() {
+    async function handleLogin(event) {
+        event.preventDefault();
         try {
             setError("");
-
-            const tokens = await loginRequest(login, password);
-            document.cookie = `jwt_token=${tokens.jwt_token}; path=/; SameSite=Lax`;
-            document.cookie = `refresh_token=${tokens.refresh_token}; path=/; SameSite=Lax`;
-            navigate("/home");
+            await authLogin(login, password);
+            navigate(from, { replace: true });
         } catch (error) {
             setError(error.message);
         }
@@ -52,7 +53,7 @@ export default function LoginWindow() {
 
                     <div className="registration">
                         Нет аккаунта?
-                        <NavLink className="Register" to="/Registration">Зарегистрироваться</NavLink>
+                        <NavLink className="Register" to="/registration">Зарегистрироваться</NavLink>
                     </div>
 
                     <div className="ButtonContainer">
