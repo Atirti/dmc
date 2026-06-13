@@ -11,7 +11,7 @@ class OrderModel(BaseModel):
     products: list[ProductModel]
     status: str
     price: float | int
-
+    address: str
 
 class ProductRequest(BaseModel):
     product_id: int
@@ -31,6 +31,9 @@ class ProductRequest(BaseModel):
             raise ValueError('count must be >= 1')
         return v
 
+class OrderRequest(BaseModel):
+    products: list[ProductRequest]
+    address: str
 
 class PayRequest(BaseModel):
     order_id: int
