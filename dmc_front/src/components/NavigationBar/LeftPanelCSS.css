@@ -72,12 +72,22 @@
     font-weight: bold;
 }
 
-.dot {
+.cartLink {
+    position: relative;
+}
+
+.cartLink::after {
+    content: attr(data-count);
     position: absolute;
+    top: 12px;
+    right: 10px;
     min-width: 10px;
-    min-height: 10px;
+    height: 16px;
+    padding: 0 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background-color: #2E4578;
-    border-radius: 5px;
-    top: 8px;
-    right: 8px;
+    border-radius: 90px;
+    font-size: 11px;
 }

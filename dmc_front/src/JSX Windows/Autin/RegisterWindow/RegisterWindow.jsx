@@ -1,18 +1,19 @@
 import "./RegisterWIndowCSS.css"
 import {NavLink, useNavigate} from "react-router-dom";
 import {useState} from "react";
-import {registrationRequest} from "../../../APIStuff/auth.js";
+import {useAuth} from "../../../APIStuff/Auten/AuthContext.jsx";
 
 
 function  RegisterWindow() {
     const navigate = useNavigate();
+    const { registration } = useAuth();
     const [error, setError] = useState("");
-
     const [login, setLogin] = useState("");
     const [password, setPassword] = useState("");
     const [passwordRepeat, setPasswordRepeat] = useState("");
 
-    async function handleRegister() {
+    async function handleRegister(event) {
+        event.preventDefault();
         try {
             setError("");
 
@@ -20,8 +21,8 @@ function  RegisterWindow() {
                 setError("Пароли не совпадают");
                 return;
             }
-            await registrationRequest(login, password);
-            navigate("/");
+            await registration(login, password);
+            navigate("/home", { replace: true });
         } catch (error) {
             setError(error.message);
         }

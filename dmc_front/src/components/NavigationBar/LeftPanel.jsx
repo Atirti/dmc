@@ -1,18 +1,22 @@
 import { MdAccountCircle, MdHome, MdShoppingCart, MdLogout } from "react-icons/md";
 import { NavLink, useNavigate } from "react-router-dom";
 import "./LeftPanelCSS.css";
-import {logoutRequest} from "../../APIStuff/auth.js";
+import {useAuth} from "../../APIStuff/Auten/AuthContext.jsx";
+import Badge from "trmd3components/Badge";
+import Component from "trmd3components/Component";
 
 
 function LeftPanel() {
     const navigate = useNavigate();
+    const { logout } = useAuth();
 
     async function handleLogout() {
         try {
-            await logoutRequest();
+            await logout();
             navigate("/");
         } catch (error) {
             alert(error.message);
+            navigate("/", {replace: true});
         }
     }
 
@@ -24,14 +28,19 @@ function LeftPanel() {
                     <NavLink to="/profile" className={({ isActive }) => isActive ? "active" : ""}>
                         <MdAccountCircle size={25} />
                         Профиль</NavLink>
+
                     <NavLink to="/home" className={({ isActive }) => isActive ? "active" : ""}>
                         <MdHome size={25} />
                         Главная</NavLink>
 
-                    <NavLink to="/cart" className={({ isActive }) => isActive ? "active" : ""}>
+                    <NavLink
+                            to="/cart"
+                            data-count="3"
+                            className={({ isActive }) => isActive ? "cartLink active" : "cartLink"}
+                    >
                         <MdShoppingCart size={25} />
                         Корзина
-                        <i className="dot"></i></NavLink>
+                    </NavLink>
                 </div>
 
                 <button onClick={handleLogout} className="Exit">

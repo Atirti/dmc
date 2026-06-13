@@ -1,25 +1,47 @@
 .itemWindow {
     min-height: 100vh;
-    width: 100%;
+    width: 100vw;
     overflow-x: hidden;
     color: white;
     display: flex;
 }
 
 .itemContent {
-    width: 100vw;
+    width: 100%;
     flex: 1;
-    min-height: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    padding-left: 15%;
+    padding-right: 10%;
+}
+
+.itemTop {
+    position: relative;
+    top: 0;
+    z-index: 10;
+    width: 100%;
+    max-width: 1000px;
+    min-height: 55vh;
+    margin: 0 auto;
     display: flex;
     gap: 40px;
-    padding: 10% 10% 10% 15%;
-    box-sizing: border-box;
     justify-content: center;
     align-items: center;
+    padding: 60px 0 40px 0;
+    box-sizing: border-box;
+}
+.itemDescriptionBlock {
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px 0 80px 0;
+    box-sizing: border-box;
 }
 
 .itemImageBlock {
-    flex: 0 1 400px;
+    flex: 0 0 400px;
 }
 
 .itemImage {
@@ -32,7 +54,8 @@
 }
 
 .itemPanel {
-    max-width: 80%;
+    max-width: 500px;
+    width: 100%;
 }
 
 .itemPageTitle {
@@ -49,8 +72,8 @@
     color: #2E4578;
 }
 
-.Description{
-    padding: 5% 0 1% 0;
+.Description {
+    padding: 0 0 16px 0;
     font-size: 22px;
     font-weight: bold;
     line-height: 1.5;
@@ -62,8 +85,8 @@
     line-height: 1.5;
     color: #d0d0d0;
 }
-.toCartButton{
-    width: 100%;
+.toCartButton {
+    width: 120px;
     padding: 12px;
     border: 2px solid #2E4578;
     border-radius: 12px;
@@ -74,31 +97,68 @@
     cursor: pointer;
     transition: 0.3s;
 }
-.toCartButton:hover{
+
+.toCartButton:hover {
     transform: translateY(-2px);
     box-shadow: 0 5px 15px #2E4578;
 }
 
-.toCartButton:active{
-    transform: translateY(+2px);
+.toCartButton:active {
+    transform: translateY(2px);
 }
-@media (max-width: 700px) {
+.textDotsButton {
+    padding: 0 0 0 4px;
+
+    border: none;
+    background: transparent;
+
+    color: #4f7cff;
+    font: inherit;
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.textDotsButton:hover {
+    color: #2E4578;
+    text-decoration: underline;
+}
+
+.textCollapseButton {
+    margin-left: 8px;
+    padding: 0;
+
+    border: none;
+    background: transparent;
+
+    color: #4f7cff;
+    font-size: 16px;
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.textCollapseButton:hover {
+    color: #2E4578;
+    text-decoration: underline;
+}
+
+@media (max-width: 900px) {
     .itemContent {
-        flex-direction: column;
-        align-items: stretch;
-        padding-left: 20%;
-    }
-    .itemImageBlock {
-        width: 100%;
+        padding-left: 30%;
+        padding-right: 5%;
     }
 
     .itemImage {
-        max-width: 400px;
-        margin: 0 auto;
+        width: 280px;
+        height: 280px;
     }
 
     .itemPanel {
-        max-width: 100%;
-        width: 100%;
+        max-width: 280px;
+    }
+
+    .itemDescriptionBlock {
+        max-width: 280px;
     }
 }
