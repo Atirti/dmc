@@ -1,10 +1,10 @@
-import jwt
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from services import JwtService, AuthService, ProductsService, CartService
-from repositories import RefreshTokenRepository, UserRepository, ProductRepository, CategoryRepository, CartRepository
+from services import JwtService, AuthService, ProductsService, CartService, OrdersService
+from repositories import RefreshTokenRepository, UserRepository, ProductRepository, CategoryRepository, CartRepository, \
+    OrdersRepository
 import config
 import database
 
@@ -32,6 +32,10 @@ async def get_product_service(db: AsyncSession = Depends(get_db)) -> ProductsSer
 
 async def get_cart_service(db: AsyncSession = Depends(get_db)) -> CartService:
     return CartService(CartRepository(db))
+
+
+async def get_order_service(db: AsyncSession = Depends(get_db)) -> OrdersService:
+    return OrdersService(OrdersRepository(db), ProductRepository(db))
 
 
 async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(oauth2_scheme),
