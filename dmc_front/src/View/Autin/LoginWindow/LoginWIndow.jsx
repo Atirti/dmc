@@ -3,13 +3,12 @@ import {NavLink, useLocation, useNavigate} from "react-router-dom";
 import {useState} from "react";
 import {useAuth} from "../../../Controll/APIStuff/Autentification/AuthContext.jsx";
 
-
 export default function LoginWindow() {
     const navigate = useNavigate();
     const location = useLocation();
-    const { login: authLogin } = useAuth();
+    const { login } = useAuth();
     const [error, setError] = useState("");
-    const [login, setLogin] = useState("");
+    const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const from = location.state?.from?.pathname || "/home";
 
@@ -17,7 +16,7 @@ export default function LoginWindow() {
         event.preventDefault();
         try {
             setError("");
-            await authLogin(login, password);
+            await login(username, password);
             navigate(from, { replace: true });
         } catch (error) {
             setError(error.message);
@@ -35,8 +34,8 @@ export default function LoginWindow() {
                     <div className="Inputs">
                         <div className="Login">
                             <div className="inputLogin">
-                                <input placeholder=" " type="text" value={login}
-                                       onChange={(event) => setLogin(event.target.value)}/>
+                                <input placeholder=" " type="text" value={username}
+                                       onChange={(event) => setUsername(event.target.value)}/>
                                 <label>Логин</label>
                             </div>
                         </div>

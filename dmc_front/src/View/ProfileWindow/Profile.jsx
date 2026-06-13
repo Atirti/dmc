@@ -32,6 +32,9 @@ function Profile () {
                                     <MdLogout size={25} />Выход</button>
                             </div>
                         </div>
+                        <div className={"profilePageOrders"}>
+
+                        </div>
                     </div>
                 </main>
             </div>

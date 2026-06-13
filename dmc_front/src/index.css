@@ -1,16 +1,30 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
-*{
-    padding: 0;
+html,
+body,
+#root {
+    width: 100%;
+    min-height: 100vh;
     margin: 0;
+    padding: 0;
+    background: radial-gradient(#181818, #000000);
+}
+
+* {
     box-sizing: border-box;
 }
-body{
-    min-height: 400px;
+
+.App {
     width: 100%;
-    overflow-x: hidden;
-    background: radial-gradient(#151819, #000000);
+    min-height: 100vh;
+    display: flex;
 }
-a{
-    text-decoration: none;
-    color: inherit;
+
+.pageContent {
+    flex: 1;
+    width: 100%;
+    min-width: 0;
+    min-height: 100vh;
+
+    margin: 0;
+    padding: 0;
 }

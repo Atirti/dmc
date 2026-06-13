@@ -9,19 +9,25 @@ export function AuthProvider({ children }) {
 
     useEffect(() => {
         let mounted = true;
-
         async function initAuth() {
-            const result = await checkAuth();
-
-            if (mounted) {
-                setIsAuth(result);
-                setLoading(false);
+            try {
+                const result = await checkAuth();
+                if (mounted) {
+                    setIsAuth(result);
+                }
+            } catch (error) {
+                console.log("Auth check error:", error);
+                if (mounted) {
+                    setIsAuth(false);
+                }
+            } finally {
+                if (mounted) {
+                    setLoading(false);
+                }
             }
         }
         initAuth();
-        return () => {
-            mounted = false;
-        };
+        return () => {mounted = false;};
     }, []);
 
     async function login(username, password) {
@@ -35,13 +41,11 @@ export function AuthProvider({ children }) {
     }
 
     async function logout() {
-        try{
+        try {
             await logoutRequest();
-        }
-        catch(error){
-            console.log("Logout Error: ",error);
-        }
-        finally {
+        } catch (error) {
+            console.log("Logout Error:", error);
+        } finally {
             setIsAuth(false);
         }
     }

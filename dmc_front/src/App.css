@@ -5,10 +5,10 @@
     min-height: 100vh;
 }
 
-.PageContent {
+.pageContent {
     flex: 1;
     min-height: 100vh;
     min-width: 100%;
-    padding: 20px;
+    padding: 0 0 0 0;
     box-sizing: border-box;
 }
