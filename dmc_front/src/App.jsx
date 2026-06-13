@@ -6,7 +6,7 @@ import Cart from "./JSX Windows/CartWindow/Cart.jsx";
 import Profile from "./JSX Windows/ProfileWindow/Profile.jsx";
 import ItemWindow from "./JSX Windows/ItemWindow/ItemWindow.jsx";
 import RegisterWindow from "./JSX Windows/Autin/RegisterWindow/RegisterWindow.jsx";
-import {PublicRoute, ProtectedRoute} from "./APIStuff/Auten/Routes.jsx";
+import {PublicRoute, ProtectedRoute} from "./APIStuff/Autentification/Routes.jsx";
 
 function App() {
     return (

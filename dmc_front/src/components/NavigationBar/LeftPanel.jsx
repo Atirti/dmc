@@ -1,9 +1,8 @@
 import { MdAccountCircle, MdHome, MdShoppingCart, MdLogout } from "react-icons/md";
 import { NavLink, useNavigate } from "react-router-dom";
 import "./LeftPanelCSS.css";
-import {useAuth} from "../../APIStuff/Auten/AuthContext.jsx";
-import Badge from "trmd3components/Badge";
-import Component from "trmd3components/Component";
+import {useAuth} from "../../APIStuff/Autentification/AuthContext.jsx";
+
 
 
 function LeftPanel() {
