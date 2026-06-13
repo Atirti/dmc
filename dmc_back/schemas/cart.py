@@ -6,7 +6,7 @@ class ProductModel(p):
     count_in_cart: int
 
 
-class Request(BaseModel):
+class ProductRequest(BaseModel):
     id: int
     count: int
 
@@ -22,4 +22,13 @@ class Request(BaseModel):
     def count_validator(cls, v):
         if v < 1:
             raise ValueError('count must be >= 1')
+        return v
+
+class DeleteRequest(BaseModel):
+    id: int
+    @field_validator('id')
+    @classmethod
+    def id_validator(cls, v):
+        if v < 0:
+            raise ValueError('id must be >= 0')
         return v

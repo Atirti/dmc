@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends
-from schemas.orders import OrderModel, ProductRequest, PayRequest
+from schemas.orders import OrderModel, ProductRequest, PayRequest, OrderRequest
 
 import dependencies
 
@@ -12,12 +12,12 @@ async def get_orders(current_user: dict = Depends(dependencies.get_current_user)
 
 
 @router.post("/order", response_model=OrderModel)
-async def create_order(request: list[ProductRequest],
+async def create_order(request: OrderRequest,
                        current_user: dict = Depends(dependencies.get_current_user)) -> OrderModel:
     pass
 
 
-@router.post("/pay")
+@router.post("/pay", response_model=OrderModel)
 async def pay_order(request: PayRequest = Depends(),
                     current_user: dict = Depends(dependencies.get_current_user)) -> None:
     pass
