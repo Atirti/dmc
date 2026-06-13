@@ -1,4 +1,5 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
+import { setAudioModeAsync, useAudioPlayer } from "expo-audio";
 import { ThemePreference } from "../../styles/themes";
 import { getProfileMenuItems, ProfileMenuAction } from "../models/profilemenumodel";
 import { AuthState, guestAuthState, initialAuthState, placeholderUser } from "../models/usermodel";
@@ -12,6 +13,15 @@ export function useProfileController() {
         setThemePreference,
         resolvedThemeName,
     } = useAppTheme();
+
+    const logoutAllSound = require("../../media/sound/wilhelms.mp3");
+    const logoutAllSoundPlayer = useAudioPlayer(logoutAllSound);
+
+    useEffect(() => {
+        setAudioModeAsync({
+            playsInSilentMode: true,
+        });
+    }, []);
 
     const [authState, setAuthState] =
         useState<AuthState>(initialAuthState);
@@ -67,6 +77,9 @@ export function useProfileController() {
 
     function logoutAll() {
         // TODO заменить на restapi logout-all-devices
+
+        logoutAllSoundPlayer.seekTo(0);
+        logoutAllSoundPlayer.play();
         setAuthState(guestAuthState);
         setInfoMessage("placeholder");
     }

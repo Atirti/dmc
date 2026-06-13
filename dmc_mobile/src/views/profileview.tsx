@@ -1,5 +1,6 @@
 import React from "react";
-import { Modal, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from "react-native";
+import { Modal, Pressable, ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { AppTheme, ThemePreference } from "../../styles/themes";
 import { ProfileMenuItem } from "../models/profilemenumodel";
@@ -33,48 +34,30 @@ const themeOptions: Array<{
     {
         value: "system",
         label: "Системная",
-        description: "Использовать тему устройства",
+        description: "Использовать сис тему устройства",
         icon: "cellphone-cog",
     },
     {
         value: "light",
         label: "Светлая",
-        description: "Светлый Material Design интерфейс",
+        description: "Светлый интерфейс",
         icon: "white-balance-sunny",
     },
     {
         value: "dark",
         label: "Темная",
-        description: "Темный Material Design интерфейс",
+        description: "Темный интерфейс",
         icon: "moon-waning-crescent",
     },
 ];
 
 export function ProfileView(props: ProfileViewProps) {
-    const {
-        theme,
-        authState,
-        menuItems,
-        isMenuVisible,
-        isSettingsVisible,
-        themePreference,
-        resolvedThemeName,
-        infoMessage,
-
-        openMenu,
-        closeMenu,
-        closeSettings,
-        selectTheme,
-        handleMenuAction,
-        login,
-        register,
-    } = props;
-
+    const { theme, authState, menuItems, isMenuVisible, isSettingsVisible, themePreference, resolvedThemeName, infoMessage, openMenu, closeMenu, closeSettings, selectTheme, handleMenuAction, login, register } = props;
     const styles = createStyles(theme);
     const displayName = authState.user?.name ?? "Гость";
 
     return (
-        <SafeAreaView style={styles.safeArea}>
+        <SafeAreaView style={styles.safeArea} edges={["top", "left", "right"]}>
             <TouchableWithoutFeedback
                 onPress={closeMenu}
                 disabled={!isMenuVisible}
@@ -247,19 +230,9 @@ export function ProfileView(props: ProfileViewProps) {
     );
 }
 
-type PlaceholderRowProps = {
-    theme: AppTheme;
-    icon: keyof typeof MaterialCommunityIcons.glyphMap;
-    label: string;
-    value: string;
-};
+type PlaceholderRowProps = { theme: AppTheme; icon: keyof typeof MaterialCommunityIcons.glyphMap; label: string; value: string; };
 
-function PlaceholderRow({
-                            theme,
-                            icon,
-                            label,
-                            value,
-                        }: PlaceholderRowProps) {
+function PlaceholderRow({ theme, icon, label, value }: PlaceholderRowProps) {
     const styles = createStyles(theme);
 
     return (
