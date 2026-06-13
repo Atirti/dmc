@@ -1,17 +1,8 @@
-import { Text, View, StyleSheet } from "react-native";
+import { useProfileController } from "../controllers/profilecontroller";
+import { ProfileView } from "../views/profileview";
 
 export default function Profile() {
-    return (
-        <View style={styles.container}>
-            <Text>Profile</Text>
-        </View>
-    );
-}
+    const controller = useProfileController();
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
-    },
-});
+    return <ProfileView {...controller} />;
+}
