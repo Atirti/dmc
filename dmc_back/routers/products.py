@@ -12,34 +12,39 @@ router = APIRouter(tags=["products"])
 async def get_products(request: ProductsRequest = Depends(),
                        product_service: ProductsService = Depends(dependencies.get_product_service)) -> list[
     ProductModel]:
+    """
+    return list of limit products
+    start form offset
+    sort by date or price
+    asc or desc
+    """
     return await product_service.get_products(request)
-
-
-@router.get("/product", response_model=ProductModel)
-async def get_product(request: RequestId = Depends(),
-                      product_service: ProductsService = Depends(dependencies.get_product_service)):
-    pass
 
 
 @router.post("/product", response_model=ProductModel, tags=["admin"])
 async def create_product(request: ProductRequest,
                          product_service: ProductsService = Depends(dependencies.get_product_service),
                          admin=Depends(dependencies.get_admin_user)) -> ProductModel:
-    pass
+    return await product_service.add_product(request)
 
+@router.get("/product", response_model=ProductModel)
+async def get_product(request: RequestId = Depends(),
+                      product_service: ProductsService = Depends(dependencies.get_product_service)):
+    return await product_service.get_product(request)
 
+"""
 @router.put("/product", response_model=ProductModel, tags=["admin"])
 async def update_product(request: ProductModel,
                          product_service: ProductsService = Depends(dependencies.get_product_service),
                          admin=Depends(dependencies.get_admin_user)) -> ProductModel:
     pass
 
-
 @router.delete("/product", response_model=ProductModel, tags=["admin"])
 async def delete_product(request: RequestId = Depends(),
                          product_service: ProductsService = Depends(dependencies.get_product_service),
                          admin=Depends(dependencies.get_admin_user)) -> None:
     pass
+"""
 
 
 @router.get("/categories", response_model=list[CategoryModel])
@@ -48,6 +53,7 @@ async def get_categories(product_service: ProductsService = Depends(dependencies
     return await product_service.get_categories()
 
 
+"""
 @router.get("/categories/category", response_model=list[CategoryModel])
 async def get_categories(product_service: ProductsService = Depends(dependencies.get_product_service)) -> list[
     CategoryModel]:
@@ -72,3 +78,4 @@ async def delete_category(request: RequestId = Depends(),
                           product_service: ProductsService = Depends(dependencies.get_product_service),
                           admin=Depends(dependencies.get_admin_user)) -> None:
     pass
+"""
