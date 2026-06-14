@@ -76,6 +76,9 @@ function setCookie(name, value) {
 export function saveTokens(tokens) {
     setCookie("jwt_token", tokens.jwt_token);
     setCookie("refresh_token", tokens.refresh_token);
+    console.log("new jwt:", getCookie("jwt_token"));
+    console.log("new refresh:", getCookie("refresh_token"));
+    console.log("response tokens:", tokens);
 }
 
 export function clearTokens() {
@@ -134,12 +137,8 @@ async function refreshRequestRaw() {
     const response = await fetch(`${api_url}/refresh_token`, {
         method: "POST",
         credentials: "include",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            refresh_token: refreshToken,
-        }),
+        headers: {"Content-Type": "application/json",},
+        body: JSON.stringify({refresh_token: refreshToken,}),
     });
 
     if (!response.ok) {
@@ -189,16 +188,21 @@ export async function logoutRequest() {
 }
 
 export async function checkAuth() {
+    const jwtToken = getCookie("jwt_token");
     const refreshToken = getCookie("refresh_token");
+
     if (!refreshToken) {
         clearTokens();
         return false;
     }
 
+    if (jwtToken) {
+        return true;
+    }
+
     try {
         await refreshRequest();
         return true;
-
     } catch (error) {
         console.error("Auth check failed:", error);
         clearTokens();
