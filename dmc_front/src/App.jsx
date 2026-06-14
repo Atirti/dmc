@@ -7,6 +7,7 @@ import Profile from "./View/ProfileWindow/Profile.jsx";
 import ItemWindow from "./View/ItemWindow/ItemWindow.jsx";
 import RegisterWindow from "./View/Autin/RegisterWindow/RegisterWindow.jsx";
 import {PublicRoute, ProtectedRoute} from "./Controll/APIStuff/Routes.jsx";
+import OrderplaceWindow from "./View/OrderplaceWindow/OrderplaceWindow.jsx";
 
 function App() {
     return (
@@ -24,7 +25,8 @@ function App() {
                         <Route element={<ProtectedRoute/>}>
                             <Route path="/cart" element={<Cart/>}/>
                             <Route path="/profile" element={<Profile/>}/>
-                        </Route>
+                            <Route path="/order" element={<OrderplaceWindow/>}/>
+                         </Route>
                         <Route path="*" element={<Navigate to="/" replace />} />
                     </Routes>
                 </main>

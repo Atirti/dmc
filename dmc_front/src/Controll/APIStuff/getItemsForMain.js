@@ -1,20 +1,21 @@
-const api_url = "http://127.0.0.1:8000"
+import { api_url, parseError } from "./Autentification/auth.js";
 
-export async function getItemsRequest(_limit=10,_offset=0,_order="desc",_sort="date"){
+export async function getItemsRequest(_limit = 10, _offset = 0, _order = "desc", _sort = "date") {
     const params = new URLSearchParams({
-        limit : _limit,
-        offset : _offset,
+        limit: _limit,
+        offset: _offset,
         sort: _sort,
-        order : _order
-    })
+        order: _order,
+    });
 
     const response = await fetch(`${api_url}/?${params.toString()}`, {
-        method: 'GET',
-        headers:{"Content-Type":"application/json"},})
+        method: "GET",
+    });
 
-    if (!response.ok){
-        throw new Error("Ошибка загрузки товаров")
+    if (!response.ok) {
+        const message = await parseError(response);
+        throw new Error(message);
     }
 
-    return await response.json()
+    return await response.json();
 }

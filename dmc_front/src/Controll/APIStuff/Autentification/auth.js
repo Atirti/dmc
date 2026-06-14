@@ -1,6 +1,32 @@
 export const api_url = "http://127.0.0.1:8000";
 
-async function parseError(response) {
+export async function authFetch(path, options = {}, retry = true) {
+    const jwtToken = getCookie("jwt_token");
+
+    const response = await fetch(`${api_url}${path}`, {
+        ...options,
+        credentials: "include",
+        headers: {
+            ...(options.headers || {}),
+            ...(jwtToken ? { Authorization: `Bearer ${jwtToken}` } : {}),
+        },
+    });
+
+    if (response.status !== 401 || !retry) {
+        return response;
+    }
+    await refreshRequest();
+
+    const newJwtToken = getCookie("jwt_token");
+
+    return await fetch(`${api_url}${path}`, {...options,
+        credentials: "include",
+        headers: {...(options.headers || {}), ...(newJwtToken ? { Authorization: `Bearer ${newJwtToken}` } : {}),
+        },
+    });
+}
+
+export async function parseError(response) {
     const data = await response.json().catch(() => null);
 
     if (Array.isArray(data?.detail)) {
@@ -124,9 +150,8 @@ export async function logoutRequest() {
         return null;
     }
 
-    const response = await fetch(`${api_url}/logout`, {
+    const response = await authFetch("/logout", {
         method: "POST",
-        credentials: "include",
         headers: {"Content-Type": "application/json",},
         body: JSON.stringify({refresh_token: refreshToken,}),
     });
