@@ -1,53 +1,211 @@
-.Profile {
-    display: flex;
-    flex-direction: row;
-    min-height: 100vh;
-    min-width: 100%;
-}
-
-.profilePage{
+.profilePage {
     width: 100%;
     min-height: 100vh;
     padding-top: 100px;
     padding-left: 150px;
+    padding-right: 60px;
+    padding-bottom: 60px;
     box-sizing: border-box;
     display: flex;
-}
-.profilePageHeader {
-    align-items: flex-start;
-    display: flex;
-    flex-direction: row;
-    gap:20px;
-}
-
-.profileImg{
-    width: 100px;
-    min-height: 100px;
-    color: #d0d0d0;
-    flex-shrink: 0;
-}
-.profileUserStuff{
-    display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    gap: 12px
+    gap: 40px;
 }
 
-.Exit {
-    display: flex;
-    gap: 10px;
-    flex-direction: row;
-    align-items: center;
-    text-decoration: none;
+.profileUsername {
     color: white;
-    cursor: pointer;
-    border-color: #2E4578;
-    border-radius: 10px;
-    background-color: transparent;
+    font-size: 32px;
     font-weight: bold;
 }
 
-.Exit:hover {
-    color: hsl(0 0% 58%);
+.profilePageOrders {
+    width: 100%;
+    max-width: 1000px;
+}
+
+.profileOrdersTitle {
+    margin-bottom: 24px;
+    font-size: 28px;
+    font-weight: bold;
+    color: white;
+}
+
+.profileOrdersMessage {
+    padding: 20px;
+    border-radius: 16px;
+    background-color: #0f1112;
+    border: 1px solid #2E4578;
+    color: #d0d0d0;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.profileOrdersError {
+    padding: 20px;
+    border-radius: 16px;
+    background-color: #0f1112;
+    border: 1px solid #ff6b6b;
+    color: #ff6b6b;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.ordersList {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.profileOrderCard {
+    width: 100%;
+    padding: 22px;
+    border-radius: 20px;
+    background-color: #0f1112;
+    border: 2px solid #2E4578;
+    box-sizing: border-box;
+}
+
+.profileOrderHeader {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    align-items: center;
+    margin-bottom: 18px;
+}
+
+.profileOrderNumber {
+    font-size: 22px;
+    font-weight: bold;
+    color: white;
+}
+
+.profileOrderStatus {
+    padding: 8px 14px;
+    border-radius: 12px;
+    border: 1px solid #2E4578;
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.profileOrderInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 18px;
+}
+
+.profileOrderRow {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    color: #d0d0d0;
+    font-size: 16px;
+}
+
+.profileOrderProducts {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.profileOrderProduct {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px;
+    border-radius: 14px;
+    background-color: #131313;
+    border: 1px solid #2E4578;
+}
+
+.profileOrderProductImage {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 12px;
+    background-color: #323232;
+    flex-shrink: 0;
+}
+
+.profileOrderProductInfo {
+    flex: 1;
+    min-width: 0;
+}
+
+.profileOrderProductTitle {
+    margin-bottom: 6px;
+    color: white;
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.profileOrderProductDetails {
+    color: #d0d0d0;
+    font-size: 15px;
+}
+.Exit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: fit-content;
+    margin-top: 4px;
+    padding: 10px 16px;
+    border: 2px solid #2E4578;
+    border-radius: 12px;
+    background: #0f1112;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
     transition: 0.3s;
+}
+
+.Exit:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px #2E4578;
+    color: white;
+}
+
+.Exit:active:not(:disabled) {
+    transform: translateY(2px);
+}
+
+.Exit:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+@media (max-width: 800px) {
+    .profilePage {
+        padding: 80px 16px 40px 20%;
+    }
+
+    .profilePageHeader {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .profileUserStuff {
+        align-items: center;
+    }
+
+    .profileUsername {
+        font-size: 28px;
+    }
+
+    .profileOrderHeader {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .profileOrderRow {
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .profileOrderProduct {
+        align-items: flex-start;
+    }
 }

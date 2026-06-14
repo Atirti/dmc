@@ -30,12 +30,30 @@ export async function parseError(response) {
     const data = await response.json().catch(() => null);
 
     if (Array.isArray(data?.detail)) {
-        return data.detail.map((error) => error.msg).join(", ");
+        return data.detail
+                .map((error) => {
+                    const location = Array.isArray(error.loc) ? error.loc.join(".") : "";
+                    return location ? `${location}: ${error.msg}` : error.msg;
+                }).join(", ");
     }
-
-    return data?.detail || "Ошибка запроса";
+    if (typeof data?.detail === "string") {
+        return data.detail;
+    }
+    return "Ошибка запроса";
+}
+export function saveUsername(username) {
+    setCookie("username", username);
 }
 
+export function getCurrentUsername() {
+    const username = getCookie("username");
+
+    if (username) {
+        return username;
+    }
+
+    return "Пользователь";
+}
 export function getCookie(name) {
     const cookies = document.cookie.split("; ");
     const cookie = cookies.find((item) => item.startsWith(`${name}=`));
@@ -63,7 +81,9 @@ export function saveTokens(tokens) {
 export function clearTokens() {
     deleteCookie("jwt_token");
     deleteCookie("refresh_token");
+    deleteCookie("username");
 }
+
 let refreshPromise = null;
 
 
@@ -81,6 +101,7 @@ export async function loginRequest(username, password) {
     }
     const tokens = await response.json();
     saveTokens(tokens);
+    saveUsername(username);
     return tokens;
 }
 
@@ -98,6 +119,7 @@ export async function registrationRequest(username, password) {
     }
     const tokens = await response.json();
     saveTokens(tokens);
+    saveUsername(username);
 
     return tokens;
 }

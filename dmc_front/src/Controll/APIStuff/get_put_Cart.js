@@ -16,13 +16,8 @@ export async function getCartRequest() {
 export async function changeCartCountRequest(id, count) {
     const response = await authFetch("/cart/", {
         method: "PUT",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            id: id,
-            count: count,
-        }),
+        headers: {"Content-Type": "application/json",},
+        body: JSON.stringify({id: id, count: count,}),
     });
 
     if (!response.ok) {

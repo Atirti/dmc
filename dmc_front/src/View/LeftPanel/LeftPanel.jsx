@@ -20,7 +20,6 @@ function LeftPanel() {
 
                     <NavLink
                             to="/cart"
-                            data-count="3"
                             className={({ isActive }) => isActive ? "cartLink active" : "cartLink"}>
                         <MdShoppingCart size={25} />
                         Корзина

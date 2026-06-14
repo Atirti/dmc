@@ -1,5 +1,5 @@
 import "./ItemWindowCSS.css";
-import LeftPanel from "../../View/NavigationBar/LeftPanel.jsx";
+import LeftPanel from "../LeftPanel/LeftPanel.jsx";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { addItemToCartRequest} from "../../Controll/APIStuff/get_put_Cart.js";

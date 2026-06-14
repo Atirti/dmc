@@ -171,6 +171,38 @@
     transform: translateY(-2px);
     box-shadow: 0 5px 15px #2E4578;
 }
+
+.addressLabel {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #d0d0d0;
+}
+
+.addressInput {
+    width: 100%;
+    resize: none;
+    margin-bottom: 20px;
+    padding: 12px;
+    border-radius: 12px;
+    border: 2px solid #2E4578;
+    background-color: #131313;
+    color: white;
+    font-size: 15px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.addressInput:focus {
+    box-shadow: 0 0 15px #2E4578;
+}
+
+.checkoutButton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
 @media (max-width: 800px) {
     .cartPage {
         width: 100%;
