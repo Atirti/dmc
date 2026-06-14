@@ -57,6 +57,13 @@ class LoginRequest(BaseModel):
 class TokenRequest(BaseModel):
     refresh_token: str
 
+    @field_validator("refresh_token")
+    @classmethod
+    def refresh_token_validator(cls, v):
+        if v == "":
+            raise ValueError("Refresh token cannot be empty")
+        return v
+
 
 class TokenResponse(BaseModel):
     jwt_token: str
