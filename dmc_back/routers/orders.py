@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends
-from schemas.orders import OrderModel, PayRequest, OrderRequest
+from schemas.orders import OrderModel, PayRequest, OrderRequest, OrderUpdateRequest
+from schemas.products import RequestId
 from services.orders import OrdersService
 
 import dependencies
@@ -18,3 +19,24 @@ async def create_order(request: OrderRequest,
                        current_user: dict = Depends(dependencies.get_current_user),
                        orders_service: OrdersService = Depends(dependencies.get_order_service)) -> OrderModel:
     return await orders_service.create_order(current_user["user_id"], request)
+
+
+@router.get("/order", response_model=OrderModel)
+async def get_order(request: RequestId = Depends(),
+                    current_user: dict = Depends(dependencies.get_current_user),
+                    admin_user: dict = Depends(dependencies.get_admin_user)):
+    pass
+
+
+@router.put("/order", response_model=OrderModel)
+async def update_order(request: OrderUpdateRequest,
+                       order_service: OrdersService = Depends(dependencies.get_order_service),
+                       admin_user: dict = Depends(dependencies.get_admin_user)):
+    pass
+
+
+@router.delete("/order")
+async def delete_order(request: RequestId = Depends(),
+                       order_service: OrdersService = Depends(dependencies.get_order_service),
+                       admin_user: dict = Depends(dependencies.get_admin_user)):
+    pass
