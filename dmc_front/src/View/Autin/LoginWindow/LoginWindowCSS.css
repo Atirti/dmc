@@ -1,126 +1,193 @@
 .loginPage {
     min-height: 100vh;
-    min-width: 100vw;
+    width: 100%;
+    overflow-x: hidden;
+    background: #08090d;
+    color: white;
     display: flex;
-    justify-content: center;
     align-items: center;
-    vertical-align: center;
-}
-
-.loginWindow{
-    width: 400px;
-    max-width: 90%;
-    background-color: #131313;
-    border-radius: 25px;
-    padding: 20px;
+    justify-content: center;
+    padding: 15vh 20px 60px 20px;
     box-sizing: border-box;
 }
 
-.header{
-    text-align: center;
-    font-weight: bold;
-    font-size: 30px;
-    color: white;
-    margin-bottom: 25px;
-}
-
-/* Контейнер полей */
-.Inputs{
+.loginWindow {
     width: 100%;
-}
-
-.Login, .Password{
-    margin-bottom: 20px;
-}
-
-.inputLogin, .inputPassword{
-    position: relative;
-    width: 100%;
-}
-
-.loginWindow input{
-    width: 100%;
-    padding: 0.7rem 0.4rem;
-    outline: none;
-    border: 1px solid gray;
-    border-radius: 5px;
-    font-size: 1rem;
-    background-color: transparent;
-    color: white;
+    max-width: 460px;
     box-sizing: border-box;
 }
 
-.loginWindow label{
-    position: absolute;
-    top: 50%;
-    left: 1rem;
-    transform: translateY(-50%);
-    background-color: #131313;
-    border-radius: 5px;
-    padding: 0 0.3rem;
-    transform-origin: top left;
-    transition: 0.15s ease-out;
-    pointer-events: none;
-    color: gray;
+.loginHeader {
+    margin-bottom: 34px;
 }
 
-.loginWindow input:focus + label{
-    top: 0;
+.loginForm {
+    width: 100%;
+}
+
+.loginInput {
+    width: 100%;
+}
+
+.loginInput .MuiInputLabel-root {
+    color: #8f94a3;
+    font-weight: 700;
+}
+
+.loginInput .MuiInputLabel-root.Mui-focused {
     color: #2E4578;
-    transform: scale(0.9) translateY(-50%);
 }
 
-.loginWindow input:focus{
+.loginInput .MuiOutlinedInput-root {
+    color: white;
+    border-radius: 18px;
+    background-color: #252a35;
+    font-weight: 700;
+}
+
+.loginInput .MuiOutlinedInput-input {
+    padding-top: 16px;
+    padding-bottom: 16px;
+}
+
+.loginInput .MuiOutlinedInput-notchedOutline {
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+.loginInput .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
     border-color: #2E4578;
 }
 
-.loginWindow input:not(:placeholder-shown) + label{
-    top: 0;
-    transform: scale(0.9) translateY(-50%);
+.loginInput .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+    border-color: #2E4578;
 }
 
-/*Регистрация*/
-.registration{
+.registration {
+    margin-top: 22px;
+    color: #8f94a3;
+    font-size: 1rem;
+    font-weight: 700;
     display: flex;
+    align-items: center;
     justify-content: center;
-    color: white;
-    margin: 15px 0;
+    gap: 8px;
+    flex-wrap: wrap;
+    text-align: center;
 }
 
-.Register{
-    color: #4f7cff;
-    padding-left: 5px;
-    text-decoration: underline;
-    transition: 0.3s;
-}
-
-.Register:hover{
+.Register {
     color: #2E4578;
+    font-weight: 800;
+    text-decoration: none;
 }
 
-.ButtonContainer{
-    width: 100%;
+.Register:hover {
+    color: #3c589f;
+    text-decoration: underline;
 }
 
-/* Кнопка входа*/
-.loginButton{
-    width: 100%;
-    padding: 12px;
-    border: 2px solid #2E4578;
-    border-radius: 12px;
-    background: #0f1112;
-    color: white;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.3s;
+.loginButton {
+    min-height: 52px;
 }
 
-.loginButton:hover{
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px #2E4578;
+.errorMessage {
+    margin-top: 16px;
+    color: #ff6b6b;
+    font-size: 1rem;
+    font-weight: 700;
+    text-align: center;
 }
 
-.loginButton:active{
-    transform: translateY(0);
+@media (max-width: 800px) {
+    .loginPage {
+        padding: 12vh 18px 50px 18px;
+    }
+
+    .loginWindow {
+        max-width: 430px;
+    }
+}
+
+@media (max-width: 600px) {
+    .loginPage {
+        padding: 10vh 14px 42px 14px;
+        align-items: flex-start;
+    }
+
+    .loginWindow {
+        max-width: 360px;
+        border-radius: 24px !important;
+    }
+
+    .loginWindow .MuiCardContent-root {
+        padding: 24px !important;
+    }
+
+    .loginHeader {
+        margin-bottom: 28px;
+    }
+
+    .loginHeader {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 14px !important;
+    }
+
+    .loginHeader > .MuiBox-root:first-child {
+        width: 52px !important;
+        height: 52px !important;
+    }
+
+    .loginHeader h4 {
+        font-size: 1.75rem !important;
+    }
+
+    .loginInput .MuiOutlinedInput-root {
+        border-radius: 16px;
+    }
+
+    .registration {
+        font-size: 0.95rem;
+    }
+
+    .loginButton {
+        min-height: 48px;
+    }
+}
+
+@media (max-width: 480px) {
+    .loginPage {
+        padding: 8vh 12px 38px 12px;
+    }
+
+    .loginWindow {
+        max-width: 320px;
+    }
+
+    .loginWindow .MuiCardContent-root {
+        padding: 20px !important;
+    }
+
+    .loginHeader h4 {
+        font-size: 1.55rem !important;
+    }
+
+    .loginInput .MuiOutlinedInput-input {
+        padding-top: 14px;
+        padding-bottom: 14px;
+    }
+}
+
+@media (max-width: 380px) {
+    .loginWindow {
+        max-width: 290px;
+    }
+
+    .loginHeader h4 {
+        font-size: 1.4rem !important;
+    }
+
+    .registration {
+        font-size: 0.9rem;
+    }
 }

@@ -1,293 +1,260 @@
 .cartPage {
     min-height: 100vh;
-    width: 100vw;
-    overflow-x: hidden;
-    color: white;
+    background: #08090d;
     display: flex;
+    color: white;
+    overflow-x: hidden;
 }
 
 .cartWindow {
-    width: 100%;
-    flex: 1;
-    min-height: 100vh;
-    padding: 5% 8% 5% 12%;
+    width: 70%;
+    margin-left: 15%;
+    margin-right: 15%;
+    padding: 15vh 0 60px 0;
     box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-}
-
-.header {
-    margin: 5%;
-    align-items: flex-start;
-}
-
-.title {
-    font-size: 36px;
-    font-weight: bold;
-    color: white;
 }
 
 .cartContent {
-    width: 100%;
-    display: flex;
-    gap: 40px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 340px;
+    gap: 28px;
     align-items: flex-start;
 }
 
 .cartItems {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.cartItem {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    padding: 20px;
-    border-radius: 20px;
-    background-color: #0f1112;
-    border: 2px solid #2E4578;
-    box-sizing: border-box;
-}
-
-.cartItemImage {
-    width: 120px;
-    height: 120px;
-    object-fit: cover;
-    border-radius: 16px;
-    background-color: #323232;
-    flex-shrink: 0;
-}
-
-.cartItemInfo {
-    flex: 1;
     min-width: 0;
-}
-
-.cartItemTitle {
-    font-size: 22px;
-    font-weight: bold;
-    color: white;
-    margin-bottom: 10px;
-}
-
-.cartItemPrice {
-    font-size: 20px;
-    font-weight: bold;
-    color: #2E4578;
-}
-
-.cartItemCount {
-    font-size: 18px;
-    font-weight: bold;
-    color: #d0d0d0;
-}
-
-.removeButton {
-    padding: 10px 16px;
-    border: 2px solid #2E4578;
-    border-radius: 12px;
-    background: #0f1112;
-    color: white;
-    font-size: 14px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.removeButton:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px #2E4578;
-}
-
-.removeButton:active {
-    transform: translateY(2px);
+    width: 100%;
 }
 
 .cartSummary {
-    width: 320px;
-    padding: 24px;
-    border-radius: 20px;
-    background-color: #0f1112;
-    border: 1px solid #2E4578;
-    box-sizing: border-box;
-    flex-shrink: 0;
+    min-width: 0;
 }
 
-.summaryTitle {
-    font-size: 26px;
-    font-weight: bold;
-    margin-bottom: 20px;
-    color: white;
+.cartItems .MuiCardContent-root > .MuiStack-root {
+    width: 100%;
 }
 
-.summaryRow {
+.cartItems .MuiCardContent-root > .MuiStack-root > .MuiStack-root {
+    align-self: center;
+}
+
+.cartItems .MuiCardContent-root > .MuiStack-root > .MuiBox-root:last-child {
     display: flex;
-    justify-content: space-between;
-    margin-bottom: 14px;
-    font-size: 18px;
-    color: #d0d0d0;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
 }
 
-.checkoutButton {
-    width: 100%;
-    margin-top: 20px;
-    padding: 12px;
-    border: 2px solid #2E4578;
-    border-radius: 12px;
-    background: #0f1112;
-    color: white;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.3s;
+.cartSummary .MuiCardContent-root > .MuiStack-root:nth-of-type(2) {
+    align-items: center ;
 }
 
-.checkoutButton:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px #2E4578;
+.cartSummary .MuiInputBase-root {
+    height: 72px;
+    display: flex;
+    align-items: center;
 }
 
-.checkoutButton:active {
-    transform: translateY(2px);
+.cartSummary textarea {
+    text-align: center;
+    line-height: 1.4;
 }
 
-.addButton, .minusButton {
-    min-width: 20px;
-    min-height: 20px;
-    margin: 5px 5px 5px 5px;
-    background-color: #131313;
-    color: white;
-    border: 2px solid #2E4578;
-    border-radius: 8px;
-    font-size: 1.2rem;
-    font-weight: bold;
-    cursor: pointer;
-}
-.addButton:hover, .minusButton:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px #2E4578;
+.cartSummary textarea::placeholder {
+    text-align: center;
 }
 
-.addressLabel {
-    display: block;
-    margin-bottom: 8px;
-    font-size: 16px;
-    font-weight: bold;
-    color: #d0d0d0;
-}
-
-.addressInput {
-    width: 100%;
-    resize: none;
-    margin-bottom: 20px;
-    padding: 12px;
-    border-radius: 12px;
-    border: 2px solid #2E4578;
-    background-color: #131313;
-    color: white;
-    font-size: 15px;
-    outline: none;
-    box-sizing: border-box;
-}
-
-.addressInput:focus {
-    box-shadow: 0 0 15px #2E4578;
-}
-
-.checkoutButton:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-
-@media (max-width: 800px) {
-    .cartPage {
-        width: 100%;
-        min-height: 100vh;
-        overflow-x: hidden;
-    }
-
+@media (max-width: 1200px) {
     .cartWindow {
-        padding: 80px 16px 40px 15%;
-        min-height: 100vh;
-    }
-
-    .header {
-        margin: 0 0 30px 0;
-    }
-
-    .title {
-        font-size: 32px;
-        text-align: center;
+        width: auto;
+        margin-left: 130px;
+        margin-right: 45px;
+        padding: 13vh 0 60px 0;
     }
 
     .cartContent {
-        flex-direction: column;
+        grid-template-columns: 1fr;
         gap: 24px;
+    }
+
+    .cartSummary {
+        position: static ;
+        top: auto ;
+        width: 100%;
     }
 
     .cartItems {
         width: 100%;
     }
 
-    .cartItem {
-        width: 100%;
-        gap: 14px;
-        padding: 14px;
-        border-radius: 16px;
+    .cartItems .MuiCardContent-root > .MuiStack-root {
+        flex-wrap: nowrap;
+    }
+}
+
+@media (max-width: 800px) {
+    .cartWindow {
+        width: auto;
+        margin-left: 118px;
+        margin-right: 18px;
+        padding: 12vh 0 50px 0;
     }
 
-    .cartItemImage {
-        width: 100px;
-        height: 100px;
-        border-radius: 14px;
-    }
-
-    .cartItemTitle {
-        font-size: 18px;
-        margin-bottom: 8px;
-    }
-
-    .cartItemPrice {
-        font-size: 17px;
-    }
-
-    .cartItemCount {
-        font-size: 16px;
-    }
-
-    .removeButton {
-        padding: 8px 12px;
-        font-size: 13px;
-        border-radius: 10px;
-    }
-
-    .addButton,
-    .minusButton {
-        min-width: 28px;
-        min-height: 28px;
-        font-size: 1rem;
+    .cartContent {
+        grid-template-columns: 1fr;
+        gap: 24px;
     }
 
     .cartSummary {
+        position: static ;
+        top: auto ;
         width: 100%;
-        padding: 20px;
-        border-radius: 16px;
     }
 
-    .summaryTitle {
-        font-size: 24px;
+    .cartItems {
+        width: 100%;
+    }
+}
+
+@media (max-width: 600px) {
+    .cartWindow {
+        width: auto;
+        margin-left: 114px;
+        margin-right: 14px;
+        padding: 10vh 0 42px 0;
     }
 
-    .summaryRow {
-        font-size: 17px;
+    .cartWindow > .MuiStack-root:first-child {
+        margin-bottom: 24px ;
     }
 
-    .checkoutButton {
-        font-size: 15px;
-        padding: 12px;
+    .cartWindow > .MuiStack-root:first-child > .MuiBox-root:first-child {
+        width: 52px ;
+        height: 52px ;
+    }
+
+    .cartWindow h4 {
+        font-size: 1.75rem ;
+    }
+
+    .cartContent {
+        gap: 18px;
+    }
+
+    .cartItems {
+        gap: 16px ;
+    }
+
+    .cartItems .MuiCard-root {
+        max-width: 360px;
+        width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+        border-radius: 24px ;
+    }
+
+    .cartItems .MuiAvatar-root {
+        width: 160px ;
+        height: 160px ;
+        max-width: 100%;
+        border-radius: 20px ;
+    }
+
+    .cartItems .MuiCardContent-root > .MuiStack-root {
+        flex-direction: column ;
+        align-items: center ;
+        justify-content: center ;
+        gap: 14px ;
+        text-align: center;
+    }
+
+    .cartItems .MuiAvatar-root {
+        width: 100% ;
+        height: auto ;
+        aspect-ratio: 1 / 1;
+        border-radius: 20px ;
+    }
+
+    .cartItems .MuiCardContent-root > .MuiStack-root > .MuiBox-root {
+        width: 100%;
+        text-align: center;
+    }
+
+    .cartItems .MuiTypography-root {
+        white-space: normal ;
+        text-align: center;
+    }
+
+    .cartItems .MuiCardContent-root > .MuiStack-root > .MuiStack-root {
+        width: fit-content;
+        align-self: center;
+        justify-content: center;
+    }
+
+    .cartItems .MuiCardContent-root > .MuiStack-root > .MuiBox-root:last-child {
+        min-width: 0 ;
+        width: 100%;
+        height: auto ;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 14px;
+        text-align: center ;
+    }
+
+    .cartSummary {
+        border-radius: 24px ;
+    }
+
+    .cartSummary .MuiCardContent-root {
+        padding: 20px ;
+    }
+
+    .cartSummary h5 {
+        font-size: 1.35rem ;
+    }
+
+    .cartSummary .MuiButton-root {
+        padding-top: 12px ;
+        padding-bottom: 12px ;
+    }
+
+    .cartSummary .MuiCardContent-root > .MuiStack-root:nth-of-type(2) {
+        justify-content: center ;
+        align-items: center ;
+        text-align: center;
+    }
+
+    .cartSummary .MuiInputBase-root {
+        height: 78px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .cartSummary textarea {
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .cartItems .MuiCard-root {
+        max-width: 320px;
+    }
+
+    .cartItems .MuiAvatar-root {
+        width: 135px;
+        height: 135px;
+    }
+}
+@media (max-width: 380px) {
+    .cartItems .MuiCard-root {
+        max-width: 280px;
+    }
+
+    .cartItems .MuiAvatar-root {
+        width: 120px;
+        height: 120px ;
     }
 }
