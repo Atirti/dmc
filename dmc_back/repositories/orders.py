@@ -28,7 +28,7 @@ class OrdersRepository:
     async def create_order(self, user_id: int, address: str, price: float, products: list[dict]) -> Order:
         result = await self.__db.execute(
             insert(Order)
-            .values(user_id=user_id, address=address, price=price, status="not paid")
+            .values(user_id=user_id, address=address, price=price, status="paid")
             .returning(Order)
         )
         order = result.scalar_one()

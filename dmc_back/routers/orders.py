@@ -18,10 +18,3 @@ async def create_order(request: OrderRequest,
                        current_user: dict = Depends(dependencies.get_current_user),
                        orders_service: OrdersService = Depends(dependencies.get_order_service)) -> OrderModel:
     return await orders_service.create_order(current_user["user_id"], request)
-
-
-@router.post("/pay", response_model=OrderModel)
-async def pay_order(request: PayRequest,
-                    current_user: dict = Depends(dependencies.get_current_user),
-                    orders_service: OrdersService = Depends(dependencies.get_order_service)) -> OrderModel:
-    return await orders_service.pay(request.order_id, current_user["user_id"])
