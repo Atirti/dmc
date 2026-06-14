@@ -1,9 +1,0 @@
-.MainWindow {
-    min-height: 100vh;
-    display: flex;
-}
-
-.mainMenu{
-    display: flex;
-    margin: 10% 10% 10% 5%;
-}

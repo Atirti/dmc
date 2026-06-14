@@ -1,0 +1,257 @@
+.MainWindow {
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+}
+
+.mainMenu {
+    flex: 1;
+    min-width: 0;
+    margin: 0;
+    padding: 150px 140px 140px 140px;
+    box-sizing: border-box;
+}
+
+.MainMenu {
+    width: 100%;
+    gap: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.sortCombos {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.ComboBoxSort, .ComboBoxOrder, .ComboBoxCategory, .ComboBoxItemLimit {
+    display: flex;
+    flex-direction: row;
+}
+
+.ComboBoxSort select, .ComboBoxOrder select, .ComboBoxCategory select, .ComboBoxItemLimit select {
+    min-width: 220px;
+    height: 32px;
+    background-color: #131313;
+    color: white;
+    border: 2px solid #2E4578;
+    border-radius: 8px;
+    cursor: pointer;
+    outline: none;
+    padding: 0 10px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.ComboBoxSort select:hover, .ComboBoxOrder select:hover, .ComboBoxCategory select:hover, .ComboBoxItemLimit select:hover {
+    border-color: #4F7FD9;
+    background-color: #181818;
+}
+
+.ComboBoxSort select:focus, .ComboBoxOrder select:focus, .ComboBoxCategory select:focus, .ComboBoxItemLimit select:focus {
+    border-color: #6A9CFF;
+    box-shadow: 0 0 0 3px rgba(46, 69, 120, 0.45);
+}
+
+.itemsMenu {
+    width: 100%;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.itemsMenuList {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 30px;
+    padding: 0;
+    margin: 0;
+}
+
+.itemsMenuListItem {
+    flex: 0 1 220px;
+    color: white;
+    text-align: center;
+    background: #0f1112;
+    border: 2px solid #2E4578;
+    border-radius: 10px;
+
+    box-sizing: border-box;
+    padding: 8px;
+
+    text-decoration: none;
+}
+
+.itemsMenuListItem:hover {
+    transform: scale(1.05);
+    transition: 0.2s;
+    z-index: 2;
+}
+
+.itemsMenuListItem img {
+    width: 100%;
+    max-width: 200px;
+    aspect-ratio: 1 / 1;
+    height: auto;
+
+    object-fit: cover;
+    display: block;
+
+    border-radius: 20px;
+    margin: 0 auto;
+}
+
+.itemTitle {
+    width: 100%;
+    margin: 6px 0 0;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    line-height: 1.25;
+    text-align: left;
+}
+
+.itemPrice {
+    color: #2E4578;
+    font-weight: bold;
+    padding-top: 3%;
+    font-size: 1.2rem;
+    text-align: left;
+}
+.pages {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    gap: 15px;
+    margin-top: 40px;
+
+    font-size: 1.2rem;
+}
+
+.pages button {
+    min-width: 40px;
+    min-height: 40px;
+
+    background-color: #131313;
+    color: white;
+
+    border: 2px solid #2E4578;
+    border-radius: 8px;
+
+    font-size: 1.2rem;
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.pages button:hover:not(:disabled) {
+    background-color: #181818;
+    color: #6A9CFF;
+}
+
+.pages button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.pages span {
+    color: white;
+    font-weight: bold;
+}
+
+@media (max-width: 800px) {
+    .MainMenu {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .sortCombos {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin: 0 0 20px 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    .ComboBoxSort, .ComboBoxOrder, .ComboBoxCategory, .ComboBoxItemLimit {
+        display: flex;
+        flex: 1 1 140px;
+    }
+
+    .ComboBoxSort select, .ComboBoxOrder select, .ComboBoxCategory select, .ComboBoxItemLimit select {
+        width: 100%;
+        min-width: 130px;
+        height: 32px;
+        font-size: 12px;
+        padding: 0 8px;
+    }
+
+    .itemsMenu {
+        width: 100%;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    .itemsMenuList {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        justify-content: flex-start;
+        gap: 15px;
+        padding: 0;
+        margin: 0;
+    }
+
+    .itemsMenuListItem {
+        flex: 1 1 145px;
+        min-width: 135px;
+        max-width: 180px;
+        padding: 6px;
+    }
+
+    .itemsMenuListItem:hover {
+        transform: scale(1.03);
+    }
+
+    .itemsMenuListItem img {
+        max-width: 145px;
+        border-radius: 14px;
+    }
+
+    .itemPrice {
+        font-size: 1rem;
+        padding-top: 4%;
+    }
+
+    .itemTitle {
+        font-size: 14px;
+    }
+    .LoadingText {
+        font-size: 18px;
+    }
+    .ErrorText {
+        font-size: 28px;
+        margin-top: 40px;
+        margin-left: 0;
+    }
+}
