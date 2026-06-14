@@ -1,8 +1,5 @@
-import secrets
-
 from fastapi import APIRouter, Depends, HTTPException, status
 
-from config import Settings
 from schemas.auth import LoginRequest, TokenRequest, TokenResponse, LogoutRequest
 import dependencies
 from services import AuthService, JwtService
