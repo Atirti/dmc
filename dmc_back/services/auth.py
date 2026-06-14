@@ -7,8 +7,10 @@ from fastapi import HTTPException, status
 
 
 class AuthService:
-    def __init__(self, repository: UserRepository):
+    def __init__(self, repository: UserRepository, admin_settings: dict):
         self.__user_repository = repository
+        self.__admin_username = admin_settings["username"]
+        self.__admin_password = admin_settings["password"]
 
     async def login(self, username, password) -> User:
         """
@@ -33,3 +35,10 @@ class AuthService:
             raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Username already taken")
 
         return await self.__user_repository.create_user(username, hashpw(password.encode(), gensalt()).decode())
+
+
+    async def admin_login(self, username, password):
+        if username == self.__admin_username and password == self.__admin_password:
+            return username
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect username or password")
+
