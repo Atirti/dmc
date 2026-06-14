@@ -8,9 +8,9 @@ from repositories import RefreshTokenRepository, UserRepository, ProductReposito
 import config
 import database
 
-Settings = config.Settings()
+settings = config.Settings()
 oauth2_scheme = HTTPBearer()
-db = database.Database(Settings.get_db_async_url())
+db = database.Database(settings.get_db_async_url())
 
 
 async def get_db():
@@ -19,7 +19,7 @@ async def get_db():
 
 
 async def get_jwt_service(db: AsyncSession = Depends(get_db)) -> JwtService:
-    return JwtService(Settings.get_jwt_secret(), RefreshTokenRepository(db))
+    return JwtService(settings.get_jwt_secret(), RefreshTokenRepository(db))
 
 
 async def get_auth_service(db: AsyncSession = Depends(get_db)) -> AuthService:
@@ -41,3 +41,8 @@ async def get_order_service(db: AsyncSession = Depends(get_db)) -> OrdersService
 async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(oauth2_scheme),
                            jwt_service: JwtService = Depends(get_jwt_service)) -> dict:
     return jwt_service.decode(credentials.credentials)
+
+
+def get_admin_user(credentials: HTTPAuthorizationCredentials = Depends(oauth2_scheme),
+                         jwt_service: JwtService = Depends(get_jwt_service)) -> dict:
+    return jwt_service.decode_admin(credentials.credentials)
