@@ -1,20 +1,26 @@
 .LeftPanel {
-    backdrop-filter: brightness(1.3) opacity(0.7) ;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 90px;
+    min-width: 90px;
+    height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100px;
-    min-width: 100px;
-    height: 100vh;
-    border-radius: 10px;
+    background: rgb(18 19 24);
+    backdrop-filter: brightness(1.3) opacity(0.7) blur(8px);
+    border-radius: 0 14px 14px 0;
     overflow: hidden;
-    position: fixed;
 }
 
-.LeftPanel .active {
-    padding-right: 4px;
-    border-right: 3px #2E4578 solid;
-    border-radius: 3px;
+.shopTitle {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 30px;
+    font-weight: 800;
+    text-align: center;
+    color: white;
 }
 
 .menu {
@@ -23,49 +29,64 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap: 28px;
 }
 
-.menu a {
+.LeftPanel .menu .navButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    color: white;
+    transition: color 0.25s ease;
+}
+
+.LeftPanel .menu .navButton:hover {
+    color: hsl(0 0% 67%);
+}
+
+.LeftPanel .menu .navButton .menuButton {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 5px;
-    padding-top: 20px;
-    text-decoration: none;
-    position: relative;
-    font-size: 16px;
-    color: white;
-    cursor: pointer;
+    justify-content: center;
+    gap: 2px;
+    padding: 0;
+    color: inherit;
+    border-radius: 0;
+    background: transparent;
+    font-family: inherit;
 }
 
-.menu a:hover {
-    color: hsl(0 0% 58%);
-    transition: 0.3s;
+.LeftPanel .menu .navButton .menuButton:hover {
+    background: transparent;
 }
 
-
-.shopTitle {
-    display: flex;
-    font-size: 30px;
-    margin: 20px;
-    font-weight: bold;
-}
-
-.cartLink {
-    position: relative;
-}
-
-.cartLink::after {
-    content: attr(data-count);
-    position: absolute;
-    top: 12px;
-    right: 10px;
-    min-width: 10px;
-    height: 16px;
-    padding: 0 4px;
+.iconWrapper {
+    width: 76px;
+    height: 44px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 90px;
-    font-size: 11px;
+    border-radius: 999px;
+    transition: background 0.25s ease, color 0.25s ease;
+}
+
+.LeftPanel .menu .navButton .menuButton span {
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1;
+    color: inherit;
+}
+
+.LeftPanel .menu .navButton.active {
+    color: #2E4578;
+}
+
+.LeftPanel .menu .navButton.active .iconWrapper {
+    background: rgb(63 69 88);
+}
+
+.LeftPanel .menu .navButton.active:hover {
+    color: #2E4578;
 }
