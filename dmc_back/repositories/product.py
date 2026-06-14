@@ -1,5 +1,5 @@
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, asc, desc
+from sqlalchemy import select, asc, desc, insert, update, delete
 
 from models import Product
 
@@ -63,6 +63,13 @@ class ProductRepository:
 
         return result.scalars().all()
 
+    async def get_product(self, id: int):
+        result = await self.__db.execute(
+            select(Product)
+            .where(Product.id == id)
+        )
+        return result.scalar_one_or_none()
+
     async def get_by_ids(self, ids: list[int]):
         result = await self.__db.execute(
             select(Product)
@@ -70,3 +77,17 @@ class ProductRepository:
         )
 
         return result.scalars().all()
+
+    async def add_product(self, title: str, description: str, price: float | int, picture_url: str | None,
+                          count_in_stock, category_id):
+        result = await self.__db.execute(
+            insert(Product)
+            .values(title=title, description=description, price=price, picture_url=picture_url,
+                    count_in_stock=count_in_stock, category_id=category_id)
+            .returning(Product)
+        )
+
+        await self.__db.commit()
+        product = result.scalar_one()
+        await self.__db.refresh(product)
+        return product

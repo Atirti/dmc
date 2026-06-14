@@ -43,3 +43,12 @@ async def client():
     async with engine.begin() as conn:
         await conn.run_sync(models.Base.metadata.drop_all)
     await engine.dispose()
+
+@pytest_asyncio.fixture
+async def no_db_client():
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as c:
+        yield c
+
+@pytest.fixture()
+def admin():
+    return settings.get_admin_user()

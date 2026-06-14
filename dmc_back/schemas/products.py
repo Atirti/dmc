@@ -3,6 +3,14 @@ from pydantic import BaseModel, field_validator
 
 class ProductModel(BaseModel):
     id: int
+    title: str | None
+    description: str | None
+    price: float | int | None
+    picture_url: str | None
+    count_in_stock: int | None
+    category_id: int | None
+
+class ProductRequest(BaseModel):
     title: str
     description: str
     price: float | int
@@ -10,11 +18,19 @@ class ProductModel(BaseModel):
     count_in_stock: int
     category_id: int
 
-
 class CategoryModel(BaseModel):
     id: int
     title: str
 
+class RequestId(BaseModel):
+    id: int
+    @field_validator("id")
+    @classmethod
+    def category_id_validator(cls, v):
+        if v is not None:
+            if v < 0:
+                raise ValueError("Category id must be greater than 0")
+        return v
 
 class ProductsRequest(BaseModel):
     limit: int = 20

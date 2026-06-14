@@ -14,6 +14,12 @@ class OrderModel(BaseModel):
     address: str
 
 
+class OrderUpdateRequest(BaseModel):
+    id: int
+    status: str | None
+    address: str | None
+
+
 class ProductRequest(BaseModel):
     product_id: int
     product_count: int

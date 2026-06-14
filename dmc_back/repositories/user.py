@@ -10,13 +10,13 @@ class UserRepository:
     Class for queries to users table.
     """
     def __init__(self, db: AsyncSession):
-        self.db = db
+        self.__db = db
 
     async def get_user_by_login(self, username: str) -> User | None:
         """
         Find a user by username.
         """
-        user = await self.db.execute(
+        user = await self.__db.execute(
             select(User)
             .where(User.username == username)
         )
@@ -27,11 +27,11 @@ class UserRepository:
         """
         Creates and returns a new user.
         """
-        result = await self.db.execute(
+        result = await self.__db.execute(
             insert(User).values(username=username, password=password)
             .returning(User)
             )
-        await self.db.commit()
+        await self.__db.commit()
         user = result.scalar_one()
-        await self.db.refresh(user)
+        await self.__db.refresh(user)
         return user
