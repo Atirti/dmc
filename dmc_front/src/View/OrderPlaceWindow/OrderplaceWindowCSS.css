@@ -1,6 +1,6 @@
 .orderPage {
     min-height: 100vh;
-    width: 100vw;
+    width: 100%;
     overflow-x: hidden;
     color: white;
     display: flex;
@@ -9,15 +9,16 @@
 .orderWindow {
     width: 100%;
     flex: 1;
+    min-width: 0;
     min-height: 100vh;
-    padding: 5% 8% 5% 15%;
+    padding: 90px 8% 70px 15%;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
 }
 
 .orderHeader {
-    margin: 5%;
+    margin: 0 0 35px 0;
     align-items: flex-start;
 }
 
@@ -32,10 +33,12 @@
     display: flex;
     gap: 40px;
     align-items: flex-start;
+    box-sizing: border-box;
 }
 
 .orderItems {
     flex: 1;
+    min-width: 0;
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -72,6 +75,9 @@
     font-weight: bold;
     color: white;
     margin-bottom: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .orderItemPrice {
@@ -91,6 +97,7 @@
     font-weight: bold;
     color: white;
     flex-shrink: 0;
+    white-space: nowrap;
 }
 
 .orderSummary {
@@ -139,9 +146,15 @@
 .summaryRow {
     display: flex;
     justify-content: space-between;
+    gap: 12px;
     margin-bottom: 14px;
     font-size: 18px;
     color: #d0d0d0;
+}
+
+.summaryRow span:last-child {
+    text-align: right;
+    white-space: nowrap;
 }
 
 .payButton {
@@ -185,18 +198,53 @@
     font-weight: bold;
 }
 
+@media (max-width: 1100px) {
+    .orderWindow {
+        padding: 90px 45px 60px 130px;
+    }
+
+    .orderContent {
+        gap: 24px;
+    }
+
+    .orderSummary {
+        width: 320px;
+    }
+
+    .orderItem {
+        gap: 16px;
+        padding: 16px;
+    }
+
+    .orderItemImage {
+        width: 105px;
+        height: 105px;
+    }
+
+    .orderItemTitle {
+        font-size: 19px;
+    }
+
+    .orderItemPrice, .orderItemTotal {
+        font-size: 18px;
+    }
+
+    .orderItemCount {
+        font-size: 16px;
+    }
+}
+
 @media (max-width: 800px) {
     .orderWindow {
-        padding: 80px 16px 40px 15%;
+        padding: 105px 18px 60px 118px;
     }
 
     .orderHeader {
-        margin: 0 0 30px 0;
+        margin: 0 0 28px 0;
     }
 
     .orderTitle {
         font-size: 32px;
-        text-align: center;
     }
 
     .orderContent {
@@ -217,6 +265,7 @@
     .orderItemImage {
         width: 100px;
         height: 100px;
+        border-radius: 14px;
     }
 
     .orderItemTitle {
@@ -234,17 +283,100 @@
     .orderSummary {
         width: 100%;
         padding: 20px;
+        border-radius: 16px;
+    }
+
+    .summaryTitle {
+        font-size: 24px;
+    }
+}
+
+@media (max-width: 600px) {
+    .orderWindow {
+        padding: 100px 14px 50px 114px;
+    }
+
+    .orderTitle {
+        font-size: 28px;
+    }
+
+    .orderContent {
+        gap: 18px;
+    }
+
+    .orderItems {
+        gap: 16px;
+    }
+
+    .orderItem {
+        gap: 12px;
+        padding: 12px;
+    }
+
+    .orderItemImage {
+        width: 86px;
+        height: 86px;
+    }
+
+    .orderItemTitle {
+        font-size: 16px;
+        margin-bottom: 8px;
+    }
+
+    .orderItemPrice, .orderItemTotal {
+        font-size: 15px;
+    }
+
+    .orderItemCount {
+        font-size: 14px;
+    }
+
+    .orderSummary {
+        padding: 18px;
+    }
+
+    .summaryTitle {
+        font-size: 22px;
+        margin-bottom: 16px;
+    }
+
+    .summaryRow {
+        font-size: 16px;
+    }
+
+    .addressInput {
+        font-size: 14px;
+    }
+
+    .payButton {
+        font-size: 15px;
+    }
+
+    .orderMessage {
+        font-size: 18px;
+    }
+
+    .orderError {
+        font-size: 16px;
     }
 }
 
 @media (max-width: 480px) {
+    .orderWindow {
+        padding: 96px 12px 0 20%;
+    }
+
+    .orderTitle {
+        font-size: 26px;
+    }
+
     .orderItem {
         flex-direction: column;
-        align-items: flex-start;
+        align-items: stretch;
     }
 
     .orderItemImage {
-        width: 70%;
+        width: 100%;
         height: 180px;
     }
 
@@ -252,8 +384,49 @@
         width: 100%;
     }
 
+    .orderItemTitle {
+        white-space: normal;
+        font-size: 17px;
+    }
+
     .orderItemTotal {
         width: 100%;
         text-align: right;
+        font-size: 17px;
+    }
+
+    .summaryRow {
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 380px) {
+    .orderWindow {
+        padding: 92px 10px 0 20%;
+    }
+
+    .orderTitle {
+        font-size: 23px;
+    }
+
+    .orderItemImage {
+        height: 150px;
+    }
+
+    .orderSummary {
+        padding: 14px;
+    }
+
+    .summaryTitle {
+        font-size: 20px;
+    }
+
+    .summaryRow {
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .summaryRow span:last-child {
+        text-align: left;
     }
 }
