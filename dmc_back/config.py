@@ -1,4 +1,6 @@
 import os
+import secrets
+
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -17,6 +19,15 @@ class Settings(BaseSettings):
     JWT_EXPIRE_MINUTES: int
 
     REFRESH_TOKEN_EXPIRE_DAYS: int
+
+    ADMIN_USERNAME: str
+    ADMIN_PASSWORD: str
+
+    ADMIN_JWT_SECRET: str
+    ADMIN_JWT_ALGORITHM: str
+    ADMIN_JWT_EXPIRE_MINUTES: int
+
+    ADMIN_REFRESH_TOKEN: str = ""
 
     TEST_DB_HOST: str
     TEST_DB_PORT: int
@@ -54,7 +65,9 @@ class Settings(BaseSettings):
         :return dict with jwt settings
         """
         return {"secret": self.JWT_SECRET, "algorithm": self.JWT_ALGORITHM, "exp_minutes": self.JWT_EXPIRE_MINUTES,
-                "refresh_exp_days": self.REFRESH_TOKEN_EXPIRE_DAYS}
+                "refresh_exp_days": self.REFRESH_TOKEN_EXPIRE_DAYS, "admin_secret": self.ADMIN_JWT_SECRET,
+                "admin_algorithm": self.ADMIN_JWT_ALGORITHM, "admin_exp_minutes": self.ADMIN_JWT_EXPIRE_MINUTES,
+                "admin_refresh_token": self.ADMIN_REFRESH_TOKEN}
 
-
-settings = Settings()
+    def get_admin_user(self) -> dict:
+        return {"username": self.ADMIN_USERNAME, "password": self.ADMIN_PASSWORD}

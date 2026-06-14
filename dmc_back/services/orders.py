@@ -48,11 +48,3 @@ class OrdersService:
         )
 
         return self.__order_to_dict(order)
-
-    async def pay(self, order_id: int, user_id: int):
-        await self.__orders_repository.update_status(order_id, user_id, "paid")
-        order = await self.__orders_repository.get_order_by_id(order_id, user_id)
-        if order is None:
-            raise HTTPException(status_code=404, detail="Order not found")
-
-        return self.__order_to_dict(order)
