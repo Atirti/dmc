@@ -1,11 +1,17 @@
 import { useEffect, useState } from "react";
 import LeftPanel from "../LeftPanel/LeftPanel.jsx";
 import "./ProfileCSS.css";
-import { MdAccountCircle, MdLogout } from "react-icons/md";
 import { useAuth } from "../../Controll/APIStuff/Autentification/AuthContext.jsx";
 import { useNavigate } from "react-router-dom";
 import { getCurrentUsername } from "../../Controll/APIStuff/Autentification/auth.js";
 import { getUserOrdersRequest } from "../../Controll/APIStuff/post_get_Orders.js";
+import {Alert, Box, Button, Card, CardContent, CircularProgress, Divider, Stack, Typography}
+    from "@mui/material";
+import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
+import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
+import ReceiptLongOutlinedIcon from "@mui/icons-material/ReceiptLongOutlined";
+import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
+import OpenInNewOutlinedIcon from "@mui/icons-material/OpenInNewOutlined";
 
 function Profile() {
     const navigate = useNavigate();
@@ -38,7 +44,9 @@ function Profile() {
     }
 
     function getStatusText(status) {
-        if (status === "paid") {return "Оплачен";}
+        if (status === "paid") {
+            return "Оплачен";
+        }
 
         return getText(status, "Неизвестно");
     }
@@ -87,94 +95,203 @@ function Profile() {
     return (
             <div className="Profile">
                 <LeftPanel />
-                <main>
-                    <div className="profilePage">
-                        <div className="profilePageHeader">
-                            <MdAccountCircle size={100} className="profileImg" />
 
-                            <div className="profileUserStuff">
-                                <div className="profileUsername">{username}</div>
-                                <button onClick={handleLogout} className="Exit"><MdLogout size={25} />Выход</button>
-                            </div>
-                        </div>
+                <Box component="main" className="profilePage">
+                    <Card className="profileHeaderCard" sx={{bgcolor: "#151922", color: "white", borderRadius: "32px",
+                        border: "1px solid rgba(255, 255, 255, 0.06)", boxShadow: "none",}}>
+                        <CardContent sx={{p: 3, "&:last-child": {pb: 3,},}}>
+                            <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={2}
+                                   className="profilePageHeader">
+                                <Stack direction="row" alignItems="center" spacing={2.5} className="profileUserBlock">
+                                    <Box sx={{width: 76, height: 76, borderRadius: "50%", bgcolor: "#12141b",
+                                        color: "#2E4578", display: "flex", alignItems: "center",
+                                        justifyContent: "center", flexShrink: 0,}}>
+                                        <AccountCircleOutlinedIcon sx={{ fontSize: 50 }} />
+                                    </Box>
 
-                        <div className="profilePageOrders">
-                            <div className="profileOrdersTitle">Мои заказы</div>
-                            {isLoadingOrders && (<div className="profileOrdersMessage">Загрузка заказов...</div>)}
-                            {ordersError && (<div className="profileOrdersError">{ordersError}</div>)}
-                            {!isLoadingOrders && !ordersError && orders.length === 0 && (
-                                    <div className="profileOrdersMessage">У вас пока нет заказов</div>)}
+                                    <Box sx={{ minWidth: 0 }}>
+                                        <Typography variant="h4" className="profileUsername"
+                                                    sx={{color: "white", fontWeight: 800, lineHeight: 1.1,}}>
+                                            {username}
+                                        </Typography>
 
-                            {!isLoadingOrders && !ordersError && orders.length > 0 && (
-                                    <div className="ordersList">
-                                        {orders.map((order) => {
-                                            const orderId = getText(order?.id, "—");
-                                            const orderStatus = getStatusText(order?.status);
-                                            const orderAddress = getText(order?.address, "Адрес не указан");
-                                            const orderPrice = getNumber(order?.price);
-                                            const products = Array.isArray(order?.products)
-                                                    ? order.products
-                                                    : [];
+                                        <Typography sx={{color: "#8f94a3", mt: 0.7, fontSize: "1.05rem",}}>
+                                            Личный кабинет
+                                        </Typography>
+                                    </Box>
+                                </Stack>
 
-                                            const productsCount = products.reduce((sum, product) => {
-                                                return sum + getItemCount(product);
-                                            }, 0);
+                                <Button
+                                        onClick={handleLogout}
+                                        endIcon={<LogoutOutlinedIcon />}
+                                        className="Exit"
+                                        sx={{py: 1.4, px: 3, borderRadius: "18px",
+                                            bgcolor: "#2E4578", color: "white", fontWeight: 800, fontSize: "1rem",
+                                            textTransform: "none", flexShrink: 0, "&:hover": {bgcolor: "#3c589f",},}}
+                                >
+                                    Выход
+                                </Button>
+                            </Stack>
+                        </CardContent>
+                    </Card>
 
-                                            return (
-                                                    <div className="profileOrderCard" key={orderId}>
-                                                        <div className="profileOrderHeader">
-                                                            <div className="profileOrderNumber">Заказ #{orderId}</div>
-                                                            <div className="profileOrderStatus">{orderStatus}</div>
-                                                        </div>
+                    <Box className="profilePageOrders">
+                        <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 4 }}>
+                            <Stack direction="row" alignItems="center" spacing={2}>
+                                <Box sx={{width: 64, height: 64, borderRadius: "50%", bgcolor: "#171717",
+                                    color: "#2E4578", display: "flex", alignItems: "center",
+                                    justifyContent: "center", flexShrink: 0,}}>
+                                    <ReceiptLongOutlinedIcon sx={{ fontSize: 34 }} />
+                                </Box>
 
-                                                        <div className="profileOrderInfo">
-                                                            <div className="profileOrderRow">
-                                                                <span>Адрес:</span>
-                                                                <span>{orderAddress}</span>
-                                                            </div>
+                                <Box>
+                                    <Typography variant="h4" sx={{color: "white", fontWeight: 800, lineHeight: 1.1,}}>
+                                        Мои заказы
+                                    </Typography>
+                                    <Typography variant="body1" sx={{color: "#8f94a3", mt: 0.8, fontSize: "1.1rem",}}>
+                                        История покупок
+                                    </Typography>
+                                </Box>
+                            </Stack>
+                        </Stack>
 
-                                                            <div className="profileOrderRow">
-                                                                <span>Товаров:</span>
-                                                                <span>{productsCount}</span>
-                                                            </div>
+                        {isLoadingOrders && (
+                                <Stack direction="row" alignItems="center" spacing={2}>
+                                    <CircularProgress size={26} sx={{ color: "#2E4578" }} />
+                                    <Typography sx={{ color: "white", fontSize: "1.1rem" }}>
+                                        Загрузка заказов...
+                                    </Typography>
+                                </Stack>
+                        )}
 
-                                                            <div className="profileOrderRow">
-                                                                <span>Сумма:</span>
-                                                                <span>{orderPrice} ₽</span>
-                                                            </div>
-                                                        </div>
+                        {ordersError && (
+                                <Alert severity="error" sx={{mb: 3, bgcolor: "#2a1115", color: "#ffb4b4",
+                                    borderRadius: "16px", border: "1px solid rgba(255, 107, 107, 0.25)",
+                                    "& .MuiAlert-icon": {color: "#ff6b6b",},}}>
+                                    {ordersError}
+                                </Alert>
+                        )}
 
-                                                        <div className="profileOrderProducts">
-                                                            {products.map((product, index) => {
-                                                                const productId = getText(product?.id, `product-${index}`);
-                                                                const title = getText(product?.title, "Без названия");
-                                                                const pictureUrl = getText(product?.picture_url, "");
-                                                                const price = getNumber(product?.price);
-                                                                const count = getItemCount(product);
-                                                                const total = price * count;
+                        {!isLoadingOrders && !ordersError && orders.length === 0 && (
+                                <Card sx={{bgcolor: "#151922", color: "white", borderRadius: "32px",
+                                    border: "1px solid rgba(255, 255, 255, 0.06)", boxShadow: "none",}}>
+                                    <CardContent sx={{ p: 4 }}>
+                                        <Typography variant="h6" sx={{ fontWeight: 700 }}>
+                                            У вас пока нет заказов
+                                        </Typography>
+                                        <Typography sx={{ color: "#8f94a3", mt: 1 }}>
+                                            Оформленные заказы будут отображаться здесь.
+                                        </Typography>
+                                    </CardContent>
+                                </Card>
+                        )}
 
-                                                                return (
-                                                                        <div className="profileOrderProduct" key={productId}>
-                                                                            <img className="profileOrderProductImage"
-                                                                                    src={pictureUrl} alt={title}/>
-                                                                            <div className="profileOrderProductInfo">
-                                                                                <div className="profileOrderProductTitle">
-                                                                                    {title}</div>
-                                                                                <div className="profileOrderProductDetails">
-                                                                                    {price} ₽ × {count} = {total} ₽</div>
-                                                                            </div>
-                                                                        </div>
-                                                                );
-                                                            })}
-                                                        </div>
-                                                    </div>
-                                            );
-                                        })}
-                                    </div>
-                            )}
-                        </div>
-                    </div>
-                </main>
+                        {!isLoadingOrders && !ordersError && orders.length > 0 && (
+                                <Stack className="profileOrdersList" spacing={2.5}>
+                                    {orders.map((order) => {
+                                        const orderId = getText(order?.id, "—");
+                                        const orderStatus = getStatusText(order?.status);
+                                        const orderAddress = getText(order?.address, "Адрес не указан");
+                                        const orderPrice = getNumber(order?.price);
+                                        const products = Array.isArray(order?.products) ? order.products : [];
+
+                                        return (
+                                                <Card key={orderId} className="profileOrderCard" sx={{bgcolor: "#151922",
+                                                    color: "white", borderRadius: "30px",
+                                                    border: "1px solid rgba(255, 255, 255, 0.06)",
+                                                    boxShadow: "none", overflow: "hidden",}}>
+                                                    <CardContent sx={{p: 3, "&:last-child": {pb: 3,},}}>
+                                                        <Stack direction="row" justifyContent="space-between"
+                                                               alignItems="flex-start" spacing={2}
+                                                               className="profileOrderTop">
+                                                            <Box sx={{ minWidth: 0 }}>
+                                                                <Typography variant="h5"
+                                                                            sx={{color: "white", fontWeight: 800,
+                                                                                lineHeight: 1.2,}}>
+                                                                    Заказ №{orderId}
+                                                                </Typography>
+
+                                                                <Typography sx={{color: "#2E4578", fontSize: "1.05rem",
+                                                                    fontWeight: 800, mt: 0.6,}}>
+                                                                    {orderStatus}
+                                                                </Typography>
+                                                            </Box>
+
+                                                            <Typography variant="h5"
+                                                                        sx={{color: "#2e4477", fontWeight: 800,
+                                                                            whiteSpace: "nowrap",}}>Стоимость: {orderPrice} ₽
+                                                            </Typography>
+                                                        </Stack>
+
+                                                        <Stack spacing={1.5} sx={{ mt: 3 }}>
+                                                            {products.length > 0 ? (
+                                                                    products.map((product, index) => {
+                                                                        const productId = getText(product?.id, `product-${index}`);
+                                                                        const title = getText(product?.title, "Без названия");
+                                                                        const count = getItemCount(product);
+
+                                                                        return (
+                                                                                <Stack key={productId} direction="row"
+                                                                                       justifyContent="space-between"
+                                                                                       alignItems="center" spacing={2}
+                                                                                       className="profileOrderProduct">
+                                                                                    <Typography sx={{color: "white",
+                                                                                        fontSize: "1.05rem",
+                                                                                        overflow: "hidden",
+                                                                                        textOverflow: "ellipsis",
+                                                                                        whiteSpace: "nowrap",}}>
+                                                                                        {title}
+                                                                                    </Typography>
+
+                                                                                    <Typography sx={{color: "white",
+                                                                                        fontSize: "1.05rem",
+                                                                                        fontWeight: 800,
+                                                                                        whiteSpace: "nowrap",}}>
+                                                                                        ×{count}
+                                                                                    </Typography>
+                                                                                </Stack>
+                                                                        );
+                                                                    })
+                                                            ) : (
+                                                                    <Typography sx={{ color: "#a2a7b4" }}>
+                                                                        Товары не указаны
+                                                                    </Typography>
+                                                            )}
+                                                        </Stack>
+
+                                                        <Divider sx={{borderColor: "rgba(255, 255, 255, 0.06)", my: 2.2,}}/>
+
+                                                        <Stack direction="row" alignItems="center" spacing={1.5}
+                                                               sx={{bgcolor: "#252a35", borderRadius: "20px",
+                                                                   px: 2.5, py: 1.8,}}>
+                                                            <LocationOnOutlinedIcon sx={{color: "#2E4578", fontSize: 28,
+                                                                flexShrink: 0,}}/>
+                                                            <Typography sx={{color: "white", fontSize: "1.05rem",
+                                                                overflow: "hidden", textOverflow: "ellipsis",
+                                                                whiteSpace: "nowrap",}}>
+                                                                Адрес доставки: {orderAddress}
+                                                            </Typography>
+                                                        </Stack>
+
+                                                        <Button
+                                                                fullWidth
+                                                                onClick={() => navigate("/order", {state: {order: order}})}
+                                                                endIcon={<OpenInNewOutlinedIcon />}
+                                                                sx={{mt: 2.2, py: 1.4, borderRadius: "18px",
+                                                                    bgcolor: "#2E4578", color: "white", fontWeight: 800,
+                                                                    fontSize: "1rem", textTransform: "none",
+                                                                    "&:hover": {bgcolor: "#3c589f",},}}
+                                                        >
+                                                            Открыть заказ
+                                                        </Button>
+                                                    </CardContent>
+                                                </Card>
+                                        );
+                                    })}
+                                </Stack>
+                        )}
+                    </Box>
+                </Box>
             </div>
     );
 }
