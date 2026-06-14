@@ -4,10 +4,12 @@ from httpx import AsyncClient, ASGITransport
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 
 import dependencies
-from config import settings
+from config import Settings
 from main import app
 import models
 
+
+settings = Settings()
 TEST_DB_URL = settings.get_test_async_db_url()
 
 if (settings.get_db_async_url() == TEST_DB_URL):

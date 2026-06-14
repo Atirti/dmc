@@ -23,7 +23,7 @@ async def get_jwt_service(db: AsyncSession = Depends(get_db)) -> JwtService:
 
 
 async def get_auth_service(db: AsyncSession = Depends(get_db)) -> AuthService:
-    return AuthService(UserRepository(db))
+    return AuthService(UserRepository(db), settings.get_admin_user())
 
 
 async def get_product_service(db: AsyncSession = Depends(get_db)) -> ProductsService:
