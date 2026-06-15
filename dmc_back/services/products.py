@@ -31,11 +31,21 @@ class ProductsService:
         return product
 
     async def add_product(self, request: ProductCreateRequest):
+        if await self.__category_repository.get_category_by_id(request.category_id) is None:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Category not found")
+
         return await self.__product_repository.add_product(request.title, request.description, request.price,
                                                            request.picture_url, request.count_in_stock,
                                                            request.category_id)
 
     async def update_product(self, request: ProductModel):
+        if await self.__product_repository.get_product(id=request.id) is None:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Product not found")
+
+        if request.category_id is not None:
+            if await self.__category_repository.get_category_by_id(request.category_id) is None:
+                raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Category not found")
+
         result = await self.__product_repository.update_product(request.id, request.title, request.description,
                                                                 request.price,
                                                                 request.picture_url, request.count_in_stock,
@@ -64,6 +74,13 @@ class ProductsService:
         return category
 
     async def update_category(self, category_id: int, title: str):
+        if await self.__category_repository.get_category_by_id(category_id) is None:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Category not found")
+
+        existing = await self.__category_repository.get_by_title(title)
+        if existing is not None and existing.id != category_id:
+            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Category already exists")
+
         await self.__category_repository.update_category(category_id, title)
         return await self.get_category(category_id)
 
