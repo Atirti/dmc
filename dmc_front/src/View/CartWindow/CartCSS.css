@@ -55,10 +55,6 @@
     align-items: center;
 }
 
-.cartSummary textarea {
-    text-align: center;
-    line-height: 1.4;
-}
 
 .cartSummary textarea::placeholder {
     text-align: center;
