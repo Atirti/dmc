@@ -214,7 +214,7 @@ function Cart() {
                                                                         onClick={() => decreaseCount(item)}
                                                                         sx={{width: 34, height: 34, color: "white",
                                                                             bgcolor: "#151922", "&:hover": {
-                                                                                bgcolor: "#342555",
+                                                                                bgcolor: "#2e4477",
                                                                             }, "&.Mui-disabled": {color: "#555",},
                                                                         }}
                                                                 >
@@ -230,7 +230,7 @@ function Cart() {
                                                                                 item.count_in_stock}
                                                                         onClick={() => increaseCount(item)}
                                                                         sx={{width: 34, height: 34, color: "white",
-                                                                            bgcolor: "#151922", "&:hover": {bgcolor: "#342555",
+                                                                            bgcolor: "#151922", "&:hover": {bgcolor: "#2e4477",
                                                                             }, "&.Mui-disabled": {color: "#555",},
                                                                         }}>
                                                                     <AddIcon fontSize="small" />
