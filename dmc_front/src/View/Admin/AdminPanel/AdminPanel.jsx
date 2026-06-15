@@ -151,7 +151,7 @@ function AdminPanel() {
                             border: "1px solid rgba(255, 255, 255, 0.06)", boxShadow: "none", height: "fit-content",}}>
                             <CardContent sx={{ p: 3, "&:last-child": { pb: 3 } }}>
                                 <Stack spacing={1.5}>
-                                    <Button fullWidth onClick={() => navigate("/admin/orders")} sx={{py: 1.3,
+                                    <Button fullWidth sx={{py: 1.3,
                                         borderRadius: "16px", bgcolor: "#252a35", color: "white", fontWeight: 800,
                                         textTransform: "none", "&:hover": { bgcolor: "#303644" },}}>
                                         Открыть заказы

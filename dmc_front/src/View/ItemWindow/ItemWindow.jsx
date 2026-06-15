@@ -1,7 +1,7 @@
 import "./ItemWindowCSS.css";
 import LeftPanel from "../LeftPanel/LeftPanel.jsx";
-import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useState} from "react";
+import {useLocation, useNavigate, useParams} from "react-router-dom";
 import { addItemToCartRequest} from "../../Controll/APIStuff/Client/get_put_Cart.js";
 import {useAuth} from "../../Controll/APIStuff/Autentification/AuthContext.jsx";
 import {Alert, Box, Button, Card, CardContent, CircularProgress, Stack, Typography,}
@@ -43,13 +43,14 @@ function ItemWindow() {
     const [isAdding, setIsAdding] = useState(false);
     const [error, setError] = useState("");
 
+
     async function handleAddToCart() {
         if (loading) {
             return;
         }
 
         if (!isAuth) {
-            navigate("/login");
+            navigate("/");
             return;
         }
 
