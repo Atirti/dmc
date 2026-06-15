@@ -1,5 +1,9 @@
 from fastapi import APIRouter, Depends
-from schemas.orders import OrderModel, PayRequest, OrderRequest, OrderUpdateRequest
+from pydantic_settings.sources.providers import aws
+from sqlalchemy.util import await_only
+
+from schemas.orders import OrderModel, PayRequest, OrderRequest, OrderUpdateRequest, AdminOrdersRequest, \
+    AdminOrderRequest
 from schemas.products import RequestId
 from services.orders import OrdersService
 
@@ -24,19 +28,26 @@ async def create_order(request: OrderRequest,
 @router.get("/order", response_model=OrderModel)
 async def get_order(request: RequestId = Depends(),
                     current_user: dict = Depends(dependencies.get_current_user),
-                    admin_user: dict = Depends(dependencies.get_admin_user)):
-    pass
+                    orders_service: OrdersService = Depends(dependencies.get_order_service)) -> OrderModel:
+    return await orders_service.get_user_order(current_user["user_id"], request.id)
+
+
+@router.get("/admin/orders", response_model=list[OrderModel])
+async def get_admin_orders(request: AdminOrdersRequest = Depends(),
+                           admin=Depends(dependencies.get_admin_user),
+                           orders_service: OrdersService = Depends(dependencies.get_order_service)) -> list[OrderModel]:
+    return await orders_service.get_user_orders(request.user_id)
+
+
+@router.get("/admin/order", response_model=OrderModel)
+async def get_admin_order(request: AdminOrderRequest = Depends(),
+                          admin=Depends(dependencies.get_admin_user),
+                          orders_service: OrdersService = Depends(dependencies.get_order_service)) -> OrderModel:
+    return await orders_service.get_user_order(request.user_id, request.order_id)
 
 
 @router.put("/order", response_model=OrderModel)
-async def update_order(request: OrderUpdateRequest,
+async def update_order_status(request: OrderUpdateRequest,
                        order_service: OrdersService = Depends(dependencies.get_order_service),
-                       admin_user: dict = Depends(dependencies.get_admin_user)):
-    pass
-
-
-@router.delete("/order")
-async def delete_order(request: RequestId = Depends(),
-                       order_service: OrdersService = Depends(dependencies.get_order_service),
-                       admin_user: dict = Depends(dependencies.get_admin_user)):
-    pass
+                       admin = Depends(dependencies.get_admin_user)):
+    return await order_service.update_status(request)
