@@ -102,13 +102,10 @@ function ItemWindow() {
                                     Вернитесь к списку товаров и выберите товар заново.
                                 </Typography>
 
-                                <Button
-                                        onClick={() => navigate("/home")}
-                                        startIcon={<ArrowBackOutlined />}
-                                        sx={{mt: 3, py: 1.3, px: 2.5, borderRadius: "18px",
-                                            bgcolor: "#2E4578", color: "white", fontWeight: 800,
-                                            textTransform: "none", "&:hover": {bgcolor: "#3c589f",},}}
-                                >
+                                <Button onClick={() => navigate("/home")} startIcon={<ArrowBackOutlined />}
+                                        sx={{mt: 3, py: 1.3, px: 2.5, borderRadius: "18px", bgcolor: "#2E4578",
+                                            color: "white", fontWeight: 800, textTransform: "none",
+                                            "&:hover": {bgcolor: "#3c589f",},}}>
                                     Вернуться к товарам
                                 </Button>
                             </CardContent>
@@ -159,11 +156,7 @@ function ItemWindow() {
                             height: "fit-content",}}>
                             <CardContent sx={{p: 3, "&:last-child": {pb: 3,},}}>
                                 <ExpandableText as="h1" className="itemPageTitle" text={item.title} limit={45}/>
-
-                                <Typography className="itemPagePrice">
-                                    {item.price} ₽
-                                </Typography>
-
+                                <Typography className="itemPagePrice">{item.price} ₽</Typography>
                                 <Stack direction="row" alignItems="center" spacing={1.2}
                                        sx={{bgcolor: "#252a35", borderRadius: "18px", px: 2, py: 1.3, mt: 2.5,}}>
                                     <Inventory2Outlined sx={{ color: "#2E4578", fontSize: 26, flexShrink: 0 }} />
@@ -190,19 +183,16 @@ function ItemWindow() {
                                         </Alert>
                                 )}
 
-                                <Button
-                                        fullWidth
-                                        className="toCartButton"
+                                <Button fullWidth className="toCartButton"
                                         endIcon={isAdding ? <CircularProgress size={18} sx={{ color: "#777" }} /> :
                                                 <AddShoppingCartOutlined />}
                                         onClick={handleAddToCart}
                                         disabled={isAdding || loading || item.count_in_stock <= 0 ||
                                                 (item.count_in_cart || 0) >= item.count_in_stock}
-                                        sx={{mt: 3, py: 1.5, borderRadius: "18px",
-                                            bgcolor: "#2E4578", color: "white", fontWeight: 800, fontSize: "1rem",
-                                            textTransform: "none", "&:hover": {bgcolor: "#3c589f",},
-                                            "&.Mui-disabled": {bgcolor: "#2b2f3a", color: "#777",},}}
-                                >
+                                        sx={{mt: 3, py: 1.5, borderRadius: "18px", bgcolor: "#2E4578", color: "white",
+                                            fontWeight: 800, fontSize: "1rem", textTransform: "none",
+                                            "&:hover": {bgcolor: "#3c589f",}, "&.Mui-disabled": {bgcolor: "#2b2f3a",
+                                                color: "#777",},}}>
                                     {isAdding ? "Добавление..." : "В корзину"}
                                 </Button>
                             </CardContent>

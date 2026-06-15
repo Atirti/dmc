@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./CartCSS.css";
 import LeftPanel from "../LeftPanel/LeftPanel.jsx";
-import {getCartRequest, changeCartCountRequest, deleteCartItemRequest,} from "../../Controll/APIStuff/Client/get_put_Cart.js";
+import {getCartRequest, changeCartCountRequest, deleteCartItemRequest, clearCartRequest} from "../../Controll/APIStuff/Client/get_put_Cart.js";
 import { createOrderRequest } from "../../Controll/APIStuff/Client/post_get_Orders.js";
 import { useNavigate } from "react-router-dom";
 import {Alert, Avatar, Box, Button, Card, CardContent, CircularProgress, Divider, IconButton, Stack, TextField, Typography,}
@@ -108,6 +108,9 @@ function Cart() {
             }));
 
             const createdOrder = await createOrderRequest(address.trim(), products);
+
+            await clearCartRequest(cartItems);
+            setCartItems([]);
 
             navigate("/order", {
                 state: {
@@ -297,16 +300,11 @@ function Cart() {
                                             />
                                         </Stack>
 
-                                        <Button
-                                                fullWidth
-                                                disabled={isCreatingOrder || !address.trim()}
-                                                onClick={goToOrder}
+                                        <Button fullWidth disabled={isCreatingOrder || !address.trim()} onClick={goToOrder}
                                                 sx={{mt: 3, py: 1.5, borderRadius: "18px",
                                                     bgcolor: "#2E4578", color: "white", fontWeight: 800, fontSize: "1rem",
                                                     textTransform: "none", "&:hover": {bgcolor: "#3c589f",},
-                                                    "&.Mui-disabled": {bgcolor: "#2b2f3a", color: "#777",},
-                                                }}
-                                        >
+                                                    "&.Mui-disabled": {bgcolor: "#2b2f3a", color: "#777",},}}>
                                             {isCreatingOrder ? "Оформление..." : "Оформить и оплатить"}
                                         </Button>
                                     </CardContent>

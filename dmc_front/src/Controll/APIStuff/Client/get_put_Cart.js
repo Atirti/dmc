@@ -40,6 +40,13 @@ export async function deleteCartItemRequest(id) {
 
     return await response.json();
 }
+export async function clearCartRequest(items) {
+    for (const item of items) {
+        await deleteCartItemRequest(item.id);
+    }
+
+    return [];
+}
 
 export async function addItemToCartRequest(id, count) {
     return await changeCartCountRequest(id, count);
