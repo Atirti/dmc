@@ -1,9 +1,13 @@
+"""Order database model."""
+
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from .base import Base
 
 
 class Order(Base):
+    """User order with delivery address, status, price, and product rows."""
+
     __tablename__ = 'orders'
 
     user_id: Mapped[int] = mapped_column(ForeignKey('users.id', ondelete='CASCADE'))

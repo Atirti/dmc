@@ -3,5 +3,4 @@
 # dev
 pytest
 pytest-asyncio
-httpx2
-testcontainers
+httpx

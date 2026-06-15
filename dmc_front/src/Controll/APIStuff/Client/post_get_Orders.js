@@ -1,4 +1,4 @@
-import { authFetch, parseError } from "./Autentification/auth.js";
+import { authFetch, parseError } from "../Autentification/auth.js";
 
 export async function createOrderRequest(address, products) {
     const response = await authFetch("/order", {

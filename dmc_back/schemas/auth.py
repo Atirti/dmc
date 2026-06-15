@@ -1,67 +1,66 @@
-from pydantic import BaseModel, field_validator, ValidationInfo
-from string import ascii_letters, digits, punctuation, ascii_lowercase, ascii_uppercase
+"""Authentication request and response schemas."""
+
+from pydantic import BaseModel, ValidationInfo, field_validator
+
+from .validators import (
+    validate_auth_content,
+    validate_non_empty_string,
+    validate_password,
+    validate_username,
+)
 
 
 class LoginRequest(BaseModel):
+    """Username and password payload for login and registration."""
+
     username: str
     password: str
 
     @field_validator("username", "password")
     @classmethod
-    def content_validator(cls, v, info: ValidationInfo):
-        for ch in v:
-            if ch not in ascii_letters + punctuation + digits:
-                raise ValueError(f"{info.field_name} must contain only eng letters, numbers, and/or punctuation")
-
-        return v
-
-    @field_validator("password")
-    @classmethod
-    def password_validator(cls, v):
-        if len(v) < 8:
-            raise ValueError("Password must be at least 8 characters")
-
-        low = False
-        up = False
-        digit = False
-        punct = False
-
-        for ch in v:
-
-            if ch in ascii_lowercase:
-                low = True
-            if ch in ascii_uppercase:
-                up = True
-            if ch in punctuation:
-                punct = True
-            if ch in digits:
-                digit = True
-
-        if not (low and up and digit and punct):
-            raise ValueError("Password must contains lower and upper case letters, digits and punctuation")
-
-        return v
+    def content_validator(cls, value: str, info: ValidationInfo) -> str:
+        """Validate allowed characters for auth fields."""
+        return validate_auth_content(value, info)
 
     @field_validator("username")
     @classmethod
-    def username_validator(cls, v):
-        if len(v) < 4:
-            raise ValueError("Username must be at least 4 characters")
+    def username_validator(cls, value: str) -> str:
+        """Validate username rules."""
+        return validate_username(value)
 
-        if len(v) > 50:
-            raise ValueError("Username should be no more than 50 characters")
-
-        return v
+    @field_validator("password")
+    @classmethod
+    def password_validator(cls, value: str) -> str:
+        """Validate password rules."""
+        return validate_password(value)
 
 
 class TokenRequest(BaseModel):
+    """Refresh token payload."""
+
     refresh_token: str
+
+    @field_validator("refresh_token")
+    @classmethod
+    def refresh_token_validator(cls, value: str, info: ValidationInfo) -> str:
+        """Validate refresh token is not empty."""
+        return validate_non_empty_string(value, info)
 
 
 class TokenResponse(BaseModel):
+    """JWT and refresh token response payload."""
+
     jwt_token: str
     refresh_token: str
 
 
 class LogoutRequest(BaseModel):
+    """Refresh token payload for logout."""
+
     refresh_token: str
+
+    @field_validator("refresh_token")
+    @classmethod
+    def refresh_token_validator(cls, value: str, info: ValidationInfo) -> str:
+        """Validate refresh token is not empty."""
+        return validate_non_empty_string(value, info)

@@ -1,3 +1,5 @@
+"""Database access methods for refresh tokens."""
+
 from datetime import datetime, timezone
 
 from sqlalchemy import insert, select, delete, update

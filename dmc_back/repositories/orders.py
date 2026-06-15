@@ -1,3 +1,5 @@
+"""Database access methods for orders."""
+
 from sqlalchemy import select, insert, update
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
@@ -6,10 +8,13 @@ from models import Order, Product, OrderProduct
 
 
 class OrdersRepository:
+    """Read and mutate order records and their product rows."""
+
     def __init__(self, db: AsyncSession):
         self.__db = db
 
     async def get_user_orders(self, user_id: int):
+        """Return visible orders for a user with products preloaded."""
         result = await self.__db.execute(
             select(Order)
             .options(selectinload(Order.order_products).selectinload(OrderProduct.product))
@@ -18,6 +23,7 @@ class OrdersRepository:
         return result.scalars().all()
 
     async def get_order_by_id(self, order_id: int, user_id: int) -> Order | None:
+        """Return one user order with products preloaded."""
         result = await self.__db.execute(
             select(Order)
             .options(selectinload(Order.order_products).selectinload(OrderProduct.product))
@@ -26,9 +32,10 @@ class OrdersRepository:
         return result.scalar_one_or_none()
 
     async def create_order(self, user_id: int, address: str, price: float, products: list[dict]) -> Order:
+        """Create order, attach products, decrement stock, and return the loaded order."""
         result = await self.__db.execute(
             insert(Order)
-            .values(user_id=user_id, address=address, price=price, status="not paid")
+            .values(user_id=user_id, address=address, price=price, status="paid")
             .returning(Order)
         )
         order = result.scalar_one()
@@ -57,6 +64,7 @@ class OrdersRepository:
         return result.scalar_one()
 
     async def update_status(self, order_id: int, user_id: int, status: str):
+        """Update status for a user's order."""
         await self.__db.execute(
             update(Order)
             .values(status=status)

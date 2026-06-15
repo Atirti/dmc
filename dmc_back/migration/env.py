@@ -7,7 +7,7 @@ from logging.config import fileConfig
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 
-from config import settings
+from config import Settings
 
 from alembic import context
 from models import *
@@ -32,7 +32,7 @@ target_metadata = Base.metadata
 # can be acquired:
 # my_important_option = alembic_config.get_main_option("my_important_option")
 # ... etc.
-
+settings = Settings()
 
 def run_migrations_offline() -> None:
     """Run migrations in 'offline' mode.

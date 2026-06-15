@@ -1,4 +1,4 @@
-import { api_url, parseError } from "./Autentification/auth.js";
+import { api_url, parseError } from "../Autentification/auth.js";
 
 export async function getItemsRequest(_limit = 10, _offset = 0, _order = "desc", _sort = "date") {
     const params = new URLSearchParams({

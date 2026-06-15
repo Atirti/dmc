@@ -25,6 +25,36 @@ export async function authFetch(path, options = {}, retry = true) {
         },
     });
 }
+function isTokenValid(token, skewMs = 30_000) {
+    try {
+        const payload = JSON.parse(atob(token.split(".")[1]));
+        return payload.exp * 15000 > Date.now() + skewMs;
+    } catch {
+        return false;
+    }
+}
+
+export async function checkAuth() {
+    const jwtToken = getCookie("jwt_token");
+    const refreshToken = getCookie("refresh_token");
+
+    if (!refreshToken) {
+        clearTokens();
+        return false;
+    }
+
+    if (jwtToken && isTokenValid(jwtToken)) {
+        return true;
+    }
+
+    try {
+        await refreshRequest();
+        return true;
+    } catch {
+        clearTokens();
+        return false;
+    }
+}
 
 export async function parseError(response) {
     const data = await response.json().catch(() => null);
@@ -134,12 +164,8 @@ async function refreshRequestRaw() {
     const response = await fetch(`${api_url}/refresh_token`, {
         method: "POST",
         credentials: "include",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            refresh_token: refreshToken,
-        }),
+        headers: {"Content-Type": "application/json",},
+        body: JSON.stringify({refresh_token: refreshToken,}),
     });
 
     if (!response.ok) {
@@ -154,54 +180,54 @@ async function refreshRequestRaw() {
     return tokens;
 }
 
+function notifyUnauthorized() {
+    window.dispatchEvent(new Event("auth:unauthorized"));
+}
+
 export async function refreshRequest() {
-    if (refreshPromise) {
-        return refreshPromise;
-    }
+    if (refreshPromise) return refreshPromise;
+
     refreshPromise = refreshRequestRaw()
-            .catch((error) => {clearTokens();throw error;})
-            .finally(() => {refreshPromise = null;});
+            .catch((error) => {
+                clearTokens();
+                notifyUnauthorized();
+                throw error;
+            })
+            .finally(() => {
+                refreshPromise = null;
+            });
+
     return refreshPromise;
 }
 
+
 export async function logoutRequest() {
-    const refreshToken = getCookie("refresh_token");
+    try {
+        const jwtToken = getCookie("jwt_token");
 
-    if (!refreshToken) {
+        const response = await fetch(`${api_url}/logout`, {
+            method: "POST",
+            credentials: "include",
+            headers: {"Content-Type": "application/json",
+                ...(jwtToken ? { Authorization: `Bearer ${jwtToken}` } : {}),},
+            body: JSON.stringify({refresh_token: getCookie("refresh_token"),}),
+        });
+
+        if (!response.ok) {
+            const message = await parseError(response);
+            throw new Error(message);
+        }
+
+        return response.json().catch(() => null);
+    } finally {
         clearTokens();
-        return null;
     }
-
-    const response = await authFetch("/logout", {
-        method: "POST",
-        headers: {"Content-Type": "application/json",},
-        body: JSON.stringify({refresh_token: refreshToken,}),
-    });
-
-    clearTokens();
-
-    if (!response.ok) {
-        const message = await parseError(response);
-        throw new Error(message);
-    }
-
-    return response.json().catch(() => null);
 }
 
-export async function checkAuth() {
-    const refreshToken = getCookie("refresh_token");
-    if (!refreshToken) {
-        clearTokens();
-        return false;
-    }
+export async function logoutEverywhereRequest() {
+    const response = await authFetch("/logout_everywhere", {
+        method: "DELETE",});
 
-    try {
-        await refreshRequest();
-        return true;
-
-    } catch (error) {
-        console.error("Auth check failed:", error);
-        clearTokens();
-        return false;
-    }
+    if (!response.ok) {throw new Error(await parseError(response));}
+    clearTokens();
 }

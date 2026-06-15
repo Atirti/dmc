@@ -1,3 +1,5 @@
+"""JWT and refresh-token service."""
+
 from datetime import datetime, timezone, timedelta
 import jwt
 import secrets
@@ -6,11 +8,18 @@ from repositories import RefreshTokenRepository
 
 
 class JwtService:
+    """Create, rotate, delete, and decode user and admin tokens."""
+
     def __init__(self, secrets_dct: dict, repository: RefreshTokenRepository):
         self.__secret = secrets_dct["secret"]
         self.__algorithm = secrets_dct["algorithm"]
         self.__exp_minutes = secrets_dct["exp_minutes"]
         self.__refresh_exp_days = secrets_dct["refresh_exp_days"]
+
+        self.__admin_secret = secrets_dct["admin_secret"]
+        self.__admin_algorithm = secrets_dct["admin_algorithm"]
+        self.__admin_exp_minutes = secrets_dct["admin_exp_minutes"]
+
         self.__refresh_token_repository = repository
 
     def __create_token_pair(self, user_id: int, username: str) -> dict[str, str | datetime]:
@@ -60,9 +69,11 @@ class JwtService:
         return tokens_pair
 
     async def delete_refresh_token(self, refresh_token: str, user_id: int) -> None:
+        """Delete one refresh token owned by a user."""
         await self.__refresh_token_repository.delete_refresh_token(refresh_token, user_id)
 
     async def delete_all_refresh_tokens(self, user_id: int) -> None:
+        """Delete all refresh tokens for a user."""
         await self.__refresh_token_repository.delete_all_refresh_tokens(user_id)
 
     def decode(self, token) -> dict:
@@ -72,6 +83,26 @@ class JwtService:
         try:
             payload = jwt.decode(token, self.__secret, algorithms=[self.__algorithm])
             return {"user_id": payload["user_id"], "username": payload["username"]}
+
+        except jwt.ExpiredSignatureError:
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token expired")
+        except jwt.InvalidTokenError:
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token")
+
+    def create_admin_token(self) -> dict:
+        """Create admin JWT and refresh token pair."""
+        payload = {
+            "exp": datetime.now(timezone.utc) + timedelta(minutes=self.__admin_exp_minutes)
+        }
+
+        refresh_token = secrets.token_urlsafe(32)
+        return {"jwt_token": jwt.encode(payload, self.__admin_secret, algorithm=self.__admin_algorithm),
+                "refresh_token": refresh_token}
+
+    def decode_admin(self, token: str) -> None:
+        """Validate admin JWT."""
+        try:
+            jwt.decode(token, self.__admin_secret, algorithms=[self.__admin_algorithm])
 
         except jwt.ExpiredSignatureError:
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token expired")

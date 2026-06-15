@@ -1,9 +1,13 @@
+"""Product database model."""
+
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from .base import Base
 
 
 class Product(Base):
+    """Sellable product linked to a category."""
+
     __tablename__ = 'products'
 
     title: Mapped[str]

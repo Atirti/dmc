@@ -1,3 +1,5 @@
+"""Repository exports for database access classes."""
+
 from .refresh_token import RefreshTokenRepository
 from .user import UserRepository
 from .product import ProductRepository

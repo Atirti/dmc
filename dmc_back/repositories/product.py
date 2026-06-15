@@ -1,5 +1,7 @@
+"""Database access methods for products."""
+
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, asc, desc
+from sqlalchemy import select, asc, desc, insert, update, delete
 
 from models import Product
 
@@ -63,10 +65,74 @@ class ProductRepository:
 
         return result.scalars().all()
 
+    async def get_product(self, id: int):
+        """Return product by id."""
+        result = await self.__db.execute(
+            select(Product)
+            .where(Product.id == id)
+        )
+        return result.scalar_one_or_none()
+
     async def get_by_ids(self, ids: list[int]):
+        """Return all products matching the given ids."""
         result = await self.__db.execute(
             select(Product)
             .where(Product.id.in_(ids))
         )
 
         return result.scalars().all()
+
+    async def add_product(self, title: str, description: str, price: float | int, picture_url: str | None,
+                          count_in_stock: int, category_id: int):
+        """Insert and return a new product."""
+        result = await self.__db.execute(
+            insert(Product)
+            .values(title=title, description=description, price=price, picture_url=picture_url,
+                    count_in_stock=count_in_stock, category_id=category_id)
+            .returning(Product)
+        )
+
+        await self.__db.commit()
+        product = result.scalar_one()
+        await self.__db.refresh(product)
+        return product
+
+    async def update_product(self, product_id, title: str | None, description: str | None, price: float | int | None,
+                             picture_url: str | None,
+                             count_in_stock: int | None, category_id: int | None):
+        """Update product fields that are not None and return the updated product."""
+        values = {k: v for k, v in {
+            "title": title,
+            "description": description,
+            "price": price,
+            "picture_url": picture_url,
+            "count_in_stock": count_in_stock,
+            "category_id": category_id
+        }.items() if v is not None}
+
+        if not values:
+            return None
+        result = await self.__db.execute(
+            update(Product).values(**values)
+            .where(Product.id == product_id)
+            .returning(Product)
+        )
+
+        product = result.scalar_one_or_none()
+        if product is None:
+            await self.__db.rollback()
+            return None
+
+        await self.__db.commit()
+        await self.__db.refresh(product)
+        return product
+
+    async def delete_product(self, product_id: int):
+        """Delete product by id."""
+
+        await self.__db.execute(
+            delete(Product)
+            .where(Product.id == product_id)
+        )
+
+        await self.__db.commit()

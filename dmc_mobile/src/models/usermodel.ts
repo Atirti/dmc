@@ -1,33 +1,35 @@
+import { AuthTokens } from "./authmodel";
+
 export type User = {
     id: string;
+    username: string;
     name: string;
-    email?: string;
-    phone?: string;
 };
 
 export type AuthState = {
     isAuthenticated: boolean;
     user: User | null;
+    tokens: AuthTokens | null;
 };
 
 export const guestAuthState: AuthState = {
     isAuthenticated: false,
     user: null,
+    tokens: null,
 };
 
 export const placeholderUser: User = {
     id: "placeholder-user-id",
+    username: "user",
     name: "User Userovich",
-    email: "user@mail.com",
-    phone: "+7 000 000-00-00",
 };
 
-// плейсхолдер до подтягивания апи
 export const USE_AUTH_PLACEHOLDER = false;
 
 export const initialAuthState: AuthState = USE_AUTH_PLACEHOLDER
     ? {
-        isAuthenticated: true,
-        user: placeholderUser,
-    }
+          isAuthenticated: true,
+          user: placeholderUser,
+          tokens: null,
+      }
     : guestAuthState;

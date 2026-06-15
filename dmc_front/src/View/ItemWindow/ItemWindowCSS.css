@@ -1,164 +1,282 @@
 .itemWindow {
     min-height: 100vh;
-    width: 100vw;
+    width: 100%;
     overflow-x: hidden;
     color: white;
     display: flex;
+    background: #08090d;
 }
 
 .itemContent {
-    width: 100%;
-    flex: 1;
+    margin-top: 10%;
+    width: 70%;
+    margin-left: 15%;
+    margin-right: 15%;
     min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+    padding: 38px 0 60px 0;
     box-sizing: border-box;
-    padding-left: 15%;
-    padding-right: 10%;
 }
 
 .itemTop {
-    position: relative;
-    top: 0;
-    z-index: 10;
     width: 100%;
-    max-width: 1000px;
-    min-height: 55vh;
-    margin: 0 auto;
-    display: flex;
-    gap: 40px;
-    justify-content: center;
-    align-items: center;
-    padding: 60px 0 40px 0;
-    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 380px;
+    gap: 28px;
+    align-items: flex-start;
 }
-.itemDescriptionBlock {
-    width: 100%;
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 20px 0 80px 0;
-    box-sizing: border-box;
+
+.itemImageCard {
+    min-width: 0;
 }
 
 .itemImageBlock {
-    flex: 0 0 400px;
+    width: 100%;
+    height: 460px;
+    border-radius: 28px;
+    background-color: #252a35;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .itemImage {
-    width: 400px;
-    height: 400px;
-    object-fit: cover;
-    border-radius: 20px;
-    background-color: #323232;
-    flex-shrink: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+.itemImagePlaceholder {
+    width: 100%;
+    height: 100%;
+    color: #8f94a3;
+    font-size: 1.4rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .itemPanel {
-    max-width: 500px;
-    width: 100%;
+    min-width: 0;
 }
 
 .itemPageTitle {
-    margin: 0 0 16px;
-    font-size: 32px;
-    font-weight: bold;
+    margin: 0;
     color: white;
+    font-size: 2rem;
+    line-height: 1.15;
+    font-weight: 800;
+    word-break: break-word;
 }
 
 .itemPagePrice {
-    padding: 0 0 5% 0;
-    font-size: 24px;
-    font-weight: bold;
-    color: #2E4578;
+    margin: 18px 0 0 0 ;
+    color: #b276ff;
+    font-size: 1.8rem ;
+    line-height: 1.1 ;
+    font-weight: 800 ;
+}
+
+.itemStock {
+    color: #8f94a3;
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.itemError {
+    margin-top: 16px;
+    color: #ff6b6b;
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.itemDescriptionBlock {
+    min-width: 0;
 }
 
 .Description {
-    padding: 0 0 16px 0;
-    font-size: 22px;
-    font-weight: bold;
-    line-height: 1.5;
-    color: #d0d0d0;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin-bottom: 14px;
 }
 
 .itemDescription {
-    font-size: 20px;
-    line-height: 1.5;
-    color: #d0d0d0;
-}
-.toCartButton {
-    width: 120px;
-    padding: 12px;
-    border: 2px solid #2E4578;
-    border-radius: 12px;
-    background: #0f1112;
-    color: white;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.3s;
+    color: #c7cbd6;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    word-break: break-word;
 }
 
-.toCartButton:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px #2E4578;
-}
-
-.toCartButton:active {
-    transform: translateY(2px);
-}
-.textDotsButton {
-    padding: 0 0 0 4px;
-
-    border: none;
-    background: transparent;
-
-    color: #4f7cff;
-    font: inherit;
-    font-weight: bold;
-
-    cursor: pointer;
-}
-
-.textDotsButton:hover {
-    color: #2E4578;
-    text-decoration: underline;
-}
-
+.textDotsButton,
 .textCollapseButton {
-    margin-left: 8px;
+    margin-left: 6px;
     padding: 0;
-
     border: none;
+    outline: none;
     background: transparent;
-
-    color: #4f7cff;
-    font-size: 16px;
-    font-weight: bold;
-
+    color: #2E4578;
+    font-size: inherit;
+    font-weight: 800;
     cursor: pointer;
 }
 
+.textDotsButton:hover,
 .textCollapseButton:hover {
-    color: #2E4578;
-    text-decoration: underline;
+    color: #3c589f;
 }
 
-@media (max-width: 900px) {
+.toCartButton {
+    min-height: 52px;
+}
+
+
+@media (max-width: 800px) {
     .itemContent {
-        padding-left: 30%;
-        padding-right: 5%;
+        width: auto;
+        margin-left: 118px;
+        margin-right: 18px;
+        padding: 28px 0 50px 0;
     }
 
-    .itemImage {
-        width: 280px;
-        height: 280px;
+    .itemTop {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+
+    .itemImageBlock {
+        height: 360px;
+        border-radius: 24px;
     }
 
     .itemPanel {
-        max-width: 280px;
+        width: 100%;
+    }
+
+    .itemPageTitle {
+        font-size: 1.65rem;
+    }
+
+    .itemPagePrice {
+        font-size: 1.45rem ;
+    }
+}
+
+@media (max-width: 600px) {
+    .itemContent {
+        width: auto;
+        margin-left: 114px;
+        margin-right: 14px;
+        padding: 22px 0 42px 0;
+    }
+
+    .itemContent > .MuiStack-root:first-child {
+        margin-bottom: 24px ;
+    }
+
+    .itemContent > .MuiStack-root:first-child > .MuiBox-root:first-child {
+        width: 52px ;
+        height: 52px ;
+    }
+
+    .itemContent h4 {
+        font-size: 1.75rem ;
+    }
+
+    .itemTop {
+        gap: 18px;
+    }
+
+    .itemImageCard {
+        border-radius: 24px ;
+    }
+
+    .itemImageCard .MuiCardContent-root {
+        padding: 18px ;
+    }
+
+    .itemImageBlock {
+        height: 280px;
+        border-radius: 20px;
+    }
+
+    .itemPanel {
+        border-radius: 24px ;
+    }
+
+    .itemPanel .MuiCardContent-root {
+        padding: 20px ;
+    }
+
+    .itemPageTitle {
+        font-size: 1.45rem;
+    }
+
+    .itemPagePrice {
+        margin-top: 14px ;
+        font-size: 1.3rem ;
     }
 
     .itemDescriptionBlock {
-        max-width: 280px;
+        border-radius: 24px ;
+        margin-top: 18px ;
+    }
+
+    .itemDescriptionBlock .MuiCardContent-root {
+        padding: 20px ;
+    }
+
+    .itemDescription {
+        font-size: 0.98rem;
+        line-height: 1.5;
+    }
+
+    .toCartButton {
+        min-height: 48px;
+    }
+}
+
+@media (max-width: 480px) {
+    .itemContent {
+        margin-left: 108px;
+        margin-right: 12px;
+        padding: 18px 0 38px 0;
+    }
+
+    .itemImageBlock {
+        height: 230px;
+    }
+
+    .itemPageTitle {
+        font-size: 1.25rem;
+    }
+
+    .itemPagePrice {
+        font-size: 1.15rem ;
+    }
+
+    .itemDescription {
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 380px) {
+    .itemContent {
+        margin-left: 100px;
+        margin-right: 10px;
+    }
+
+    .itemImageBlock {
+        height: 190px;
+    }
+
+    .itemContent h4 {
+        font-size: 1.45rem ;
+    }
+
+    .itemPageTitle {
+        font-size: 1.15rem;
     }
 }

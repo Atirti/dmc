@@ -4,10 +4,12 @@ from httpx import AsyncClient, ASGITransport
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 
 import dependencies
-from config import settings
+from config import Settings
 from main import app
 import models
 
+
+settings = Settings()
 TEST_DB_URL = settings.get_test_async_db_url()
 
 if (settings.get_db_async_url() == TEST_DB_URL):
@@ -41,3 +43,12 @@ async def client():
     async with engine.begin() as conn:
         await conn.run_sync(models.Base.metadata.drop_all)
     await engine.dispose()
+
+@pytest_asyncio.fixture
+async def no_db_client():
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as c:
+        yield c
+
+@pytest.fixture()
+def admin():
+    return settings.get_admin_user()

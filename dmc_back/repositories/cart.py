@@ -1,3 +1,5 @@
+"""Database access methods for cart rows."""
+
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, insert, update, delete
 
@@ -5,6 +7,8 @@ from models import Cart, Product
 
 
 class CartRepository:
+    """Read and mutate user cart contents."""
+
     def __init__(self, db: AsyncSession):
         self.__db = db
 
@@ -33,6 +37,14 @@ class CartRepository:
         )
 
         return cart_product.one_or_none()
+
+    async def get_product(self, product_id: int) -> Product | None:
+        """Return product by id for cart validation."""
+        result = await self.__db.execute(
+            select(Product)
+            .where(Product.id == product_id)
+        )
+        return result.scalar_one_or_none()
 
     async def insert_product(self, user_id: int, product_id: int, count: int) -> None:
         """

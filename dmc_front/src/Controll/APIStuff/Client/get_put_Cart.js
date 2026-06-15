@@ -1,4 +1,4 @@
-import { authFetch, parseError } from "./Autentification/auth.js";
+import { authFetch, parseError } from "../Autentification/auth.js";
 
 export async function getCartRequest() {
     const response = await authFetch("/cart/", {
@@ -39,6 +39,13 @@ export async function deleteCartItemRequest(id) {
     }
 
     return await response.json();
+}
+export async function clearCartRequest(items) {
+    for (const item of items) {
+        await deleteCartItemRequest(item.id);
+    }
+
+    return [];
 }
 
 export async function addItemToCartRequest(id, count) {

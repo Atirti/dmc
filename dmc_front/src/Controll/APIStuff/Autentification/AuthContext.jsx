@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import {checkAuth, loginRequest, registrationRequest, logoutRequest,} from "./auth.js";
+import {checkAuth, loginRequest, registrationRequest, logoutRequest, logoutEverywhereRequest} from "./auth.js";
 
 const AuthContext = createContext(null);
 
@@ -9,24 +9,23 @@ export function AuthProvider({ children }) {
 
     useEffect(() => {
         let mounted = true;
+
         async function initAuth() {
             try {
                 const result = await checkAuth();
-                if (mounted) {
-                    setIsAuth(result);
-                }
+
+                if (mounted) {setIsAuth(result);}
             } catch (error) {
                 console.log("Auth check error:", error);
-                if (mounted) {
-                    setIsAuth(false);
-                }
+
+                if (mounted) {setIsAuth(false);}
             } finally {
-                if (mounted) {
-                    setLoading(false);
-                }
+                if (mounted) {setLoading(false);}
             }
         }
+
         initAuth();
+
         return () => {mounted = false;};
     }, []);
 
@@ -47,12 +46,27 @@ export function AuthProvider({ children }) {
             console.log("Logout Error:", error);
         } finally {
             setIsAuth(false);
+            localStorage.removeItem("username");
+            sessionStorage.removeItem("username");
+        }
+    }
+
+    async function logoutEverywhere() {
+        try {
+            await logoutEverywhereRequest();
+        } catch (error) {
+            console.log("Logout everywhere Error:", error);
+            throw error;
+        } finally {
+            setIsAuth(false);
+            localStorage.removeItem("username");
+            sessionStorage.removeItem("username");
         }
     }
 
     return (
             <AuthContext.Provider
-                    value={{isAuth, loading, login, registration, logout,}}>
+                    value={{isAuth, loading, login, registration, logout, logoutEverywhere}}>
                 {children}
             </AuthContext.Provider>
     );
