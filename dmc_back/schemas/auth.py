@@ -54,6 +54,30 @@ class TokenResponse(BaseModel):
     refresh_token: str
 
 
+class UserIdRequest(BaseModel):
+    """Admin query payload for looking up a user by username."""
+
+    username: str
+
+    @field_validator("username")
+    @classmethod
+    def content_validator(cls, value: str, info: ValidationInfo) -> str:
+        """Validate allowed characters for username."""
+        return validate_auth_content(value, info)
+
+    @field_validator("username")
+    @classmethod
+    def username_validator(cls, value: str) -> str:
+        """Validate username rules."""
+        return validate_username(value)
+
+
+class UserIdResponse(BaseModel):
+    """User id response payload."""
+
+    id: int
+
+
 class LogoutRequest(BaseModel):
     """Refresh token payload for logout."""
 
