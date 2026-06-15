@@ -34,19 +34,18 @@ async def get_product(request: RequestId = Depends(),
     return await product_service.get_product(request)
 
 
-"""
 @router.put("/product", response_model=ProductModel, tags=["admin"])
 async def update_product(request: ProductModel,
                          product_service: ProductsService = Depends(dependencies.get_product_service),
                          admin=Depends(dependencies.get_admin_user)) -> ProductModel:
-    pass
+    return await product_service.update_product(request)
 
-@router.delete("/product", response_model=ProductModel, tags=["admin"])
+
+@router.delete("/product", tags=["admin"])
 async def delete_product(request: RequestId = Depends(),
                          product_service: ProductsService = Depends(dependencies.get_product_service),
                          admin=Depends(dependencies.get_admin_user)) -> None:
-    pass
-"""
+    await product_service.delete_product(request)
 
 
 @router.get("/categories", response_model=list[CategoryModel])
@@ -64,7 +63,7 @@ async def create_category(request: CategoryRequest,
 
 @router.get("/categories/category", response_model=CategoryModel)
 async def get_category(request: RequestId = Depends(),
-                         product_service: ProductsService = Depends(dependencies.get_product_service)) -> list[
+                       product_service: ProductsService = Depends(dependencies.get_product_service)) -> list[
     CategoryModel]:
     return await product_service.get_category(request.id)
 
