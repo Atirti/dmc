@@ -1,3 +1,5 @@
+"""Reusable Pydantic validation functions."""
+
 from string import ascii_letters, ascii_lowercase, ascii_uppercase, digits, punctuation
 
 from pydantic import ValidationInfo
@@ -16,18 +18,21 @@ def _field_label(info: ValidationInfo, default: str = "Value") -> str:
 
 
 def validate_non_empty_string(value: str, info: ValidationInfo) -> str:
+    """Ensure a string contains non-whitespace characters."""
     if value.strip() == "":
         raise ValueError(f"{_field_label(info)} cannot be empty")
     return value
 
 
 def validate_optional_non_empty_string(value: str | None, info: ValidationInfo) -> str | None:
+    """Validate optional non-empty string values."""
     if value is None:
         return value
     return validate_non_empty_string(value, info)
 
 
 def validate_auth_content(value: str, info: ValidationInfo) -> str:
+    """Ensure auth field contains only allowed ASCII characters."""
     for ch in value:
         if ch not in AUTH_ALLOWED_CHARS:
             raise ValueError(f"{info.field_name} must contain only eng letters, numbers, and/or punctuation")
@@ -35,6 +40,7 @@ def validate_auth_content(value: str, info: ValidationInfo) -> str:
 
 
 def validate_username(value: str) -> str:
+    """Validate username length."""
     if len(value) < 4:
         raise ValueError("Username must be at least 4 characters")
     if len(value) > 50:
@@ -43,6 +49,7 @@ def validate_username(value: str) -> str:
 
 
 def validate_password(value: str) -> str:
+    """Validate password length and character classes."""
     if len(value) < 8:
         raise ValueError("Password must be at least 8 characters")
 
@@ -67,42 +74,49 @@ def validate_password(value: str) -> str:
 
 
 def validate_positive_int(value: int, info: ValidationInfo) -> int:
+    """Ensure an integer is greater than zero."""
     if value < 1:
         raise ValueError(f"{_field_label(info)} must be >= 1")
     return value
 
 
 def validate_optional_positive_int(value: int | None, info: ValidationInfo) -> int | None:
+    """Validate optional positive integers."""
     if value is None:
         return value
     return validate_positive_int(value, info)
 
 
 def validate_non_negative_int(value: int, info: ValidationInfo) -> int:
+    """Ensure an integer is zero or greater."""
     if value < 0:
         raise ValueError(f"{_field_label(info)} must be >= 0")
     return value
 
 
 def validate_optional_non_negative_int(value: int | None, info: ValidationInfo) -> int | None:
+    """Validate optional non-negative integers."""
     if value is None:
         return value
     return validate_non_negative_int(value, info)
 
 
 def validate_non_negative_number(value: int | float, info: ValidationInfo) -> int | float:
+    """Ensure a number is zero or greater."""
     if value < 0:
         raise ValueError(f"{_field_label(info)} must be >= 0")
     return value
 
 
 def validate_optional_non_negative_number(value: int | float | None, info: ValidationInfo) -> int | float | None:
+    """Validate optional non-negative numbers."""
     if value is None:
         return value
     return validate_non_negative_number(value, info)
 
 
 def validate_limit(value: int) -> int:
+    """Validate product list limit bounds."""
     if value < 1:
         raise ValueError("Limit must be >= 1")
     if value > 500:
@@ -111,12 +125,14 @@ def validate_limit(value: int) -> int:
 
 
 def validate_sort(value: str) -> str:
+    """Validate product list sort field."""
     if value not in SORT_FIELDS:
         raise ValueError("Sort must be 'date' or 'price'")
     return value
 
 
 def validate_order(value: str) -> str:
+    """Validate product list sort order."""
     if value not in SORT_ORDERS:
         raise ValueError("Order must be 'asc' or 'desc'")
     return value
