@@ -1,0 +1,12 @@
+.MainWindow {
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.mainMenu {
+    flex: 1;
+    min-width: 0;
+    box-sizing: border-box;
+}

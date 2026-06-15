@@ -1,0 +1,193 @@
+.registerPage {
+    min-height: 100vh;
+    width: 100%;
+    overflow-x: hidden;
+    background: #08090d;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15vh 20px 60px 20px;
+    box-sizing: border-box;
+}
+
+.registerWindow {
+    width: 100%;
+    max-width: 460px;
+    box-sizing: border-box;
+}
+
+.registerHeader {
+    margin-bottom: 34px;
+}
+
+.registerForm {
+    width: 100%;
+}
+
+.registerInput {
+    width: 100%;
+}
+
+.registerInput .MuiInputLabel-root {
+    color: #8f94a3;
+    font-weight: 700;
+}
+
+.registerInput .MuiInputLabel-root.Mui-focused {
+    color: #2E4578;
+}
+
+.registerInput .MuiOutlinedInput-root {
+    color: white;
+    border-radius: 18px;
+    background-color: #252a35;
+    font-weight: 700;
+}
+
+.registerInput .MuiOutlinedInput-input {
+    padding-top: 16px;
+    padding-bottom: 16px;
+}
+
+.registerInput .MuiOutlinedInput-notchedOutline {
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+.registerInput .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+    border-color: #2E4578;
+}
+
+.registerInput .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+    border-color: #2E4578;
+}
+
+.LoginExitst {
+    margin-top: 22px;
+    color: #8f94a3;
+    font-size: 1rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    text-align: center;
+}
+
+.LoginExitst a {
+    color: #2E4578;
+    font-weight: 800;
+    text-decoration: none;
+}
+
+.LoginExitst a:hover {
+    color: #3c589f;
+    text-decoration: underline;
+}
+
+.registerButton {
+    min-height: 52px;
+}
+
+.errorMessage {
+    margin-top: 16px;
+    color: #ff6b6b;
+    font-size: 1rem;
+    font-weight: 700;
+    text-align: center;
+}
+
+@media (max-width: 800px) {
+    .registerPage {
+        padding: 12vh 18px 50px 18px;
+    }
+
+    .registerWindow {
+        max-width: 430px;
+    }
+}
+
+@media (max-width: 600px) {
+    .registerPage {
+        padding: 10vh 14px 42px 14px;
+        align-items: flex-start;
+    }
+
+    .registerWindow {
+        max-width: 360px;
+        border-radius: 24px !important;
+    }
+
+    .registerWindow .MuiCardContent-root {
+        padding: 24px !important;
+    }
+
+    .registerHeader {
+        margin-bottom: 28px;
+    }
+
+    .registerHeader {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 14px !important;
+    }
+
+    .registerHeader > .MuiBox-root:first-child {
+        width: 52px !important;
+        height: 52px !important;
+    }
+
+    .registerHeader h4 {
+        font-size: 1.75rem !important;
+    }
+
+    .registerInput .MuiOutlinedInput-root {
+        border-radius: 16px;
+    }
+
+    .LoginExitst {
+        font-size: 0.95rem;
+    }
+
+    .registerButton {
+        min-height: 48px;
+    }
+}
+
+@media (max-width: 480px) {
+    .registerPage {
+        padding: 8vh 12px 38px 12px;
+    }
+
+    .registerWindow {
+        max-width: 320px;
+    }
+
+    .registerWindow .MuiCardContent-root {
+        padding: 20px !important;
+    }
+
+    .registerHeader h4 {
+        font-size: 1.55rem !important;
+    }
+
+    .registerInput .MuiOutlinedInput-input {
+        padding-top: 14px;
+        padding-bottom: 14px;
+    }
+}
+
+@media (max-width: 380px) {
+    .registerWindow {
+        max-width: 290px;
+    }
+
+    .registerHeader h4 {
+        font-size: 1.4rem !important;
+    }
+
+    .LoginExitst {
+        font-size: 0.9rem;
+    }
+}
