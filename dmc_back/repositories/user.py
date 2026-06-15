@@ -1,3 +1,5 @@
+"""Database access methods for users."""
+
 from sqlalchemy import insert, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
