@@ -4,6 +4,7 @@ import { Tabs } from "expo-router";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import type { ColorValue } from "react-native";
 import { ThemeProvider, useAppTheme } from "../controllers/themecontroller";
+import { AuthProvider } from "../controllers/authcontroller";
 import { AppTheme } from "../../styles/themes";
 
 type TabIconProps = {
@@ -14,22 +15,11 @@ type TabIconProps = {
     name: keyof typeof MaterialCommunityIcons.glyphMap;
 };
 
-function TabIcon({
-                     focused,
-                     color,
-                     size,
-                     name,
-                     theme,
-                 }: TabIconProps) {
+function TabIcon({ focused, color, size, name, theme }: TabIconProps) {
     const styles = createStyles(theme);
 
     return (
-        <View
-            style={[
-                styles.iconWrapper,
-                focused && styles.iconWrapperActive,
-            ]}
-        >
+        <View style={[styles.iconWrapper, focused && styles.iconWrapperActive]}>
             <MaterialCommunityIcons
                 name={name}
                 size={focused ? theme.sizes.tabBarActiveIcon : size}
@@ -68,11 +58,7 @@ function AppTabs() {
                             color={color}
                             size={size}
                             theme={theme}
-                            name={
-                                focused
-                                    ? "home-variant"
-                                    : "home-variant-outline"
-                            }
+                            name={focused ? "home-variant" : "home-variant-outline"}
                         />
                     ),
                 }}
@@ -95,6 +81,40 @@ function AppTabs() {
             />
 
             <Tabs.Screen
+                name="orders"
+                options={{
+                    title: "Заказы",
+                    tabBarIcon: ({ focused, color, size }) => (
+                        <TabIcon
+                            focused={focused}
+                            color={color}
+                            size={size}
+                            theme={theme}
+                            name={focused ? "clipboard-list" : "clipboard-list-outline"}
+                        />
+                    ),
+                }}
+            />
+
+            <Tabs.Screen
+                name="login"
+                options={{
+                    title: "Вход",
+                    href: null,
+                    tabBarStyle: { display: "none" },
+                }}
+            />
+
+            <Tabs.Screen
+                name="registration"
+                options={{
+                    title: "Регистрация",
+                    href: null,
+                    tabBarStyle: { display: "none" },
+                }}
+            />
+
+            <Tabs.Screen
                 name="profile"
                 options={{
                     title: "Профиль",
@@ -104,11 +124,7 @@ function AppTabs() {
                             color={color}
                             size={size}
                             theme={theme}
-                            name={
-                                focused
-                                    ? "account"
-                                    : "account-outline"
-                            }
+                            name={focused ? "account" : "account-outline"}
                         />
                     ),
                 }}
@@ -120,7 +136,9 @@ function AppTabs() {
 export default function Layout() {
     return (
         <ThemeProvider>
-            <AppTabs />
+            <AuthProvider>
+                <AppTabs />
+            </AuthProvider>
         </ThemeProvider>
     );
 }
