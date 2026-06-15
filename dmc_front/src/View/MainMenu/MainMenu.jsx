@@ -1,6 +1,6 @@
 import "./MainMenuCSS.css";
 import { NavLink } from "react-router-dom";
-import { getItemsRequest } from "../../Controll/APIStuff/getItemsForMain.js";
+import { getItemsRequest } from "../../Controll/APIStuff/Client/getItemsForMain.js";
 import { useEffect, useState } from "react";
 import {
     Alert,

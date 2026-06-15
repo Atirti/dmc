@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import "./CartCSS.css";
 import LeftPanel from "../LeftPanel/LeftPanel.jsx";
-import {getCartRequest, changeCartCountRequest, deleteCartItemRequest,} from "../../Controll/APIStuff/get_put_Cart.js";
-import { createOrderRequest } from "../../Controll/APIStuff/post_get_Orders.js";
+import {getCartRequest, changeCartCountRequest, deleteCartItemRequest,} from "../../Controll/APIStuff/Client/get_put_Cart.js";
+import { createOrderRequest } from "../../Controll/APIStuff/Client/post_get_Orders.js";
 import { useNavigate } from "react-router-dom";
 import {Alert, Avatar, Box, Button, Card, CardContent, CircularProgress, Divider, IconButton, Stack, TextField, Typography,}
     from "@mui/material";
@@ -214,7 +214,7 @@ function Cart() {
                                                                         onClick={() => decreaseCount(item)}
                                                                         sx={{width: 34, height: 34, color: "white",
                                                                             bgcolor: "#151922", "&:hover": {
-                                                                                bgcolor: "#342555",
+                                                                                bgcolor: "#2e4477",
                                                                             }, "&.Mui-disabled": {color: "#555",},
                                                                         }}
                                                                 >
@@ -230,7 +230,7 @@ function Cart() {
                                                                                 item.count_in_stock}
                                                                         onClick={() => increaseCount(item)}
                                                                         sx={{width: 34, height: 34, color: "white",
-                                                                            bgcolor: "#151922", "&:hover": {bgcolor: "#342555",
+                                                                            bgcolor: "#151922", "&:hover": {bgcolor: "#2e4477",
                                                                             }, "&.Mui-disabled": {color: "#555",},
                                                                         }}>
                                                                     <AddIcon fontSize="small" />

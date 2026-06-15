@@ -2,7 +2,7 @@ import "./ItemWindowCSS.css";
 import LeftPanel from "../LeftPanel/LeftPanel.jsx";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { addItemToCartRequest} from "../../Controll/APIStuff/get_put_Cart.js";
+import { addItemToCartRequest} from "../../Controll/APIStuff/Client/get_put_Cart.js";
 import {useAuth} from "../../Controll/APIStuff/Autentification/AuthContext.jsx";
 import {Alert, Box, Button, Card, CardContent, CircularProgress, Stack, Typography,}
     from "@mui/material";

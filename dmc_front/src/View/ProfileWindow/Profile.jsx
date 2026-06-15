@@ -4,7 +4,7 @@ import "./ProfileCSS.css";
 import { useAuth } from "../../Controll/APIStuff/Autentification/AuthContext.jsx";
 import { useNavigate } from "react-router-dom";
 import { getCurrentUsername } from "../../Controll/APIStuff/Autentification/auth.js";
-import { getUserOrdersRequest } from "../../Controll/APIStuff/post_get_Orders.js";
+import { getUserOrdersRequest } from "../../Controll/APIStuff/Client/post_get_Orders.js";
 import {Alert, Box, Button, Card, CardContent, CircularProgress, Divider, Stack, Typography}
     from "@mui/material";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
@@ -15,7 +15,7 @@ import OpenInNewOutlinedIcon from "@mui/icons-material/OpenInNewOutlined";
 
 function Profile() {
     const navigate = useNavigate();
-    const { logout } = useAuth();
+    const { logout,logoutEverywhere } = useAuth();
 
     const [username, setUsername] = useState("Пользователь");
     const [orders, setOrders] = useState([]);
@@ -91,6 +91,15 @@ function Profile() {
             navigate("/", { replace: true });
         }
     }
+    async function handleLogoutFromEverywhere() {
+        try {
+            await logoutEverywhere();
+            navigate("/", { replace: true });
+        } catch (error) {
+            alert(error.message);
+            navigate("/", { replace: true });
+        }
+    }
 
     return (
             <div className="Profile">
@@ -121,15 +130,17 @@ function Profile() {
                                     </Box>
                                 </Stack>
 
-                                <Button
-                                        onClick={handleLogout}
-                                        endIcon={<LogoutOutlinedIcon />}
-                                        className="Exit"
+                                <Button onClick={handleLogout} endIcon={<LogoutOutlinedIcon />} className="Exit"
                                         sx={{py: 1.4, px: 3, borderRadius: "18px",
                                             bgcolor: "#2E4578", color: "white", fontWeight: 800, fontSize: "1rem",
-                                            textTransform: "none", flexShrink: 0, "&:hover": {bgcolor: "#3c589f",},}}
-                                >
+                                            textTransform: "none", flexShrink: 0, "&:hover": {bgcolor: "#3c589f",},}}>
                                     Выход
+                                </Button>
+                                <Button onClick={handleLogoutFromEverywhere} endIcon={<LogoutOutlinedIcon />} className="Exit"
+                                        sx={{py: 1.4, px: 3, borderRadius: "18px",
+                                            bgcolor: "#2E4578", color: "white", fontWeight: 800, fontSize: "1rem",
+                                            textTransform: "none", flexShrink: 0, "&:hover": {bgcolor: "#3c589f",},}}>
+                                    Выход со всех устройств
                                 </Button>
                             </Stack>
                         </CardContent>
