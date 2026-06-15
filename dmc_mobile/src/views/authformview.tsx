@@ -1,15 +1,5 @@
-import React from "react";
-import {
-    ActivityIndicator,
-    KeyboardAvoidingView,
-    Platform,
-    Pressable,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TextInput,
-    View,
-} from "react-native";
+import React, { useState } from "react";
+import { ActivityIndicator, KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { AppTheme } from "../../styles/themes";
@@ -57,6 +47,15 @@ export function AuthFormView(props: AuthFormViewProps) {
         onBackToProfile,
     } = props;
     const styles = createStyles(theme);
+
+    const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+    const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] = useState(false);
+
+    const isSubmitDisabled =
+        isSubmitting ||
+        username.trim().length === 0 ||
+        password.length === 0 ||
+        Boolean(showConfirmPassword && !confirmPassword);
 
     return (
         <SafeAreaView style={styles.safeArea} edges={["top", "left", "right"]}>
@@ -109,31 +108,77 @@ export function AuthFormView(props: AuthFormViewProps) {
 
                         <View style={styles.fieldGroup}>
                             <Text style={styles.label}>Пароль</Text>
-                            <TextInput
-                                value={password}
-                                onChangeText={onChangePassword}
-                                autoCapitalize="none"
-                                autoCorrect={false}
-                                secureTextEntry
-                                placeholder="минимум 8 символов"
-                                placeholderTextColor={theme.colors.textSecondary}
-                                style={styles.input}
-                            />
-                        </View>
 
-                        {showConfirmPassword && (
-                            <View style={styles.fieldGroup}>
-                                <Text style={styles.label}>Повтор пароля</Text>
+                            <View style={styles.passwordField}>
                                 <TextInput
-                                    value={confirmPassword}
-                                    onChangeText={onChangeConfirmPassword}
+                                    value={password}
+                                    onChangeText={onChangePassword}
                                     autoCapitalize="none"
                                     autoCorrect={false}
-                                    secureTextEntry
-                                    placeholder="повторите пароль"
+                                    secureTextEntry={!isPasswordVisible}
+                                    placeholder="минимум 8 символов"
                                     placeholderTextColor={theme.colors.textSecondary}
-                                    style={styles.input}
+                                    style={styles.passwordInput}
+                                    autoComplete={showConfirmPassword ? "new-password" : "current-password"}
+                                    textContentType={showConfirmPassword ? "newPassword" : "password"}
                                 />
+
+                                <Pressable
+                                    accessibilityRole="button"
+                                    accessibilityLabel={isPasswordVisible ? "Скрыть пароль" : "Показать пароль"}
+                                    hitSlop={10}
+                                    style={({ pressed }) => [
+                                        styles.passwordToggle,
+                                        pressed && styles.pressed,
+                                    ]}
+                                    onPress={() => setIsPasswordVisible((value) => !value)}
+                                >
+                                    <MaterialCommunityIcons
+                                        name={isPasswordVisible ? "eye-off-outline" : "eye-outline"}
+                                        size={22}
+                                        color={theme.colors.textSecondary}
+                                    />
+                                </Pressable>
+                            </View>
+                        </View>
+
+                        {showConfirmPassword && onChangeConfirmPassword && (
+                            <View style={styles.fieldGroup}>
+                                <Text style={styles.label}>Повтор пароля</Text>
+
+                                <View style={styles.passwordField}>
+                                    <TextInput
+                                        value={confirmPassword ?? ""}
+                                        onChangeText={onChangeConfirmPassword}
+                                        autoCapitalize="none"
+                                        autoCorrect={false}
+                                        secureTextEntry={!isConfirmPasswordVisible}
+                                        placeholder="повторите пароль"
+                                        placeholderTextColor={theme.colors.textSecondary}
+                                        style={styles.passwordInput}
+                                        autoComplete="new-password"
+                                        textContentType="newPassword"
+                                    />
+
+                                    <Pressable
+                                        accessibilityRole="button"
+                                        accessibilityLabel={
+                                            isConfirmPasswordVisible ? "Скрыть повтор пароля" : "Показать повтор пароля"
+                                        }
+                                        hitSlop={10}
+                                        style={({ pressed }) => [
+                                            styles.passwordToggle,
+                                            pressed && styles.pressed,
+                                        ]}
+                                        onPress={() => setIsConfirmPasswordVisible((value) => !value)}
+                                    >
+                                        <MaterialCommunityIcons
+                                            name={isConfirmPasswordVisible ? "eye-off-outline" : "eye-outline"}
+                                            size={22}
+                                            color={theme.colors.textSecondary}
+                                        />
+                                    </Pressable>
+                                </View>
                             </View>
                         )}
 
@@ -150,11 +195,11 @@ export function AuthFormView(props: AuthFormViewProps) {
 
                         <Pressable
                             accessibilityRole="button"
-                            disabled={isSubmitting}
+                            disabled={isSubmitDisabled}
                             style={({ pressed }) => [
                                 styles.submitButton,
-                                isSubmitting && styles.submitButtonDisabled,
-                                pressed && styles.pressed,
+                                isSubmitDisabled && styles.submitButtonDisabled,
+                                pressed && !isSubmitDisabled && styles.pressed,
                             ]}
                             onPress={onSubmit}
                         >
@@ -187,6 +232,32 @@ function createStyles(theme: AppTheme) {
 
         keyboardRoot: {
             flex: 1,
+        },
+
+        passwordField: {
+            minHeight: 52,
+            flexDirection: "row",
+            alignItems: "center",
+            borderRadius: theme.radius.lg,
+            borderWidth: 1,
+            borderColor: theme.colors.divider,
+            backgroundColor: theme.colors.surfaceContainer,
+        },
+
+        passwordInput: {
+            flex: 1,
+            minHeight: 52,
+            paddingLeft: theme.spacing.md,
+            paddingRight: theme.spacing.sm,
+            color: theme.colors.text,
+            ...theme.typography.bodyLarge,
+        },
+
+        passwordToggle: {
+            width: 48,
+            minHeight: 52,
+            alignItems: "center",
+            justifyContent: "center",
         },
 
         content: {
