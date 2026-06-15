@@ -5,6 +5,7 @@ import {useAuth} from "../../../Controll/APIStuff/Autentification/AuthContext.js
 import {Alert, Box, Button, Card, CardContent, CircularProgress, Stack, TextField, Typography} from "@mui/material";
 import PersonAddAltOutlinedIcon from "@mui/icons-material/PersonAddAltOutlined";
 import AppRegistrationOutlinedIcon from "@mui/icons-material/AppRegistrationOutlined";
+import {getNormalErrorMessage} from "../../../Controll/errorHandler.js";
 
 function  RegisterWindow() {
     const navigate = useNavigate();
@@ -46,7 +47,7 @@ function  RegisterWindow() {
 
             navigate("/home", { replace: true });
         } catch (error) {
-            setError(error.message);
+            setError(getNormalErrorMessage(error));
         } finally {
             setIsRegisterLoading(false);
         }
@@ -85,7 +86,7 @@ function  RegisterWindow() {
                                         type="password" fullWidth variant="outlined" className="registerInput"/>
                             </Stack>
 
-                            <div className="LoginExitst">Уже есть аккаунт?<NavLink to="/">Войти</NavLink></div>
+                            <div className="LoginExitst">Уже есть аккаунт?<NavLink to="/login">Войти</NavLink></div>
 
                             {error && (
                                     <Alert severity="error" sx={{mt: 2.5, bgcolor: "#2a1115", color: "#ffb4b4",

@@ -5,6 +5,7 @@ import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettin
 import LoginOutlinedIcon from "@mui/icons-material/LoginOutlined";
 import {useAdminAuth} from "../../../Controll/APIStuff/adminStuuf/AdminAuthContext.jsx";
 import "./AdminLoginWindowCSS.css";
+import {getNormalErrorMessage} from "../../../Controll/errorHandler.js";
 
 function AdminLoginWindow() {
     const navigate = useNavigate();
@@ -36,7 +37,7 @@ function AdminLoginWindow() {
 
             navigate("/admin", { replace: true });
         } catch (error) {
-            setError(error.message);
+            setError(getNormalErrorMessage(error));;
         } finally {
             setIsLoginLoading(false);
         }

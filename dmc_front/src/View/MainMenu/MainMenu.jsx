@@ -4,8 +4,9 @@ import { getItemsRequest } from "../../Controll/APIStuff/Client/getItemsForMain.
 import { useEffect, useState } from "react";
 import {Alert, Box, Button, Card, CardActionArea, CardContent, CardMedia, CircularProgress, FormControl,
     InputLabel, MenuItem, Select, Stack, Typography} from "@mui/material";
-import StorefrontOutlinedIcon from "@mui/icons-material/StorefrontOutlined";
 import {getCategories} from "../../Controll/APIStuff/adminStuuf/categotyApi.js";
+import BackButton from "../BackButton.jsx";
+import {getNormalErrorMessage} from "../../Controll/errorHandler.js";
 
 function MainMenu() {
     const [itemsList, setItemList] = useState([]);
@@ -38,7 +39,7 @@ function MainMenu() {
                 setItemList(items);
             } catch (err) {
                 console.log(err);
-                setError("Не удалось загрузить товары");
+                setError(getNormalErrorMessage(err));
             } finally {
                 setLoading(false);
             }
@@ -79,7 +80,7 @@ function MainMenu() {
                 <Stack direction="row" alignItems="center" spacing={2} sx={{ mb: 4 }}>
                     <Box sx={{width: 64, height: 64, borderRadius: "50%", bgcolor: "#12141b", color: "#2E4578",
                         display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,}}>
-                        <StorefrontOutlinedIcon sx={{ fontSize: 34 }} />
+                        <BackButton sx={{ fontSize: 34 }} />
                     </Box>
 
                     <Box>
@@ -93,10 +94,11 @@ function MainMenu() {
                 </Stack>
 
                 <Card className="sortCard" sx={{bgcolor: "#151922", color: "white", borderRadius: "28px",
-                    border: "1px solid rgba(255, 255, 255, 0.06)", boxShadow: "none", mb: 3,}}>
+                    border: "1px solid rgba(255, 255, 255, 0.06)", boxShadow: "none", mb: 3,
+                    width: "max-content", maxWidth: "none",}}>
                     <CardContent sx={{p: 2.5, "&:last-child": {pb: 2.5,},}}>
                         <div className="sortCombos">
-                            <FormControl className="ComboBoxSort" size="small">
+                            <FormControl className="ComboBoxSort" size="small" sx={{width: 200}}>
                                 <InputLabel id="sort-type-label">Сортировка</InputLabel>
                                 <Select variant="outlined" labelId="sort-type-label" id="sort-type-select" value={sortType}
                                         label="Сортировка" onChange={handleSortChange}>
@@ -105,7 +107,7 @@ function MainMenu() {
                                 </Select>
                             </FormControl>
 
-                            <FormControl className="ComboBoxOrder" size="small">
+                            <FormControl className="ComboBoxOrder" size="small" sx={{width: 200 }}>
                                 <InputLabel id="order-label">Порядок</InputLabel>
                                 <Select variant="outlined" labelId="order-label" id="order-select" value={order}
                                         label="Порядок" onChange={handleOrderChange}>
@@ -114,7 +116,7 @@ function MainMenu() {
                                 </Select>
                             </FormControl>
 
-                            <FormControl className="ComboBoxItemLimit" size="small">
+                            <FormControl className="ComboBoxItemLimit" size="small" sx={{width: 200}}>
                                 <InputLabel id="limit-label">Количество</InputLabel>
                                 <Select variant="outlined" labelId="limit-label" id="limit-select"
                                         value={limit} label="Количество" onChange={handleLimitChange}>
@@ -124,7 +126,8 @@ function MainMenu() {
                                     <MenuItem value={40}>40 Предметов</MenuItem>
                                 </Select>
                             </FormControl>
-                            <FormControl className="ComboBoxCategory" size="small">
+
+                            <FormControl className="ComboBoxCategory" size="small" sx={{width: 200}}>
                                 <InputLabel id="category-label">Категория</InputLabel>
                                 <Select variant="outlined" labelId="category-label" id="category-select"
                                         value={categoryId} label="Категория" onChange={handleCategoryChange}>

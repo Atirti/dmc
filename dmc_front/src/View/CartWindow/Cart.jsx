@@ -8,9 +8,10 @@ import {Alert, Avatar, Box, Button, Card, CardContent, CircularProgress, Divider
     from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
-import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import {DeleteOutlined} from "@mui/icons-material";
+import BackButton from "../BackButton.jsx";
+import {getNormalErrorMessage} from "../../Controll/errorHandler.js";
 
 function Cart() {
     const navigate = useNavigate();
@@ -34,7 +35,7 @@ function Cart() {
                 const data = await getCartRequest();
                 setCartItems(sortCartItems(data));
             } catch (error) {
-                setError(error.message);
+                setError(getNormalErrorMessage(error));
             } finally {
                 setIsLoading(false);
             }
@@ -59,7 +60,7 @@ function Cart() {
             const data = await changeCartCountRequest(item.id, newCount);
             setCartItems(sortCartItems(data));
         } catch (error) {
-            setError(error.message);
+            setError(getNormalErrorMessage(error));
         } finally {
             setUpdatingItemId(null);
         }
@@ -86,7 +87,7 @@ function Cart() {
             const data = await deleteCartItemRequest(item.id);
             setCartItems(sortCartItems(data));
         } catch (error) {
-            setError(error.message);
+            setError(getNormalErrorMessage(error));
         } finally {
             setUpdatingItemId(null);
         }
@@ -123,7 +124,7 @@ function Cart() {
                 },
             });
         } catch (error) {
-            setError(error.message || "Ошибка оформления заказа");
+            setError(getNormalErrorMessage(error));
         } finally {
             setIsCreatingOrder(false);
         }
@@ -145,7 +146,7 @@ function Cart() {
                     <Stack direction="row" alignItems="center" spacing={2} sx={{ mb: 4 }}>
                         <Box sx={{width: 64, height: 64, borderRadius: "50%", bgcolor: "#12141b", color: "#2E4578",
                             display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,}}>
-                            <ShoppingCartOutlinedIcon sx={{ fontSize: 34 }} />
+                            <BackButton sx={{ fontSize: 34 }} />
                         </Box>
 
                         <Box>

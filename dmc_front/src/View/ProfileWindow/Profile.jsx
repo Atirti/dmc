@@ -9,9 +9,10 @@ import {Alert, Box, Button, Card, CardContent, CircularProgress, Divider, Stack,
     from "@mui/material";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
-import ReceiptLongOutlinedIcon from "@mui/icons-material/ReceiptLongOutlined";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import OpenInNewOutlinedIcon from "@mui/icons-material/OpenInNewOutlined";
+import BackButton from "../BackButton.jsx";
+import {getNormalErrorMessage} from "../../Controll/errorHandler.js";
 
 function Profile() {
     const navigate = useNavigate();
@@ -73,7 +74,7 @@ function Profile() {
                 const data = await getUserOrdersRequest();
                 setOrders(normalizeOrders(data));
             } catch (error) {
-                setOrdersError(error.message || "Ошибка загрузки заказов");
+                setError(getNormalErrorMessage(error));
             } finally {
                 setIsLoadingOrders(false);
             }
@@ -85,19 +86,19 @@ function Profile() {
     async function handleLogout() {
         try {
             await logout();
-            navigate("/");
+            navigate("/home");
         } catch (error) {
             alert(error.message);
-            navigate("/", { replace: true });
+            navigate("/home", { replace: true });
         }
     }
     async function handleLogoutFromEverywhere() {
         try {
             await logoutEverywhere();
-            navigate("/", { replace: true });
+            navigate("/home", { replace: true });
         } catch (error) {
             alert(error.message);
-            navigate("/", { replace: true });
+            navigate("/home", { replace: true });
         }
     }
 
@@ -152,7 +153,7 @@ function Profile() {
                                 <Box sx={{width: 64, height: 64, borderRadius: "50%", bgcolor: "#171717",
                                     color: "#2E4578", display: "flex", alignItems: "center",
                                     justifyContent: "center", flexShrink: 0,}}>
-                                    <ReceiptLongOutlinedIcon sx={{ fontSize: 34 }} />
+                                    <BackButton sx={{ fontSize: 34 }} />
                                 </Box>
 
                                 <Box>
