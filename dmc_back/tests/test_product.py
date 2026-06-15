@@ -1,3 +1,4 @@
+import jwt
 import pytest
 import pytest_asyncio
 
@@ -90,12 +91,33 @@ async def test_get_products(client, admin):
 
 @pytest.mark.asyncio
 async def test_update_product(client, product):
-    response, _ = product
-    id_ = response.json()["id"]
+    response, jwt = product
+    old = response.json()
+
+    response = await client.put(f'/product', json={"id": old["id"],
+                                                    "title": "new title",
+                                                    "description": "new description",
+                                                    "price": 123,
+                                                    "picture_url": "new url",
+                                                    "count_in_stock": 22,
+                                                    "category_id": None},
+                                headers={"Authorization": f"Bearer {jwt}"})
+    assert response.status_code == 200
+    assert response.json() != old
+    new = response.json()
+
+    response = await client.get(f'/product?id={old["id"]}')
+    assert response.json() != old
+    assert response.json() == new
+
 
 @pytest.mark.asyncio
 async def test_delete_product(client, product):
-    response, _ = product
+    response, jwt = product
     id_ = response.json()["id"]
 
+    response = await client.delete(f'/product?id={id_}', headers={"Authorization": f"Bearer {jwt}"})
+    assert response.status_code == 200
 
+    response = await client.delete(f'/product?id={id_}', headers={"Authorization": f"Bearer {jwt}"})
+    assert response.status_code == 404
