@@ -1,5 +1,6 @@
+"""Application configuration loaded from environment variables."""
+
 import os
-import secrets
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -70,4 +71,5 @@ class Settings(BaseSettings):
                 "admin_refresh_token": self.ADMIN_REFRESH_TOKEN}
 
     def get_admin_user(self) -> dict:
+        """Return configured admin credentials."""
         return {"username": self.ADMIN_USERNAME, "password": self.ADMIN_PASSWORD}
