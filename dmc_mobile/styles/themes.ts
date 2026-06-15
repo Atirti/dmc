@@ -74,29 +74,33 @@ export const themes = {
             surface: "#FFFFFF",
             surfaceVariant: "#E7E0EC",
             surfaceContainer: "#F3EDF7",
+            inputBackground: "#F7F2FA",
+            inputBorder: "rgba(29, 27, 32, 0.16)",
+            inputBorderFocused: "#6750A4",
 
             primary: "#6750A4",
             onPrimary: "#FFFFFF",
             primaryContainer: "#EADDFF",
             onPrimaryContainer: "#21005D",
-
             text: "#1D1B20",
             textSecondary: "#49454F",
-
             outline: "#79747E",
             divider: "rgba(29, 27, 32, 0.12)",
-
             error: "#B3261E",
             onError: "#FFFFFF",
             errorContainer: "#F9DEDC",
-
+            success: "#146C2E",
+            successContainer: "#D7F8DD",
+            warning: "#7A4D00",
+            warningContainer: "#FFEBC2",
+            disabled: "rgba(29, 27, 32, 0.38)",
+            overlay: "rgba(0, 0, 0, 0.42)",
             tabBarBackground: "#FFFFFF",
             tabBarBorder: "rgba(29, 27, 32, 0.12)",
             tabIconActive: "#6750A4",
             tabIconInactive: "#79747E",
             tabLabelActive: "#1D1B20",
             tabLabelInactive: "#79747E",
-
             shadow: "#000000",
         },
     },
@@ -110,6 +114,10 @@ export const themes = {
             surface: "#171A21",
             surfaceVariant: "#20242E",
             surfaceContainer: "#242832",
+
+            inputBackground: "#20242E",
+            inputBorder: "rgba(255, 255, 255, 0.12)",
+            inputBorderFocused: "#BB86FC",
 
             primary: "#BB86FC",
             onPrimary: "#1F1235",
@@ -125,6 +133,12 @@ export const themes = {
             error: "#FFB4AB",
             onError: "#690005",
             errorContainer: "rgba(255, 180, 171, 0.14)",
+            success: "#7DDA92",
+            successContainer: "rgba(125, 218, 146, 0.16)",
+            warning: "#FFD27D",
+            warningContainer: "rgba(255, 210, 125, 0.16)",
+            disabled: "rgba(255, 255, 255, 0.38)",
+            overlay: "rgba(0, 0, 0, 0.62)",
 
             tabBarBackground: "#171A21",
             tabBarBorder: "rgba(255, 255, 255, 0.08)",
