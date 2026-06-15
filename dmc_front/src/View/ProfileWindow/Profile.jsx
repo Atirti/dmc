@@ -4,7 +4,7 @@ import "./ProfileCSS.css";
 import { useAuth } from "../../Controll/APIStuff/Autentification/AuthContext.jsx";
 import { useNavigate } from "react-router-dom";
 import { getCurrentUsername } from "../../Controll/APIStuff/Autentification/auth.js";
-import { getUserOrdersRequest } from "../../Controll/APIStuff/post_get_Orders.js";
+import { getUserOrdersRequest } from "../../Controll/APIStuff/Client/post_get_Orders.js";
 import {Alert, Box, Button, Card, CardContent, CircularProgress, Divider, Stack, Typography}
     from "@mui/material";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";

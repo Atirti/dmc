@@ -1,5 +1,5 @@
 import {Navigate, Outlet, useLocation} from "react-router-dom";
-import { useAuth } from "./Autentification/AuthContext.jsx";
+import { useAuth } from "../Autentification/AuthContext.jsx";
 
 export function PublicRoute() {
     const { isAuth, loading } = useAuth();
