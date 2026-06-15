@@ -2,7 +2,7 @@
 
 from fastapi import APIRouter, Depends, HTTPException, status
 
-from schemas import LoginRequest, LogoutRequest, TokenRequest, TokenResponse
+from schemas import LoginRequest, LogoutRequest, TokenRequest, TokenResponse, UserIdRequest, UserIdResponse
 import dependencies
 from services import AuthService, JwtService
 
@@ -83,6 +83,14 @@ async def admin_refresh_token(token_model: TokenRequest,
         dependencies.settings.ADMIN_REFRESH_TOKEN = dct["refresh_token"]
         return dct
     raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Refresh token is invalid")
+
+
+@router.get("/admin/get_user", tags=["admin"], response_model=UserIdResponse)
+async def get_user_id(request: UserIdRequest = Depends(),
+                      admin=Depends(dependencies.get_admin_user),
+                      auth_service: AuthService = Depends(dependencies.get_auth_service)) -> UserIdResponse:
+    """Return user id by username for admin."""
+    return {"id": await auth_service.get_user_id_by_username(request.username)}
 
 
 @router.delete("/admin_logout", tags=["admin"])

@@ -1,6 +1,6 @@
 """Pydantic schema exports."""
 
-from .auth import LoginRequest, LogoutRequest, TokenRequest, TokenResponse
+from .auth import LoginRequest, LogoutRequest, TokenRequest, TokenResponse, UserIdRequest, UserIdResponse
 from .cart import CartProductChangeRequest, CartProductDeleteRequest, CartProductModel
 from .orders import (
     AdminOrderRequest,
@@ -39,4 +39,6 @@ __all__ = [
     "ProductModel",
     "TokenRequest",
     "TokenResponse",
+    "UserIdRequest",
+    "UserIdResponse",
 ]
