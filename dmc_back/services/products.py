@@ -1,7 +1,9 @@
 from pydantic_settings.sources.providers import aws
 from fastapi import HTTPException, status
+from sqlalchemy.util import await_only
+
 from repositories import ProductRepository, CategoryRepository
-from schemas.products import ProductsRequest, ProductRequest, RequestId
+from schemas.products import ProductsRequest, ProductRequest, RequestId, CategoryModel
 
 
 class ProductsService:
@@ -35,3 +37,25 @@ class ProductsService:
 
     async def get_categories(self):
         return await self.__category_repository.get_all_categories()
+
+    async def add_category(self, title: str):
+        if await self.__category_repository.get_by_title(title) is not None:
+            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Category already exists")
+        return await self.__category_repository.create_category(title)
+
+    async def get_category(self, category_id: int):
+        category = await self.__category_repository.get_category_by_id(category_id)
+        if category is None:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Category not found")
+        return category
+
+    async def update_category(self, category_id: int, title: str):
+        await self.__category_repository.update_category(category_id, title)
+        return await self.get_category(category_id)
+
+    async def remove_category(self, category_id: int):
+        if any(await self.__product_repository.get_products_by_category(
+            limit=1, category_id=category_id, offset = 0, sort = "date", order = "desc"
+        )):
+            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Category in use")
+        await self.__category_repository.delete_category(category_id)
