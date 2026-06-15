@@ -121,9 +121,11 @@ function ItemWindow() {
 
                 <Box component="main" className="itemContent">
                     <Stack direction="row" alignItems="center" spacing={2} sx={{ mb: 4 }}>
-                        <Box sx={{width: 64, height: 64, borderRadius: "50%", bgcolor: "#12141b", color: "#2E4578",
-                            display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,}}>
-                            <ShoppingCartOutlined sx={{ fontSize: 34 }} />
+                        <Box onClick={() => window.history.back()}
+                                sx={{width: 64, height: 64, borderRadius: "50%", bgcolor: "#12141b",
+                                    color: "#2E4578", display: "flex", alignItems: "center",
+                                    justifyContent: "center", flexShrink: 0, cursor: "pointer",}}>
+                            <ArrowBackOutlined sx={{ fontSize: 34 }} />
                         </Box>
 
                         <Box>

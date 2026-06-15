@@ -2,23 +2,10 @@ import "./MainMenuCSS.css";
 import { NavLink } from "react-router-dom";
 import { getItemsRequest } from "../../Controll/APIStuff/Client/getItemsForMain.js";
 import { useEffect, useState } from "react";
-import {
-    Alert,
-    Box,
-    Button,
-    Card,
-    CardActionArea,
-    CardContent,
-    CardMedia,
-    CircularProgress,
-    FormControl,
-    InputLabel,
-    MenuItem,
-    Select,
-    Stack,
-    Typography
-} from "@mui/material";
+import {Alert, Box, Button, Card, CardActionArea, CardContent, CardMedia, CircularProgress, FormControl,
+    InputLabel, MenuItem, Select, Stack, Typography} from "@mui/material";
 import StorefrontOutlinedIcon from "@mui/icons-material/StorefrontOutlined";
+import {getCategories} from "../../Controll/APIStuff/adminStuuf/categotyApi.js";
 
 function MainMenu() {
     const [itemsList, setItemList] = useState([]);
@@ -28,7 +15,17 @@ function MainMenu() {
     const [order, setOrder] = useState("desc");
     const [limit, setLimit] = useState(10);
     const [page, setPage] = useState(0);
+    const [categoryId, setCategoryId] = useState("");
+    const [categories, setCategories] = useState([]);
 
+
+    useEffect(()=>{
+        async function loadCategories() {
+            const data = await getCategories();
+            setCategories(data);
+        }
+        loadCategories();
+    }, [])
     useEffect(() => {
         async function loadItems() {
             try {
@@ -36,7 +33,7 @@ function MainMenu() {
                 setError("");
 
                 const offset = page * limit;
-                const items = await getItemsRequest(limit, offset, order, sortType);
+                const items = await getItemsRequest(limit, offset, order, sortType,categoryId);
 
                 setItemList(items);
             } catch (err) {
@@ -48,7 +45,11 @@ function MainMenu() {
         }
 
         loadItems();
-    }, [page, limit, order, sortType]);
+    }, [page, limit, order, sortType,categoryId]);
+    function handleCategoryChange(event) {
+        setCategoryId(event.target.value);
+        setPage(0);
+    }
 
     function handleLimitChange(event) {
         setLimit(Number(event.target.value));
@@ -123,6 +124,17 @@ function MainMenu() {
                                     <MenuItem value={40}>40 Предметов</MenuItem>
                                 </Select>
                             </FormControl>
+                            <FormControl className="ComboBoxCategory" size="small">
+                                <InputLabel id="category-label">Категория</InputLabel>
+                                <Select variant="outlined" labelId="category-label" id="category-select"
+                                        value={categoryId} label="Категория" onChange={handleCategoryChange}>
+                                    <MenuItem value="">Все категории</MenuItem>
+                                    {categories.map((category) => (
+                                            <MenuItem key={category.id} value={category.id}>
+                                                {category.title}
+                                            </MenuItem>))}
+                                </Select>
+                            </FormControl>
                         </div>
                     </CardContent>
                 </Card>
@@ -176,7 +188,7 @@ function MainMenu() {
                                                             {item.title}
                                                         </Typography>
 
-                                                        <Typography variant="body1" sx={{color: "#b276ff", fontWeight: 800,
+                                                        <Typography variant="body1" sx={{color: "#2e4477", fontWeight: 800,
                                                             fontSize: "1.2rem", textAlign: "left",}}>
                                                             {item.price} ₽
                                                         </Typography>
