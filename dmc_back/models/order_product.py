@@ -1,9 +1,13 @@
+"""Order-product association model."""
+
 from sqlalchemy import ForeignKey, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from typing import Optional
 from .base import Base
 
 class OrderProduct(Base):
+    """Line item storing a product quantity inside an order."""
+
     __tablename__ = 'orders_products'
 
     order_id: Mapped[int] = mapped_column(ForeignKey('orders.id', ondelete='CASCADE'))
