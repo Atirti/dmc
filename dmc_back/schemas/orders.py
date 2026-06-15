@@ -1,3 +1,5 @@
+from datetime import date
+
 from pydantic import BaseModel, field_validator
 from schemas.products import ProductModel as p
 
@@ -15,9 +17,9 @@ class OrderModel(BaseModel):
 
 
 class OrderUpdateRequest(BaseModel):
-    id: int
-    status: str | None
-    address: str | None
+    order_id: int
+    user_id: int
+    status: str
 
 
 class ProductRequest(BaseModel):
@@ -53,3 +55,9 @@ class PayRequest(BaseModel):
         if v < 0:
             raise ValueError('id must be >= 0')
         return v
+
+class AdminOrdersRequest(BaseModel):
+    user_id: int
+
+class AdminOrderRequest(AdminOrdersRequest):
+    order_id: int

@@ -21,7 +21,7 @@ class OrdersService:
                     "count_in_stock": op.product.count_in_stock,
                     "category_id": op.product.category_id,
                     "count": op.count
-                } for op in order.order_products
+                } for op in order.order_products if op.product is not None
             ],
             "status": order.status,
             "price": order.price,
@@ -30,8 +30,15 @@ class OrdersService:
 
     async def get_user_orders(self, user_id: int):
         orders = await self.__orders_repository.get_user_orders(user_id)
-
+        if orders is None:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Orders not found")
         return [self.__order_to_dict(order) for order in orders]
+
+    async def get_user_order(self, user_id: int, order_id: int):
+        order = await self.__orders_repository.get_order_by_id(order_id, user_id)
+        if order is None:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Order not found")
+        return self.__order_to_dict(order)
 
     async def create_order(self, user_id: int, request: OrderRequest):
         products = await self.__product_repository.get_by_ids([p.product_id for p in request.products])
@@ -48,3 +55,10 @@ class OrdersService:
         )
 
         return self.__order_to_dict(order)
+
+    async def update_status(self, request):
+        order = await self.get_user_order(request.user_id, request.order_id)
+        if order is None:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Order not found")
+        await self.__orders_repository.update_status(request.order_id, request.user_id, request.status)
+        return await self.get_user_order(request.user_id, request.order_id)
