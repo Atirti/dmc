@@ -240,8 +240,8 @@ function createStyles(theme: AppTheme) {
             alignItems: "center",
             borderRadius: theme.radius.lg,
             borderWidth: 1,
-            borderColor: theme.colors.divider,
-            backgroundColor: theme.colors.surfaceContainer,
+            borderColor: theme.colors.inputBorder,
+            backgroundColor: theme.colors.inputBackground,
         },
 
         passwordInput: {
@@ -335,8 +335,8 @@ function createStyles(theme: AppTheme) {
             minHeight: 52,
             borderRadius: theme.radius.lg,
             borderWidth: 1,
-            borderColor: theme.colors.divider,
-            backgroundColor: theme.colors.surfaceContainer,
+            borderColor: theme.colors.inputBorder,
+            backgroundColor: theme.colors.inputBackground,
             color: theme.colors.text,
             paddingHorizontal: theme.spacing.md,
             ...theme.typography.bodyLarge,
