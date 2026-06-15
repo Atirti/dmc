@@ -1,0 +1,282 @@
+.itemWindow {
+    min-height: 100vh;
+    width: 100%;
+    overflow-x: hidden;
+    color: white;
+    display: flex;
+    background: #08090d;
+}
+
+.itemContent {
+    margin-top: 10%;
+    width: 70%;
+    margin-left: 15%;
+    margin-right: 15%;
+    min-height: 100vh;
+    padding: 38px 0 60px 0;
+    box-sizing: border-box;
+}
+
+.itemTop {
+    width: 100%;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 380px;
+    gap: 28px;
+    align-items: flex-start;
+}
+
+.itemImageCard {
+    min-width: 0;
+}
+
+.itemImageBlock {
+    width: 100%;
+    height: 460px;
+    border-radius: 28px;
+    background-color: #252a35;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.itemImage {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+.itemImagePlaceholder {
+    width: 100%;
+    height: 100%;
+    color: #8f94a3;
+    font-size: 1.4rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.itemPanel {
+    min-width: 0;
+}
+
+.itemPageTitle {
+    margin: 0;
+    color: white;
+    font-size: 2rem;
+    line-height: 1.15;
+    font-weight: 800;
+    word-break: break-word;
+}
+
+.itemPagePrice {
+    margin: 18px 0 0 0 ;
+    color: #b276ff;
+    font-size: 1.8rem ;
+    line-height: 1.1 ;
+    font-weight: 800 ;
+}
+
+.itemStock {
+    color: #8f94a3;
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.itemError {
+    margin-top: 16px;
+    color: #ff6b6b;
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.itemDescriptionBlock {
+    min-width: 0;
+}
+
+.Description {
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin-bottom: 14px;
+}
+
+.itemDescription {
+    color: #c7cbd6;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    word-break: break-word;
+}
+
+.textDotsButton,
+.textCollapseButton {
+    margin-left: 6px;
+    padding: 0;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: #2E4578;
+    font-size: inherit;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.textDotsButton:hover,
+.textCollapseButton:hover {
+    color: #3c589f;
+}
+
+.toCartButton {
+    min-height: 52px;
+}
+
+
+@media (max-width: 800px) {
+    .itemContent {
+        width: auto;
+        margin-left: 118px;
+        margin-right: 18px;
+        padding: 28px 0 50px 0;
+    }
+
+    .itemTop {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+
+    .itemImageBlock {
+        height: 360px;
+        border-radius: 24px;
+    }
+
+    .itemPanel {
+        width: 100%;
+    }
+
+    .itemPageTitle {
+        font-size: 1.65rem;
+    }
+
+    .itemPagePrice {
+        font-size: 1.45rem ;
+    }
+}
+
+@media (max-width: 600px) {
+    .itemContent {
+        width: auto;
+        margin-left: 114px;
+        margin-right: 14px;
+        padding: 22px 0 42px 0;
+    }
+
+    .itemContent > .MuiStack-root:first-child {
+        margin-bottom: 24px ;
+    }
+
+    .itemContent > .MuiStack-root:first-child > .MuiBox-root:first-child {
+        width: 52px ;
+        height: 52px ;
+    }
+
+    .itemContent h4 {
+        font-size: 1.75rem ;
+    }
+
+    .itemTop {
+        gap: 18px;
+    }
+
+    .itemImageCard {
+        border-radius: 24px ;
+    }
+
+    .itemImageCard .MuiCardContent-root {
+        padding: 18px ;
+    }
+
+    .itemImageBlock {
+        height: 280px;
+        border-radius: 20px;
+    }
+
+    .itemPanel {
+        border-radius: 24px ;
+    }
+
+    .itemPanel .MuiCardContent-root {
+        padding: 20px ;
+    }
+
+    .itemPageTitle {
+        font-size: 1.45rem;
+    }
+
+    .itemPagePrice {
+        margin-top: 14px ;
+        font-size: 1.3rem ;
+    }
+
+    .itemDescriptionBlock {
+        border-radius: 24px ;
+        margin-top: 18px ;
+    }
+
+    .itemDescriptionBlock .MuiCardContent-root {
+        padding: 20px ;
+    }
+
+    .itemDescription {
+        font-size: 0.98rem;
+        line-height: 1.5;
+    }
+
+    .toCartButton {
+        min-height: 48px;
+    }
+}
+
+@media (max-width: 480px) {
+    .itemContent {
+        margin-left: 108px;
+        margin-right: 12px;
+        padding: 18px 0 38px 0;
+    }
+
+    .itemImageBlock {
+        height: 230px;
+    }
+
+    .itemPageTitle {
+        font-size: 1.25rem;
+    }
+
+    .itemPagePrice {
+        font-size: 1.15rem ;
+    }
+
+    .itemDescription {
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 380px) {
+    .itemContent {
+        margin-left: 100px;
+        margin-right: 10px;
+    }
+
+    .itemImageBlock {
+        height: 190px;
+    }
+
+    .itemContent h4 {
+        font-size: 1.45rem ;
+    }
+
+    .itemPageTitle {
+        font-size: 1.15rem;
+    }
+}

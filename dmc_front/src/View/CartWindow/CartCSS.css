@@ -1,0 +1,260 @@
+.cartPage {
+    min-height: 100vh;
+    background: #08090d;
+    display: flex;
+    color: white;
+    overflow-x: hidden;
+}
+
+.cartWindow {
+    width: 70%;
+    margin-left: 15%;
+    margin-right: 15%;
+    padding: 15vh 0 60px 0;
+    box-sizing: border-box;
+}
+
+.cartContent {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 340px;
+    gap: 28px;
+    align-items: flex-start;
+}
+
+.cartItems {
+    min-width: 0;
+    width: 100%;
+}
+
+.cartSummary {
+    min-width: 0;
+}
+
+.cartItems .MuiCardContent-root > .MuiStack-root {
+    width: 100%;
+}
+
+.cartItems .MuiCardContent-root > .MuiStack-root > .MuiStack-root {
+    align-self: center;
+}
+
+.cartItems .MuiCardContent-root > .MuiStack-root > .MuiBox-root:last-child {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.cartSummary .MuiCardContent-root > .MuiStack-root:nth-of-type(2) {
+    align-items: center ;
+}
+
+.cartSummary .MuiInputBase-root {
+    height: 72px;
+    display: flex;
+    align-items: center;
+}
+
+.cartSummary textarea {
+    text-align: center;
+    line-height: 1.4;
+}
+
+.cartSummary textarea::placeholder {
+    text-align: center;
+}
+
+@media (max-width: 1200px) {
+    .cartWindow {
+        width: auto;
+        margin-left: 130px;
+        margin-right: 45px;
+        padding: 13vh 0 60px 0;
+    }
+
+    .cartContent {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+
+    .cartSummary {
+        position: static ;
+        top: auto ;
+        width: 100%;
+    }
+
+    .cartItems {
+        width: 100%;
+    }
+
+    .cartItems .MuiCardContent-root > .MuiStack-root {
+        flex-wrap: nowrap;
+    }
+}
+
+@media (max-width: 800px) {
+    .cartWindow {
+        width: auto;
+        margin-left: 118px;
+        margin-right: 18px;
+        padding: 12vh 0 50px 0;
+    }
+
+    .cartContent {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+
+    .cartSummary {
+        position: static ;
+        top: auto ;
+        width: 100%;
+    }
+
+    .cartItems {
+        width: 100%;
+    }
+}
+
+@media (max-width: 600px) {
+    .cartWindow {
+        width: auto;
+        margin-left: 114px;
+        margin-right: 14px;
+        padding: 10vh 0 42px 0;
+    }
+
+    .cartWindow > .MuiStack-root:first-child {
+        margin-bottom: 24px ;
+    }
+
+    .cartWindow > .MuiStack-root:first-child > .MuiBox-root:first-child {
+        width: 52px ;
+        height: 52px ;
+    }
+
+    .cartWindow h4 {
+        font-size: 1.75rem ;
+    }
+
+    .cartContent {
+        gap: 18px;
+    }
+
+    .cartItems {
+        gap: 16px ;
+    }
+
+    .cartItems .MuiCard-root {
+        max-width: 360px;
+        width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+        border-radius: 24px ;
+    }
+
+    .cartItems .MuiAvatar-root {
+        width: 160px ;
+        height: 160px ;
+        max-width: 100%;
+        border-radius: 20px ;
+    }
+
+    .cartItems .MuiCardContent-root > .MuiStack-root {
+        flex-direction: column ;
+        align-items: center ;
+        justify-content: center ;
+        gap: 14px ;
+        text-align: center;
+    }
+
+    .cartItems .MuiAvatar-root {
+        width: 100% ;
+        height: auto ;
+        aspect-ratio: 1 / 1;
+        border-radius: 20px ;
+    }
+
+    .cartItems .MuiCardContent-root > .MuiStack-root > .MuiBox-root {
+        width: 100%;
+        text-align: center;
+    }
+
+    .cartItems .MuiTypography-root {
+        white-space: normal ;
+        text-align: center;
+    }
+
+    .cartItems .MuiCardContent-root > .MuiStack-root > .MuiStack-root {
+        width: fit-content;
+        align-self: center;
+        justify-content: center;
+    }
+
+    .cartItems .MuiCardContent-root > .MuiStack-root > .MuiBox-root:last-child {
+        min-width: 0 ;
+        width: 100%;
+        height: auto ;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 14px;
+        text-align: center ;
+    }
+
+    .cartSummary {
+        border-radius: 24px ;
+    }
+
+    .cartSummary .MuiCardContent-root {
+        padding: 20px ;
+    }
+
+    .cartSummary h5 {
+        font-size: 1.35rem ;
+    }
+
+    .cartSummary .MuiButton-root {
+        padding-top: 12px ;
+        padding-bottom: 12px ;
+    }
+
+    .cartSummary .MuiCardContent-root > .MuiStack-root:nth-of-type(2) {
+        justify-content: center ;
+        align-items: center ;
+        text-align: center;
+    }
+
+    .cartSummary .MuiInputBase-root {
+        height: 78px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .cartSummary textarea {
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .cartItems .MuiCard-root {
+        max-width: 320px;
+    }
+
+    .cartItems .MuiAvatar-root {
+        width: 135px;
+        height: 135px;
+    }
+}
+@media (max-width: 380px) {
+    .cartItems .MuiCard-root {
+        max-width: 280px;
+    }
+
+    .cartItems .MuiAvatar-root {
+        width: 120px;
+        height: 120px ;
+    }
+}
