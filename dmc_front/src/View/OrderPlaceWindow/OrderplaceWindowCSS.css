@@ -2,6 +2,7 @@
     min-height: 100vh;
     width: 100%;
     overflow-x: hidden;
+    background: #06070a;
     color: white;
     display: flex;
 }
