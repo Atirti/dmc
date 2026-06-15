@@ -17,8 +17,9 @@ function App() {
             <div className="App">
                 <main className="pageContent">
                     <Routes>
+                        <Route path="/" element={<Navigate to="/home" replace/>}/>
                         <Route element={<PublicRoute/>}>
-                            <Route path="/" element={<LoginWindow/>}/>
+                            <Route path="/login" element={<LoginWindow/>}/>
                             <Route path="/registration" element={<RegisterWindow/>}/>
                         </Route>
 
@@ -34,7 +35,7 @@ function App() {
                         <Route path="/admin_login" element={<AdminLoginWindow />} />
                         <Route path="/admin" element={<AdminProtectedRoute><AdminPanel /></AdminProtectedRoute>}/>
 
-                        <Route path="*" element={<Navigate to="/" replace />} />
+                        <Route path="*" element={<Navigate to="/home" replace />} />
                     </Routes>
                 </main>
             </div>

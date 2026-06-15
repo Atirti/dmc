@@ -1,12 +1,13 @@
 import "./ItemWindowCSS.css";
 import LeftPanel from "../LeftPanel/LeftPanel.jsx";
 import { useState} from "react";
-import {useLocation, useNavigate, useParams} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import { addItemToCartRequest} from "../../Controll/APIStuff/Client/get_put_Cart.js";
 import {useAuth} from "../../Controll/APIStuff/Autentification/AuthContext.jsx";
 import {Alert, Box, Button, Card, CardContent, CircularProgress, Stack, Typography,}
     from "@mui/material";
 import {AddShoppingCartOutlined, ArrowBackOutlined, Inventory2Outlined, ShoppingCartOutlined,} from "@mui/icons-material";
+import {getNormalErrorMessage} from "../../Controll/errorHandler.js";
 
 function ExpandableText({ text, limit, className, as: Tag = "div" }) {
     const [isExpanded, setIsExpanded] = useState(false);
@@ -50,7 +51,7 @@ function ItemWindow() {
         }
 
         if (!isAuth) {
-            navigate("/");
+            navigate("/login");
             return;
         }
 
@@ -79,7 +80,7 @@ function ItemWindow() {
 
             navigate("/cart");
         } catch (error) {
-            setError(error.message);
+            setError(getNormalErrorMessage(error));
         } finally {
             setIsAdding(false);
         }

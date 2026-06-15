@@ -15,7 +15,7 @@ export  function ProtectedRoute() {
     const location = useLocation();
 
     if (loading) {return <div>Проверка авторизации...</div>;}
-    if (!isAuth) {return <Navigate to="/" replace state={{ from: location }} />;}
+    if (!isAuth) {return <Navigate to="/login" replace state={{ from: location }} />;}
 
     return <Outlet />;
 }

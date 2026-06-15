@@ -5,6 +5,7 @@ import {useAuth} from "../../../Controll/APIStuff/Autentification/AuthContext.js
 import {Alert, Box, Button, Card, CardContent, CircularProgress, Stack, TextField, Typography} from "@mui/material";
 import LoginOutlinedIcon from "@mui/icons-material/LoginOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
+import {getNormalErrorMessage} from "../../../Controll/errorHandler.js";
 
 export default function LoginWindow() {
     const navigate = useNavigate();
@@ -37,7 +38,7 @@ export default function LoginWindow() {
 
             navigate(from, { replace: true });
         } catch (error) {
-            setError(error.message);
+            setError(getNormalErrorMessage(error));
         } finally {
             setIsLoginLoading(false);
         }

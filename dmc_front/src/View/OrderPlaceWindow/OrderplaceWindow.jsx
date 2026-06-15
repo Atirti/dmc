@@ -4,9 +4,9 @@ import "./OrderplaceWindowCSS.css";
 import LeftPanel from "../LeftPanel/LeftPanel.jsx";
 import {Alert, Avatar, Box, Button, Card, CardContent, CircularProgress, Divider, Stack, Typography,}
     from "@mui/material";
-import ReceiptLongOutlinedIcon from "@mui/icons-material/ReceiptLongOutlined";
 import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
+import BackButton from "../BackButton.jsx";
 
 function OrderplaceWindow() {
     const location = useLocation();
@@ -97,7 +97,7 @@ function OrderplaceWindow() {
                     <Stack direction="row" alignItems="center" spacing={2} sx={{ mb: 4 }}>
                         <Box sx={{width: 64, height: 64, borderRadius: "50%", bgcolor: "#12141b", color: "#2E4578",
                             display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,}}>
-                            <ReceiptLongOutlinedIcon sx={{ fontSize: 34 }} />
+                            <BackButton sx={{ fontSize: 34 }} />
                         </Box>
 
                         <Box>
@@ -229,7 +229,7 @@ function OrderplaceWindow() {
 
                                             <Stack direction="row" justifyContent="space-between" spacing={2}>
                                                 <Typography sx={{ color: "#8f94a3", paddingRight: "5px" }}>Сумма:</Typography>
-                                                <Typography sx={{color: "#b276ff", fontWeight: 800, fontSize: "1.3rem",
+                                                <Typography sx={{color: "#2e4477", fontWeight: 800, fontSize: "1.3rem",
                                                     whiteSpace: "nowrap",}}>
                                                     {totalPrice} ₽
                                                 </Typography>
