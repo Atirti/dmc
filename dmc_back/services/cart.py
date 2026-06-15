@@ -30,13 +30,17 @@ class CartService:
         """
         insert or update product count in cart
         """
+        product = await self.__cart_repository.get_product(request.id)
+        if product is None:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Product not found")
+
+        if request.count > product.count_in_stock:
+            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Not enough product in stock.")
+
         cart = await self.__cart_repository.get_cart_product(user_id, request.id)
 
         if cart is None:
             await self.__cart_repository.insert_product(user_id, request.id, request.count)
-
-        elif request.count > cart.count_in_stock:
-            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Not enough product in stock.")
 
         else:
             await self.__cart_repository.update_product(user_id, request.id, request.count)
