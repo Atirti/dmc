@@ -1,3 +1,5 @@
+"""Database access methods for products."""
+
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, asc, desc, insert, update, delete
 
@@ -64,6 +66,7 @@ class ProductRepository:
         return result.scalars().all()
 
     async def get_product(self, id: int):
+        """Return product by id."""
         result = await self.__db.execute(
             select(Product)
             .where(Product.id == id)
@@ -71,6 +74,7 @@ class ProductRepository:
         return result.scalar_one_or_none()
 
     async def get_by_ids(self, ids: list[int]):
+        """Return all products matching the given ids."""
         result = await self.__db.execute(
             select(Product)
             .where(Product.id.in_(ids))
@@ -80,6 +84,7 @@ class ProductRepository:
 
     async def add_product(self, title: str, description: str, price: float | int, picture_url: str | None,
                           count_in_stock: int, category_id: int):
+        """Insert and return a new product."""
         result = await self.__db.execute(
             insert(Product)
             .values(title=title, description=description, price=price, picture_url=picture_url,
@@ -95,6 +100,7 @@ class ProductRepository:
     async def update_product(self, product_id, title: str | None, description: str | None, price: float | int | None,
                              picture_url: str | None,
                              count_in_stock: int | None, category_id: int | None):
+        """Update product fields that are not None and return the updated product."""
         values = {k: v for k, v in {
             "title": title,
             "description": description,
@@ -122,6 +128,7 @@ class ProductRepository:
         return product
 
     async def delete_product(self, product_id: int):
+        """Delete product by id."""
 
         await self.__db.execute(
             delete(Product)

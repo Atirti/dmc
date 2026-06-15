@@ -1,3 +1,5 @@
+"""Cart routes for authenticated users."""
+
 from fastapi import APIRouter, Depends
 from schemas import CartProductChangeRequest, CartProductDeleteRequest, CartProductModel
 from services import CartService

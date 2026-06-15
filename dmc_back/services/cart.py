@@ -1,9 +1,13 @@
+"""Cart business logic."""
+
 from schemas import CartProductChangeRequest, CartProductDeleteRequest
 from repositories.cart import CartRepository
 from fastapi import HTTPException, status
 
 
 class CartService:
+    """Coordinate cart reads and cart mutations."""
+
     def __init__(self, repository: CartRepository):
         self.__cart_repository = repository
 

@@ -1,9 +1,13 @@
+"""Order business logic."""
+
 from repositories import OrdersRepository, ProductRepository
 from fastapi import HTTPException, status
 from schemas import CreateOrderRequest
 
 
 class OrdersService:
+    """Coordinate order reads, creation, stock checks, and status updates."""
+
     def __init__(self, orders_repository: OrdersRepository, product_repository: ProductRepository):
         self.__orders_repository = orders_repository
         self.__product_repository = product_repository
@@ -29,18 +33,21 @@ class OrdersService:
         }
 
     async def get_user_orders(self, user_id: int):
+        """Return all visible orders for a user."""
         orders = await self.__orders_repository.get_user_orders(user_id)
         if orders is None:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Orders not found")
         return [self.__order_to_dict(order) for order in orders]
 
     async def get_user_order(self, user_id: int, order_id: int):
+        """Return one order for a user."""
         order = await self.__orders_repository.get_order_by_id(order_id, user_id)
         if order is None:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Order not found")
         return self.__order_to_dict(order)
 
     async def create_order(self, user_id: int, request: CreateOrderRequest):
+        """Validate requested products, calculate price, and create an order."""
         requested_counts = {}
         for requested_product in request.products:
             requested_counts[requested_product.product_id] = (
@@ -71,6 +78,7 @@ class OrdersService:
         return self.__order_to_dict(order)
 
     async def update_status(self, request):
+        """Update status for an existing order."""
         order = await self.get_user_order(request.user_id, request.order_id)
         if order is None:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Order not found")

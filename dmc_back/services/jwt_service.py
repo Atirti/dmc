@@ -1,3 +1,5 @@
+"""JWT and refresh-token service."""
+
 from datetime import datetime, timezone, timedelta
 import jwt
 import secrets
@@ -6,6 +8,8 @@ from repositories import RefreshTokenRepository
 
 
 class JwtService:
+    """Create, rotate, delete, and decode user and admin tokens."""
+
     def __init__(self, secrets_dct: dict, repository: RefreshTokenRepository):
         self.__secret = secrets_dct["secret"]
         self.__algorithm = secrets_dct["algorithm"]
@@ -65,9 +69,11 @@ class JwtService:
         return tokens_pair
 
     async def delete_refresh_token(self, refresh_token: str, user_id: int) -> None:
+        """Delete one refresh token owned by a user."""
         await self.__refresh_token_repository.delete_refresh_token(refresh_token, user_id)
 
     async def delete_all_refresh_tokens(self, user_id: int) -> None:
+        """Delete all refresh tokens for a user."""
         await self.__refresh_token_repository.delete_all_refresh_tokens(user_id)
 
     def decode(self, token) -> dict:
@@ -84,6 +90,7 @@ class JwtService:
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token")
 
     def create_admin_token(self) -> dict:
+        """Create admin JWT and refresh token pair."""
         payload = {
             "exp": datetime.now(timezone.utc) + timedelta(minutes=self.__admin_exp_minutes)
         }
@@ -93,6 +100,7 @@ class JwtService:
                 "refresh_token": refresh_token}
 
     def decode_admin(self, token: str) -> None:
+        """Validate admin JWT."""
         try:
             jwt.decode(token, self.__admin_secret, algorithms=[self.__admin_algorithm])
 

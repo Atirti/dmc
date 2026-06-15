@@ -1,3 +1,5 @@
+"""Authentication and token management routes."""
+
 from fastapi import APIRouter, Depends, HTTPException, status
 
 from schemas import LoginRequest, LogoutRequest, TokenRequest, TokenResponse
@@ -64,6 +66,7 @@ async def logout_everywhere(current_user: dict = Depends(dependencies.get_curren
 async def admin_login(user_model: LoginRequest,
                       auth_service: AuthService = Depends(dependencies.get_auth_service),
                       jwt_service=Depends(dependencies.get_jwt_service)) -> TokenResponse:
+    """Create admin JWT and refresh token."""
     await auth_service.admin_login(user_model.username, user_model.password)
     dct = jwt_service.create_admin_token()
     dependencies.settings.ADMIN_REFRESH_TOKEN = dct["refresh_token"]
@@ -74,6 +77,7 @@ async def admin_login(user_model: LoginRequest,
 @router.post("/admin_refresh_token", tags=["admin"], response_model=TokenResponse)
 async def admin_refresh_token(token_model: TokenRequest,
                               jwt_service=Depends(dependencies.get_jwt_service)) -> TokenResponse:
+    """Rotate admin refresh token and return a new admin token pair."""
     if dependencies.settings.ADMIN_REFRESH_TOKEN == token_model.refresh_token:
         dct = jwt_service.create_admin_token()
         dependencies.settings.ADMIN_REFRESH_TOKEN = dct["refresh_token"]
@@ -83,4 +87,5 @@ async def admin_refresh_token(token_model: TokenRequest,
 
 @router.delete("/admin_logout", tags=["admin"])
 async def admin_logout(admin=Depends(dependencies.get_admin_user)):
+    """Invalidate current admin refresh token."""
     dependencies.settings.ADMIN_REFRESH_TOKEN = ""

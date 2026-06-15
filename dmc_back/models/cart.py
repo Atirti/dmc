@@ -1,9 +1,13 @@
+"""Cart database model."""
+
 from sqlalchemy import ForeignKey, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from .base import Base
 
 
 class Cart(Base):
+    """Product quantity selected by a user before ordering."""
+
     __tablename__ = 'carts'
 
     user_id: Mapped[int] = mapped_column(ForeignKey('users.id', ondelete='CASCADE'))

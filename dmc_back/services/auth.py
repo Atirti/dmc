@@ -1,3 +1,5 @@
+"""Authentication service."""
+
 from bcrypt import hashpw, checkpw, gensalt
 
 from models import User
@@ -7,6 +9,8 @@ from fastapi import HTTPException, status
 
 
 class AuthService:
+    """Authenticate regular users and configured admin credentials."""
+
     def __init__(self, repository: UserRepository, admin_settings: dict):
         self.__user_repository = repository
         self.__admin_username = admin_settings["username"]
@@ -38,6 +42,7 @@ class AuthService:
 
 
     async def admin_login(self, username, password):
+        """Validate configured admin username and password."""
         if username == self.__admin_username and password == self.__admin_password:
             return username
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect username or password")
