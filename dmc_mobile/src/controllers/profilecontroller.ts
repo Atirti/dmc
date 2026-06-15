@@ -1,10 +1,10 @@
 import { useMemo, useState, useEffect } from "react";
+import { router } from "expo-router";
 import { setAudioModeAsync, useAudioPlayer } from "expo-audio";
 import { ThemePreference } from "../../styles/themes";
 import { getProfileMenuItems, ProfileMenuAction } from "../models/profilemenumodel";
-import { AuthState, guestAuthState, initialAuthState, placeholderUser } from "../models/usermodel";
 import { useAppTheme } from "./themecontroller";
-
+import { useAuth } from "./authcontroller";
 
 export function useProfileController() {
     const {
@@ -13,6 +13,7 @@ export function useProfileController() {
         setThemePreference,
         resolvedThemeName,
     } = useAppTheme();
+    const { authState, logout: logoutRequest, errorMessage, authorizedRequest } = useAuth();
 
     const logoutAllSound = require("../../media/sound/wilhelms.mp3");
     const logoutAllSoundPlayer = useAudioPlayer(logoutAllSound);
@@ -23,8 +24,6 @@ export function useProfileController() {
         });
     }, []);
 
-    const [authState, setAuthState] =
-        useState<AuthState>(initialAuthState);
     const [isMenuVisible, setIsMenuVisible] = useState(false);
     const [isSettingsVisible, setIsSettingsVisible] = useState(false);
     const [infoMessage, setInfoMessage] = useState<string | null>(null);
@@ -32,6 +31,18 @@ export function useProfileController() {
         () => getProfileMenuItems(authState.isAuthenticated),
         [authState.isAuthenticated]
     );
+
+    useEffect(() => {
+        if (authState.isAuthenticated) {
+            setInfoMessage("Вы вошли в аккаунт");
+        }
+    }, [authState.isAuthenticated]);
+
+    useEffect(() => {
+        if (errorMessage) {
+            setInfoMessage(errorMessage);
+        }
+    }, [errorMessage]);
 
     function openMenu() {
         setIsMenuVisible(true);
@@ -55,33 +66,24 @@ export function useProfileController() {
     }
 
     function login() {
-        // TODO заменить на restapi авторизацию
-        setAuthState({
-            isAuthenticated: true,
-            user: placeholderUser,
-        });
-
-        setInfoMessage("placeholder");
+        router.push("/login" as never);
     }
 
     function register() {
-        // TODO заменить на экран регистрации или rest api
-        setInfoMessage("placeholder");
+        router.push("/registration" as never);
     }
 
-    function logout() {
-        // TODO заменить на restapi logout
-        setAuthState(guestAuthState);
-        setInfoMessage("placeholder");
+    async function logout() {
+        await logoutRequest();
+        setInfoMessage("Вы вышли из аккаунта");
     }
 
-    function logoutAll() {
-        // TODO заменить на restapi logout-all-devices
-
+    async function logoutAll() {
         logoutAllSoundPlayer.seekTo(0);
         logoutAllSoundPlayer.play();
-        setAuthState(guestAuthState);
-        setInfoMessage("placeholder");
+        await authorizedRequest<unknown>("/logout_everywhere", { method: "DELETE" });
+        await logoutRequest();
+        setInfoMessage("Вы вышли из аккаунта на всех устройствах");
     }
 
     function handleMenuAction(action: ProfileMenuAction) {
@@ -92,19 +94,18 @@ export function useProfileController() {
 
             case "logout":
                 closeMenu();
-                logout();
+                void logout();
                 return;
 
             case "logoutAll":
                 closeMenu();
-                logoutAll();
+                void logoutAll();
                 return;
 
             default:
                 closeMenu();
         }
     }
-
 
     return {
         theme,
