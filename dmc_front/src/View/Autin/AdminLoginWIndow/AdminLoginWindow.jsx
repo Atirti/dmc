@@ -47,7 +47,7 @@ function AdminLoginWindow() {
                 <Card className="adminLoginWindow" sx={{bgcolor: "#151922", color: "white", borderRadius: "32px",
                     border: "1px solid rgba(255, 255, 255, 0.06)", boxShadow: "none",}}>
                     <CardContent sx={{p: 4, "&:last-child": {pb: 4,},}}>
-                        <Stack direction="row" alignItems="center" spacing={2} className="adminLoginHeader">
+                        <Stack direction="row" spacing={2} className="adminLoginHeader">
                             <Box sx={{width: 64, height: 64, borderRadius: "50%", bgcolor: "#12141b", color: "#2E4578",
                                 display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,}}>
                                 <AdminPanelSettingsOutlinedIcon sx={{ fontSize: 38 }} />

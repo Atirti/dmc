@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import {adminLoginRequest, adminLogoutRequest, isAdminAuth} from "./adminAuth.js";
+import {adminLoginRequest, adminLogoutRequest, isAdminAuth, checkAdminTokenValid, clearAdminTokens,} from "./adminAuth.js";
 
 const AdminAuthContext = createContext(null);
 
@@ -8,8 +8,25 @@ export function AdminAuthProvider({ children }) {
     const [adminLoading, setAdminLoading] = useState(true);
 
     useEffect(() => {
-        setIsAdmin(isAdminAuth());
-        setAdminLoading(false);
+        async function initAuth() {
+            if (!isAdminAuth()) {
+                setAdminLoading(false);
+                return;
+            }
+
+            try {
+                const valid = await checkAdminTokenValid();
+                setIsAdmin(valid);
+                if (!valid) clearAdminTokens();
+            } catch {
+                setIsAdmin(false);
+                clearAdminTokens();
+            } finally {
+                setAdminLoading(false);
+            }
+        }
+
+        initAuth();
     }, []);
 
     async function adminLogin(username, password) {
@@ -23,7 +40,7 @@ export function AdminAuthProvider({ children }) {
     }
 
     return (
-            <AdminAuthContext.Provider value={{isAdmin, adminLoading, adminLogin, adminLogout}}>
+            <AdminAuthContext.Provider value={{ isAdmin, adminLoading, adminLogin, adminLogout }}>
                 {children}
             </AdminAuthContext.Provider>
     );
