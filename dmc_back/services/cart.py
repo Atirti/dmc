@@ -1,4 +1,4 @@
-from schemas.cart import ProductRequest, DeleteRequest
+from schemas import CartProductChangeRequest, CartProductDeleteRequest
 from repositories.cart import CartRepository
 from fastapi import HTTPException, status
 
@@ -26,7 +26,7 @@ class CartService:
             for row in cart
         ]
 
-    async def change_count(self, user_id: int, request: ProductRequest) -> None:
+    async def change_count(self, user_id: int, request: CartProductChangeRequest) -> None:
         """
         insert or update product count in cart
         """
@@ -41,7 +41,7 @@ class CartService:
         else:
             await self.__cart_repository.update_product(user_id, request.id, request.count)
 
-    async def delete_product(self, user_id: int, request: DeleteRequest) -> None:
+    async def delete_product(self, user_id: int, request: CartProductDeleteRequest) -> None:
         """
         delete product from cart
         """

@@ -1,6 +1,6 @@
 from repositories import OrdersRepository, ProductRepository
 from fastapi import HTTPException, status
-from schemas.orders import OrderRequest
+from schemas import CreateOrderRequest
 
 
 class OrdersService:
@@ -40,7 +40,7 @@ class OrdersService:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Order not found")
         return self.__order_to_dict(order)
 
-    async def create_order(self, user_id: int, request: OrderRequest):
+    async def create_order(self, user_id: int, request: CreateOrderRequest):
         products = await self.__product_repository.get_by_ids([p.product_id for p in request.products])
 
         price = 0

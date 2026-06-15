@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 
-from schemas.auth import LoginRequest, TokenRequest, TokenResponse, LogoutRequest
+from schemas import LoginRequest, LogoutRequest, TokenRequest, TokenResponse
 import dependencies
 from services import AuthService, JwtService
 
