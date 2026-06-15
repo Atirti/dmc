@@ -4,13 +4,9 @@ import { useAuth } from "../Autentification/AuthContext.jsx";
 export function PublicRoute() {
     const { isAuth, loading } = useAuth();
 
-    if (loading) {
-        return <div>Проверка авторизации...</div>;
-    }
+    if (loading) {return <div>Проверка авторизации...</div>;}
 
-    if (isAuth) {
-        return <Navigate to="/home" replace />;
-    }
+    if (isAuth) {return <Navigate to="/home" replace />;}
     return <Outlet />;
 }
 
@@ -18,13 +14,8 @@ export  function ProtectedRoute() {
     const { isAuth, loading } = useAuth();
     const location = useLocation();
 
-    if (loading) {
-        return <div>Проверка авторизации...</div>;
-    }
-
-    if (!isAuth) {
-        return <Navigate to="/" replace state={{ from: location }} />;
-    }
+    if (loading) {return <div>Проверка авторизации...</div>;}
+    if (!isAuth) {return <Navigate to="/" replace state={{ from: location }} />;}
 
     return <Outlet />;
 }

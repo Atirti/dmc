@@ -25,6 +25,36 @@ export async function authFetch(path, options = {}, retry = true) {
         },
     });
 }
+function isTokenValid(token, skewMs = 30_000) {
+    try {
+        const payload = JSON.parse(atob(token.split(".")[1]));
+        return payload.exp * 15000 > Date.now() + skewMs;
+    } catch {
+        return false;
+    }
+}
+
+export async function checkAuth() {
+    const jwtToken = getCookie("jwt_token");
+    const refreshToken = getCookie("refresh_token");
+
+    if (!refreshToken) {
+        clearTokens();
+        return false;
+    }
+
+    if (jwtToken && isTokenValid(jwtToken)) {
+        return true;
+    }
+
+    try {
+        await refreshRequest();
+        return true;
+    } catch {
+        clearTokens();
+        return false;
+    }
+}
 
 export async function parseError(response) {
     const data = await response.json().catch(() => null);
@@ -76,9 +106,6 @@ function setCookie(name, value) {
 export function saveTokens(tokens) {
     setCookie("jwt_token", tokens.jwt_token);
     setCookie("refresh_token", tokens.refresh_token);
-    console.log("new jwt:", getCookie("jwt_token"));
-    console.log("new refresh:", getCookie("refresh_token"));
-    console.log("response tokens:", tokens);
 }
 
 export function clearTokens() {
@@ -153,78 +180,54 @@ async function refreshRequestRaw() {
     return tokens;
 }
 
+function notifyUnauthorized() {
+    window.dispatchEvent(new Event("auth:unauthorized"));
+}
+
 export async function refreshRequest() {
-    if (refreshPromise) {
-        return refreshPromise;
-    }
+    if (refreshPromise) return refreshPromise;
+
     refreshPromise = refreshRequestRaw()
-            .catch((error) => {clearTokens();throw error;})
-            .finally(() => {refreshPromise = null;});
+            .catch((error) => {
+                clearTokens();
+                notifyUnauthorized();
+                throw error;
+            })
+            .finally(() => {
+                refreshPromise = null;
+            });
+
     return refreshPromise;
 }
 
+
 export async function logoutRequest() {
-    const refreshToken = getCookie("refresh_token");
+    try {
+        const jwtToken = getCookie("jwt_token");
 
-    if (!refreshToken) {
-        clearTokens();
-        return null;
-    }
+        const response = await fetch(`${api_url}/logout`, {
+            method: "POST",
+            credentials: "include",
+            headers: {"Content-Type": "application/json",
+                ...(jwtToken ? { Authorization: `Bearer ${jwtToken}` } : {}),},
+            body: JSON.stringify({refresh_token: getCookie("refresh_token"),}),
+        });
 
-    const response = await authFetch("/logout", {
-        method: "POST",
-        headers: {"Content-Type": "application/json",},
-        body: JSON.stringify({refresh_token: refreshToken,}),
-    });
-
-    clearTokens();
-
-    if (!response.ok) {
-        const message = await parseError(response);
-        throw new Error(message);
-    }
-
-    return response.json().catch(() => null);
-}
-export async function logoutEverywhereRequest() {
-    const response = await fetch(`${api_url}/logout_everywhere`, {
-        method: "DELETE",
-        credentials: "include",
-    });
-
-    if (!response.ok) {
-        let message = "Ошибка выхода со всех устройств";
-
-        try {
-            const data = await response.json();
-            message = data.detail || message;
-        } catch {
-            message = response.statusText || message;
+        if (!response.ok) {
+            const message = await parseError(response);
+            throw new Error(message);
         }
 
-        throw new Error(message);
+        return response.json().catch(() => null);
+    } finally {
+        clearTokens();
     }
 }
 
-export async function checkAuth() {
-    const jwtToken = getCookie("jwt_token");
-    const refreshToken = getCookie("refresh_token");
+export async function logoutEverywhereRequest() {
+    const response = await authFetch("/logout_everywhere", {
+        method: "DELETE",});
 
-    if (!refreshToken) {
-        clearTokens();
-        return false;
-    }
-
-    if (jwtToken) {
-        return true;
-    }
-
-    try {
-        await refreshRequest();
-        return true;
-    } catch (error) {
-        console.error("Auth check failed:", error);
-        clearTokens();
-        return false;
-    }
+    if (!response.ok) {throw new Error(await parseError(response));}
+    clearTokens();
 }

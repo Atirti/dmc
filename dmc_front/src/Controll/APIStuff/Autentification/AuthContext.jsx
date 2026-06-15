@@ -14,27 +14,19 @@ export function AuthProvider({ children }) {
             try {
                 const result = await checkAuth();
 
-                if (mounted) {
-                    setIsAuth(result);
-                }
+                if (mounted) {setIsAuth(result);}
             } catch (error) {
                 console.log("Auth check error:", error);
 
-                if (mounted) {
-                    setIsAuth(false);
-                }
+                if (mounted) {setIsAuth(false);}
             } finally {
-                if (mounted) {
-                    setLoading(false);
-                }
+                if (mounted) {setLoading(false);}
             }
         }
 
         initAuth();
 
-        return () => {
-            mounted = false;
-        };
+        return () => {mounted = false;};
     }, []);
 
     async function login(username, password) {

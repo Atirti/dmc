@@ -1,4 +1,6 @@
-const API_URL = "http://127.0.0.1:8000";
+import {api_url} from "../Autentification/auth.js";
+
+const API_URL = api_url;
 
 const ADMIN_ACCESS_TOKEN_KEY = "admin_jwt_token";
 const ADMIN_REFRESH_TOKEN_KEY = "admin_refresh_token";

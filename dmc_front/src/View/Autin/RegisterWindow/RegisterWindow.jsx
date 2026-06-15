@@ -85,10 +85,7 @@ function  RegisterWindow() {
                                         type="password" fullWidth variant="outlined" className="registerInput"/>
                             </Stack>
 
-                            <div className="LoginExitst">
-                                Уже есть аккаунт?
-                                <NavLink to="/">Войти</NavLink>
-                            </div>
+                            <div className="LoginExitst">Уже есть аккаунт?<NavLink to="/">Войти</NavLink></div>
 
                             {error && (
                                     <Alert severity="error" sx={{mt: 2.5, bgcolor: "#2a1115", color: "#ffb4b4",

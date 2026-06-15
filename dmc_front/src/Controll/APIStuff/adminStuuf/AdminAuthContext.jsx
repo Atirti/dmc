@@ -9,10 +9,7 @@ export function AdminAuthProvider({ children }) {
 
     useEffect(() => {
         async function initAuth() {
-            if (!isAdminAuth()) {
-                setAdminLoading(false);
-                return;
-            }
+            if (!isAdminAuth()) {setAdminLoading(false);return;}
 
             try {
                 const valid = await checkAdminTokenValid();
