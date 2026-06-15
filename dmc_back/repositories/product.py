@@ -79,7 +79,7 @@ class ProductRepository:
         return result.scalars().all()
 
     async def add_product(self, title: str, description: str, price: float | int, picture_url: str | None,
-                          count_in_stock, category_id):
+                          count_in_stock: int, category_id: int):
         result = await self.__db.execute(
             insert(Product)
             .values(title=title, description=description, price=price, picture_url=picture_url,
@@ -91,3 +91,37 @@ class ProductRepository:
         product = result.scalar_one()
         await self.__db.refresh(product)
         return product
+
+    async def update_product(self, product_id, title: str | None, description: str | None, price: float | int | None,
+                             picture_url: str | None,
+                             count_in_stock: int | None, category_id: int | None):
+        values = {k: v for k, v in {
+            "title": title,
+            "description": description,
+            "price": price,
+            "picture_url": picture_url,
+            "count_in_stock": count_in_stock,
+            "category_id": category_id
+        }.items() if v is not None}
+
+        if not values:
+            return None
+        result = await self.__db.execute(
+            update(Product).values(**values)
+            .where(Product.id == product_id)
+            .returning(Product)
+        )
+
+        product = result.scalar_one()
+        await self.__db.commit()
+        await self.__db.refresh(product)
+        return product
+
+    async def delete_product(self, product_id: int):
+
+        await self.__db.execute(
+            delete(Product)
+            .where(Product.id == product_id)
+        )
+
+        await self.__db.commit()
