@@ -15,7 +15,6 @@ type ProfileViewProps = {
     themePreference: ThemePreference;
     resolvedThemeName: "light" | "dark";
     infoMessage: string | null;
-
     openMenu: () => void;
     closeMenu: () => void;
     closeSettings: () => void;
@@ -34,19 +33,19 @@ const themeOptions: Array<{
     {
         value: "system",
         label: "Системная",
-        description: "Использовать сис тему устройства",
-        icon: "cellphone-cog",
+        description: "Использовать системную тему устройс",
+        icon: "theme-light-dark",
     },
     {
         value: "light",
         label: "Светлая",
-        description: "Светлый интерфейс",
+        description: "Светлый ui",
         icon: "white-balance-sunny",
     },
     {
         value: "dark",
         label: "Темная",
-        description: "Темный интерфейс",
+        description: "Темный ui",
         icon: "moon-waning-crescent",
     },
 ];
@@ -54,7 +53,7 @@ const themeOptions: Array<{
 export function ProfileView(props: ProfileViewProps) {
     const { theme, authState, menuItems, isMenuVisible, isSettingsVisible, themePreference, resolvedThemeName, infoMessage, openMenu, closeMenu, closeSettings, selectTheme, handleMenuAction, login, register } = props;
     const styles = createStyles(theme);
-    const displayName = authState.user?.name ?? "Гость";
+    const displayName = authState.user?.username ?? authState.user?.name ?? "Гость";
 
     return (
         <SafeAreaView style={styles.safeArea} edges={["top", "left", "right"]}>
@@ -132,7 +131,7 @@ export function ProfileView(props: ProfileViewProps) {
 
                             <Text style={styles.status}>
                                 {authState.isAuthenticated
-                                    ? "Профиль подключен к будущему REST API"
+                                    ? "Профиль активен"
                                     : "Войдите или зарегистрируйтесь, чтобы увидеть профиль"}
                             </Text>
 
@@ -147,7 +146,7 @@ export function ProfileView(props: ProfileViewProps) {
                                         onPress={login}
                                     >
                                         <Text style={styles.primaryButtonText}>
-                                            Логин
+                                            Вход
                                         </Text>
                                     </Pressable>
 
@@ -170,31 +169,21 @@ export function ProfileView(props: ProfileViewProps) {
                                 <View style={styles.placeholderBlock}>
                                     <PlaceholderRow
                                         theme={theme}
-                                        icon="email-outline"
-                                        label="Email"
+                                        icon="account-outline"
+                                        label="Username"
                                         value={
-                                            authState.user?.email ??
-                                            "Будет получен из API"
+                                            authState.user?.username ??
+                                            authState.user?.name ??
+                                            "Не указан"
                                         }
                                     />
-
-                                    <PlaceholderRow
-                                        theme={theme}
-                                        icon="phone-outline"
-                                        label="Телефон"
-                                        value={
-                                            authState.user?.phone ??
-                                            "Будет получен из API"
-                                        }
-                                    />
-
                                     <PlaceholderRow
                                         theme={theme}
                                         icon="identifier"
                                         label="ID пользователя"
                                         value={
                                             authState.user?.id ??
-                                            "Будет получен из API"
+                                            "Не указан"
                                         }
                                     />
                                 </View>
