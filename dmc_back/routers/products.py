@@ -3,7 +3,7 @@ from fastapi.params import Depends
 
 import dependencies
 from services import ProductsService
-from schemas.products import ProductsRequest, ProductRequest, ProductModel, CategoryModel, RequestId
+from schemas.products import ProductsRequest, ProductRequest, ProductModel, CategoryModel, RequestId, CategoryRequest
 
 router = APIRouter(tags=["products"])
 
@@ -27,10 +27,12 @@ async def create_product(request: ProductRequest,
                          admin=Depends(dependencies.get_admin_user)) -> ProductModel:
     return await product_service.add_product(request)
 
+
 @router.get("/product", response_model=ProductModel)
 async def get_product(request: RequestId = Depends(),
                       product_service: ProductsService = Depends(dependencies.get_product_service)):
     return await product_service.get_product(request)
+
 
 """
 @router.put("/product", response_model=ProductModel, tags=["admin"])
@@ -53,29 +55,29 @@ async def get_categories(product_service: ProductsService = Depends(dependencies
     return await product_service.get_categories()
 
 
-"""
-@router.get("/categories/category", response_model=list[CategoryModel])
-async def get_categories(product_service: ProductsService = Depends(dependencies.get_product_service)) -> list[
-    CategoryModel]:
-    pass
-
-
 @router.post("/categories/category", response_model=CategoryModel, tags=["admin"])
-async def create_category(product_service: ProductsService = Depends(dependencies.get_product_service),
+async def create_category(request: CategoryRequest,
+                          product_service: ProductsService = Depends(dependencies.get_product_service),
                           admin=Depends(dependencies.get_admin_user)):
-    pass
+    return await product_service.add_category(request.title)
+
+
+@router.get("/categories/category", response_model=CategoryModel)
+async def get_category(request: RequestId = Depends(),
+                         product_service: ProductsService = Depends(dependencies.get_product_service)) -> list[
+    CategoryModel]:
+    return await product_service.get_category(request.id)
 
 
 @router.put("/categories/category", response_model=CategoryModel, tags=["admin"])
-async def update_category(request: RequestId = Depends(),
+async def update_category(request: CategoryModel,
                           product_service: ProductsService = Depends(dependencies.get_product_service),
                           admin=Depends(dependencies.get_admin_user)) -> CategoryModel:
-    pass
+    return await product_service.update_category(request.id, request.title)
 
 
-@router.delete("/categories/category", response_model=CategoryModel, tags=["admin"])
+@router.delete("/categories/category", tags=["admin"])
 async def delete_category(request: RequestId = Depends(),
                           product_service: ProductsService = Depends(dependencies.get_product_service),
                           admin=Depends(dependencies.get_admin_user)) -> None:
-    pass
-"""
+    await product_service.remove_category(request.id)
