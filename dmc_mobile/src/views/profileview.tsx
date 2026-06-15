@@ -1,5 +1,6 @@
 import React from "react";
-import { Modal, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from "react-native";
+import { Modal, Pressable, ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { AppTheme, ThemePreference } from "../../styles/themes";
 import { ProfileMenuItem } from "../models/profilemenumodel";
@@ -14,7 +15,6 @@ type ProfileViewProps = {
     themePreference: ThemePreference;
     resolvedThemeName: "light" | "dark";
     infoMessage: string | null;
-
     openMenu: () => void;
     closeMenu: () => void;
     closeSettings: () => void;
@@ -33,48 +33,30 @@ const themeOptions: Array<{
     {
         value: "system",
         label: "Системная",
-        description: "Использовать тему устройства",
-        icon: "cellphone-cog",
+        description: "Использовать системную тему устройс",
+        icon: "theme-light-dark",
     },
     {
         value: "light",
         label: "Светлая",
-        description: "Светлый Material Design интерфейс",
+        description: "Светлый ui",
         icon: "white-balance-sunny",
     },
     {
         value: "dark",
         label: "Темная",
-        description: "Темный Material Design интерфейс",
+        description: "Темный ui",
         icon: "moon-waning-crescent",
     },
 ];
 
 export function ProfileView(props: ProfileViewProps) {
-    const {
-        theme,
-        authState,
-        menuItems,
-        isMenuVisible,
-        isSettingsVisible,
-        themePreference,
-        resolvedThemeName,
-        infoMessage,
-
-        openMenu,
-        closeMenu,
-        closeSettings,
-        selectTheme,
-        handleMenuAction,
-        login,
-        register,
-    } = props;
-
+    const { theme, authState, menuItems, isMenuVisible, isSettingsVisible, themePreference, resolvedThemeName, infoMessage, openMenu, closeMenu, closeSettings, selectTheme, handleMenuAction, login, register } = props;
     const styles = createStyles(theme);
-    const displayName = authState.user?.name ?? "Гость";
+    const displayName = authState.user?.username ?? authState.user?.name ?? "Гость";
 
     return (
-        <SafeAreaView style={styles.safeArea}>
+        <SafeAreaView style={styles.safeArea} edges={["top", "left", "right"]}>
             <TouchableWithoutFeedback
                 onPress={closeMenu}
                 disabled={!isMenuVisible}
@@ -149,7 +131,7 @@ export function ProfileView(props: ProfileViewProps) {
 
                             <Text style={styles.status}>
                                 {authState.isAuthenticated
-                                    ? "Профиль подключен к будущему REST API"
+                                    ? "Профиль активен"
                                     : "Войдите или зарегистрируйтесь, чтобы увидеть профиль"}
                             </Text>
 
@@ -164,7 +146,7 @@ export function ProfileView(props: ProfileViewProps) {
                                         onPress={login}
                                     >
                                         <Text style={styles.primaryButtonText}>
-                                            Логин
+                                            Вход
                                         </Text>
                                     </Pressable>
 
@@ -187,31 +169,21 @@ export function ProfileView(props: ProfileViewProps) {
                                 <View style={styles.placeholderBlock}>
                                     <PlaceholderRow
                                         theme={theme}
-                                        icon="email-outline"
-                                        label="Email"
+                                        icon="account-outline"
+                                        label="Username"
                                         value={
-                                            authState.user?.email ??
-                                            "Будет получен из API"
+                                            authState.user?.username ??
+                                            authState.user?.name ??
+                                            "Не указан"
                                         }
                                     />
-
-                                    <PlaceholderRow
-                                        theme={theme}
-                                        icon="phone-outline"
-                                        label="Телефон"
-                                        value={
-                                            authState.user?.phone ??
-                                            "Будет получен из API"
-                                        }
-                                    />
-
                                     <PlaceholderRow
                                         theme={theme}
                                         icon="identifier"
                                         label="ID пользователя"
                                         value={
                                             authState.user?.id ??
-                                            "Будет получен из API"
+                                            "Не указан"
                                         }
                                     />
                                 </View>
@@ -247,19 +219,9 @@ export function ProfileView(props: ProfileViewProps) {
     );
 }
 
-type PlaceholderRowProps = {
-    theme: AppTheme;
-    icon: keyof typeof MaterialCommunityIcons.glyphMap;
-    label: string;
-    value: string;
-};
+type PlaceholderRowProps = { theme: AppTheme; icon: keyof typeof MaterialCommunityIcons.glyphMap; label: string; value: string; };
 
-function PlaceholderRow({
-                            theme,
-                            icon,
-                            label,
-                            value,
-                        }: PlaceholderRowProps) {
+function PlaceholderRow({ theme, icon, label, value }: PlaceholderRowProps) {
     const styles = createStyles(theme);
 
     return (
