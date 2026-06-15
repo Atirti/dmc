@@ -1,6 +1,6 @@
 from repositories import OrdersRepository, ProductRepository
 from fastapi import HTTPException, status
-from schemas.orders import OrderRequest
+from schemas import CreateOrderRequest
 
 
 class OrdersService:
@@ -40,18 +40,32 @@ class OrdersService:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Order not found")
         return self.__order_to_dict(order)
 
-    async def create_order(self, user_id: int, request: OrderRequest):
-        products = await self.__product_repository.get_by_ids([p.product_id for p in request.products])
+    async def create_order(self, user_id: int, request: CreateOrderRequest):
+        requested_counts = {}
+        for requested_product in request.products:
+            requested_counts[requested_product.product_id] = (
+                requested_counts.get(requested_product.product_id, 0) + requested_product.product_count
+            )
+
+        products = await self.__product_repository.get_by_ids(list(requested_counts.keys()))
+        products_by_id = {product.id: product for product in products}
+
+        if len(products_by_id) != len(requested_counts):
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Product not found")
 
         price = 0
-        for product, req in zip(products, request.products):
-            if product.count_in_stock < req.product_count:
+        for product_id, requested_count in requested_counts.items():
+            product = products_by_id[product_id]
+            if product.count_in_stock < requested_count:
                 raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=f"Not enough {product.title} in stock")
-            price += product.price * req.product_count
+            price += product.price * requested_count
 
         order = await self.__orders_repository.create_order(
             user_id, request.address, price,
-            [{"product_id": p.product_id, "product_count": p.product_count} for p in request.products]
+            [
+                {"product_id": product_id, "product_count": requested_count}
+                for product_id, requested_count in requested_counts.items()
+            ]
         )
 
         return self.__order_to_dict(order)

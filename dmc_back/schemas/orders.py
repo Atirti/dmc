@@ -1,19 +1,39 @@
-from datetime import date
+from pydantic import BaseModel, Field, ValidationInfo, field_validator
 
-from pydantic import BaseModel, field_validator
-from schemas.products import ProductModel as p
+from .products import ProductModel as BaseProductModel
+from .validators import validate_non_empty_string, validate_non_negative_number, validate_positive_int
 
 
-class ProductModel(p):
+class OrderProductModel(BaseProductModel):
     count: int
+
+    @field_validator("count")
+    @classmethod
+    def count_validator(cls, value: int, info: ValidationInfo) -> int:
+        return validate_positive_int(value, info)
 
 
 class OrderModel(BaseModel):
     id: int
-    products: list[ProductModel]
+    products: list[OrderProductModel]
     status: str
     price: float | int
     address: str
+
+    @field_validator("id")
+    @classmethod
+    def id_validator(cls, value: int, info: ValidationInfo) -> int:
+        return validate_positive_int(value, info)
+
+    @field_validator("status", "address")
+    @classmethod
+    def text_fields_validator(cls, value: str, info: ValidationInfo) -> str:
+        return validate_non_empty_string(value, info)
+
+    @field_validator("price")
+    @classmethod
+    def price_validator(cls, value: float | int, info: ValidationInfo) -> float | int:
+        return validate_non_negative_number(value, info)
 
 
 class OrderUpdateRequest(BaseModel):
@@ -21,43 +41,64 @@ class OrderUpdateRequest(BaseModel):
     user_id: int
     status: str
 
+    @field_validator("order_id", "user_id")
+    @classmethod
+    def ids_validator(cls, value: int, info: ValidationInfo) -> int:
+        return validate_positive_int(value, info)
 
-class ProductRequest(BaseModel):
+    @field_validator("status")
+    @classmethod
+    def status_validator(cls, value: str, info: ValidationInfo) -> str:
+        return validate_non_empty_string(value, info)
+
+
+class OrderProductRequest(BaseModel):
     product_id: int
     product_count: int
 
-    @field_validator('product_id')
+    @field_validator("product_id")
     @classmethod
-    def id_validator(cls, v):
-        if v < 0:
-            raise ValueError('id must be >= 0')
-        return v
+    def product_id_validator(cls, value: int, info: ValidationInfo) -> int:
+        return validate_positive_int(value, info)
 
-    @field_validator('product_count')
+    @field_validator("product_count")
     @classmethod
-    def count_validator(cls, v):
-        if v < 1:
-            raise ValueError('count must be >= 1')
-        return v
+    def product_count_validator(cls, value: int, info: ValidationInfo) -> int:
+        return validate_positive_int(value, info)
 
 
-class OrderRequest(BaseModel):
-    products: list[ProductRequest]
+class CreateOrderRequest(BaseModel):
+    products: list[OrderProductRequest] = Field(min_length=1)
     address: str
 
+    @field_validator("address")
+    @classmethod
+    def address_validator(cls, value: str, info: ValidationInfo) -> str:
+        return validate_non_empty_string(value, info)
 
-class PayRequest(BaseModel):
+
+class OrderPaymentRequest(BaseModel):
     order_id: int
 
-    @field_validator('order_id')
+    @field_validator("order_id")
     @classmethod
-    def id_validator(cls, v):
-        if v < 0:
-            raise ValueError('id must be >= 0')
-        return v
+    def order_id_validator(cls, value: int, info: ValidationInfo) -> int:
+        return validate_positive_int(value, info)
+
 
 class AdminOrdersRequest(BaseModel):
     user_id: int
 
+    @field_validator("user_id")
+    @classmethod
+    def user_id_validator(cls, value: int, info: ValidationInfo) -> int:
+        return validate_positive_int(value, info)
+
+
 class AdminOrderRequest(AdminOrdersRequest):
     order_id: int
+
+    @field_validator("order_id")
+    @classmethod
+    def order_id_validator(cls, value: int, info: ValidationInfo) -> int:
+        return validate_positive_int(value, info)

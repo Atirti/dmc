@@ -1,4 +1,18 @@
-from pydantic import BaseModel, field_validator
+from pydantic import BaseModel, ValidationInfo, field_validator
+
+from .validators import (
+    validate_limit,
+    validate_non_empty_string,
+    validate_non_negative_int,
+    validate_non_negative_number,
+    validate_optional_non_empty_string,
+    validate_optional_non_negative_int,
+    validate_optional_non_negative_number,
+    validate_optional_positive_int,
+    validate_order,
+    validate_positive_int,
+    validate_sort,
+)
 
 
 class ProductModel(BaseModel):
@@ -10,7 +24,33 @@ class ProductModel(BaseModel):
     count_in_stock: int | None
     category_id: int | None
 
-class ProductRequest(BaseModel):
+    @field_validator("id")
+    @classmethod
+    def id_validator(cls, value: int, info: ValidationInfo) -> int:
+        return validate_positive_int(value, info)
+
+    @field_validator("title", "description", "picture_url")
+    @classmethod
+    def text_fields_validator(cls, value: str | None, info: ValidationInfo) -> str | None:
+        return validate_optional_non_empty_string(value, info)
+
+    @field_validator("price")
+    @classmethod
+    def price_validator(cls, value: float | int | None, info: ValidationInfo) -> float | int | None:
+        return validate_optional_non_negative_number(value, info)
+
+    @field_validator("count_in_stock")
+    @classmethod
+    def count_in_stock_validator(cls, value: int | None, info: ValidationInfo) -> int | None:
+        return validate_optional_non_negative_int(value, info)
+
+    @field_validator("category_id")
+    @classmethod
+    def category_id_validator(cls, value: int | None, info: ValidationInfo) -> int | None:
+        return validate_optional_positive_int(value, info)
+
+
+class ProductCreateRequest(BaseModel):
     title: str
     description: str
     price: float | int
@@ -18,24 +58,66 @@ class ProductRequest(BaseModel):
     count_in_stock: int
     category_id: int
 
+    @field_validator("title", "description")
+    @classmethod
+    def text_fields_validator(cls, value: str, info: ValidationInfo) -> str:
+        return validate_non_empty_string(value, info)
+
+    @field_validator("picture_url")
+    @classmethod
+    def picture_url_validator(cls, value: str | None, info: ValidationInfo) -> str | None:
+        return validate_optional_non_empty_string(value, info)
+
+    @field_validator("price")
+    @classmethod
+    def price_validator(cls, value: float | int, info: ValidationInfo) -> float | int:
+        return validate_non_negative_number(value, info)
+
+    @field_validator("count_in_stock")
+    @classmethod
+    def count_in_stock_validator(cls, value: int, info: ValidationInfo) -> int:
+        return validate_non_negative_int(value, info)
+
+    @field_validator("category_id")
+    @classmethod
+    def category_id_validator(cls, value: int, info: ValidationInfo) -> int:
+        return validate_positive_int(value, info)
+
+
 class CategoryModel(BaseModel):
     id: int
     title: str
 
-class CategoryRequest(BaseModel):
-    title: str
-
-class RequestId(BaseModel):
-    id: int
     @field_validator("id")
     @classmethod
-    def category_id_validator(cls, v):
-        if v is not None:
-            if v < 0:
-                raise ValueError("Category id must be greater than 0")
-        return v
+    def id_validator(cls, value: int, info: ValidationInfo) -> int:
+        return validate_positive_int(value, info)
 
-class ProductsRequest(BaseModel):
+    @field_validator("title")
+    @classmethod
+    def title_validator(cls, value: str, info: ValidationInfo) -> str:
+        return validate_non_empty_string(value, info)
+
+
+class CategoryCreateRequest(BaseModel):
+    title: str
+
+    @field_validator("title")
+    @classmethod
+    def title_validator(cls, value: str, info: ValidationInfo) -> str:
+        return validate_non_empty_string(value, info)
+
+
+class IdRequest(BaseModel):
+    id: int
+
+    @field_validator("id")
+    @classmethod
+    def id_validator(cls, value: int, info: ValidationInfo) -> int:
+        return validate_positive_int(value, info)
+
+
+class ProductListRequest(BaseModel):
     limit: int = 20
     offset: int = 0
     sort: str = "date"
@@ -44,38 +126,25 @@ class ProductsRequest(BaseModel):
 
     @field_validator("limit")
     @classmethod
-    def limit_validator(cls, v):
-        if v > 500:
-            raise ValueError("Limit must be less than 500")
-        if v < 1:
-            raise ValueError("Limit must be greater than 1")
-        return v
+    def limit_validator(cls, value: int) -> int:
+        return validate_limit(value)
 
     @field_validator("offset")
     @classmethod
-    def last_product_id_validator(cls, v):
-        if v < 0:
-            raise ValueError("Offset must be greater than 0")
-        return v
+    def offset_validator(cls, value: int, info: ValidationInfo) -> int:
+        return validate_non_negative_int(value, info)
 
     @field_validator("sort")
     @classmethod
-    def sort_validator(cls, v):
-        if v not in ["date", "price"]:
-            raise ValueError("Sort must be 'date' or 'price'")
-        return v
+    def sort_validator(cls, value: str) -> str:
+        return validate_sort(value)
 
     @field_validator("order")
     @classmethod
-    def order_validator(cls, v):
-        if v not in ["asc", "desc"]:
-            raise ValueError("Order must be 'asc' or 'desc'")
-        return v
+    def order_validator(cls, value: str) -> str:
+        return validate_order(value)
 
     @field_validator("category_id")
     @classmethod
-    def category_id_validator(cls, v):
-        if v is not None:
-            if v < 0:
-                raise ValueError("Category id must be greater than 0")
-        return v
+    def category_id_validator(cls, value: int | None, info: ValidationInfo) -> int | None:
+        return validate_optional_positive_int(value, info)

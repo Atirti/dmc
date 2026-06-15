@@ -101,6 +101,24 @@ async def test_update_category(client, admin):
 
 
 @pytest.mark.asyncio
+async def test_update_category_duplicate_title(client, admin):
+    response = await client.post('/admin_login', json=admin)
+    jwt = response.json()["jwt_token"]
+
+    first = await client.post('/categories/category', json={"title": "first"},
+                              headers={"Authorization": f"Bearer {jwt}"})
+    second = await client.post('/categories/category', json={"title": "second"},
+                               headers={"Authorization": f"Bearer {jwt}"})
+
+    response = await client.put('/categories/category', json={"id": second.json()["id"],
+                                                              "title": first.json()["title"]},
+                                headers={"Authorization": f"Bearer {jwt}"})
+
+    assert response.status_code == 409
+    assert response.json()["detail"] == "Category already exists"
+
+
+@pytest.mark.asyncio
 async def test_delete_category(client, admin):
     response = await client.post('/admin_login', json=admin)
     jwt = response.json()["jwt_token"]

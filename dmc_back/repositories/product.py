@@ -112,7 +112,11 @@ class ProductRepository:
             .returning(Product)
         )
 
-        product = result.scalar_one()
+        product = result.scalar_one_or_none()
+        if product is None:
+            await self.__db.rollback()
+            return None
+
         await self.__db.commit()
         await self.__db.refresh(product)
         return product

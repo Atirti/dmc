@@ -34,6 +34,13 @@ class CartRepository:
 
         return cart_product.one_or_none()
 
+    async def get_product(self, product_id: int) -> Product | None:
+        result = await self.__db.execute(
+            select(Product)
+            .where(Product.id == product_id)
+        )
+        return result.scalar_one_or_none()
+
     async def insert_product(self, user_id: int, product_id: int, count: int) -> None:
         """
         insert new product in cart

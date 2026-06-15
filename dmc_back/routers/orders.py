@@ -1,10 +1,6 @@
 from fastapi import APIRouter, Depends
-from pydantic_settings.sources.providers import aws
-from sqlalchemy.util import await_only
 
-from schemas.orders import OrderModel, PayRequest, OrderRequest, OrderUpdateRequest, AdminOrdersRequest, \
-    AdminOrderRequest
-from schemas.products import RequestId
+from schemas import AdminOrderRequest, AdminOrdersRequest, CreateOrderRequest, IdRequest, OrderModel, OrderUpdateRequest
 from services.orders import OrdersService
 
 import dependencies
@@ -19,14 +15,14 @@ async def get_orders(current_user: dict = Depends(dependencies.get_current_user)
 
 
 @router.post("/order", response_model=OrderModel)
-async def create_order(request: OrderRequest,
+async def create_order(request: CreateOrderRequest,
                        current_user: dict = Depends(dependencies.get_current_user),
                        orders_service: OrdersService = Depends(dependencies.get_order_service)) -> OrderModel:
     return await orders_service.create_order(current_user["user_id"], request)
 
 
 @router.get("/order", response_model=OrderModel)
-async def get_order(request: RequestId = Depends(),
+async def get_order(request: IdRequest = Depends(),
                     current_user: dict = Depends(dependencies.get_current_user),
                     orders_service: OrdersService = Depends(dependencies.get_order_service)) -> OrderModel:
     return await orders_service.get_user_order(current_user["user_id"], request.id)
