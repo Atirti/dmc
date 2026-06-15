@@ -1,4 +1,4 @@
-export const api_url = "http://127.0.0.1:8000";
+export const api_url = "https://api.dmcstore.shop";
 
 export async function authFetch(path, options = {}, retry = true) {
     const jwtToken = getCookie("jwt_token");
