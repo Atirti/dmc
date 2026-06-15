@@ -66,23 +66,11 @@ export default function LoginWindow() {
 
                         <Box component="form" onSubmit={handleLogin} className="loginForm">
                             <Stack spacing={2.2}>
-                                <TextField
-                                        value={username}
-                                        onChange={(event) => setUsername(event.target.value)}
-                                        label="Логин"
-                                        fullWidth
-                                        variant="outlined"
-                                        className="loginInput"
-                                />
+                                <TextField value={username} onChange={(event) => setUsername(event.target.value)}
+                                        label="Логин" fullWidth variant="outlined" className="loginInput"/>
 
-                                <TextField
-                                        value={password}
-                                        onChange={(event) => setPassword(event.target.value)}
-                                        label="Пароль"
-                                        type="password"
-                                        fullWidth
-                                        variant="outlined"
-                                        className="loginInput"
+                                <TextField value={password} onChange={(event) => setPassword(event.target.value)}
+                                        label="Пароль" type="password" fullWidth variant="outlined" className="loginInput"
                                 />
                             </Stack>
 
@@ -99,11 +87,7 @@ export default function LoginWindow() {
                                     </Alert>
                             )}
 
-                            <Button
-                                    type="submit"
-                                    fullWidth
-                                    className="loginButton"
-                                    disabled={isLoginLoading}
+                            <Button type="submit" fullWidth className="loginButton" disabled={isLoginLoading}
                                     endIcon={isLoginLoading ? <CircularProgress size={18} sx={{ color: "#777" }} /> :
                                             <LoginOutlinedIcon />}
                                     sx={{mt: 3, py: 1.5, borderRadius: "18px",

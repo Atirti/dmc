@@ -159,10 +159,8 @@ function MainMenu() {
                                                                     display: "flex", flexDirection: "column", alignItems: "stretch",}}>
                                                     <Box className="itemImageWrap">
                                                         {item.picture_url ? (
-                                                                <CardMedia component="img"
-                                                                           image={item.picture_url}
-                                                                           alt={item.title}
-                                                                           title={item.title}
+                                                                <CardMedia component="img" image={item.picture_url}
+                                                                           alt={item.title} title={item.title}
                                                                            className="mainItemImage"/>
                                                         ) : (
                                                                 <Box className="mainItemImagePlaceholder">
