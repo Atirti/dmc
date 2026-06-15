@@ -1,0 +1,104 @@
+.adminLoginPage {
+    min-height: 100vh;
+    width: 100%;
+    overflow-x: hidden;
+    background: #08090d;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15vh 20px 60px 20px;
+    box-sizing: border-box;
+}
+
+.adminLoginWindow {
+    width: 100%;
+    max-width: 460px;
+    box-sizing: border-box;
+}
+
+.adminLoginHeader {
+    margin-bottom: 34px;
+}
+
+.adminLoginForm {
+    width: 100%;
+}
+
+.adminLoginInput {
+    width: 100%;
+}
+
+.adminLoginInput .MuiInputLabel-root {
+    color: #8f94a3;
+    font-weight: 700;
+}
+
+.adminLoginInput .MuiInputLabel-root.Mui-focused {
+    color: #2E4578;
+}
+
+.adminLoginInput .MuiOutlinedInput-root {
+    color: white;
+    border-radius: 18px;
+    background-color: #252a35;
+    font-weight: 700;
+}
+
+.adminLoginInput .MuiOutlinedInput-input {
+    padding-top: 16px;
+    padding-bottom: 16px;
+}
+
+.adminLoginInput .MuiOutlinedInput-notchedOutline {
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+.adminLoginInput .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+    border-color: #2E4578;
+}
+
+.adminLoginInput .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+    border-color: #2E4578;
+}
+
+@media (max-width: 600px) {
+    .adminLoginPage {
+        padding: 10vh 14px 42px 14px;
+        align-items: flex-start;
+    }
+
+    .adminLoginWindow {
+        max-width: 360px;
+        border-radius: 24px !important;
+    }
+
+    .adminLoginWindow .MuiCardContent-root {
+        padding: 24px !important;
+    }
+
+    .adminLoginHeader {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 14px !important;
+    }
+
+    .adminLoginHeader > .MuiBox-root:first-child {
+        width: 52px !important;
+        height: 52px !important;
+    }
+
+    .adminLoginHeader h4 {
+        font-size: 1.75rem !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .adminLoginWindow {
+        max-width: 320px;
+    }
+
+    .adminLoginWindow .MuiCardContent-root {
+        padding: 20px !important;
+    }
+}
