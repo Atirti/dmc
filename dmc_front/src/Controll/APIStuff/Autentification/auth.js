@@ -186,6 +186,25 @@ export async function logoutRequest() {
 
     return response.json().catch(() => null);
 }
+export async function logoutEverywhereRequest() {
+    const response = await fetch(`${api_url}/logout_everywhere`, {
+        method: "DELETE",
+        credentials: "include",
+    });
+
+    if (!response.ok) {
+        let message = "Ошибка выхода со всех устройств";
+
+        try {
+            const data = await response.json();
+            message = data.detail || message;
+        } catch {
+            message = response.statusText || message;
+        }
+
+        throw new Error(message);
+    }
+}
 
 export async function checkAuth() {
     const jwtToken = getCookie("jwt_token");
