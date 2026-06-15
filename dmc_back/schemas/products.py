@@ -22,6 +22,9 @@ class CategoryModel(BaseModel):
     id: int
     title: str
 
+class CategoryRequest(BaseModel):
+    title: str
+
 class RequestId(BaseModel):
     id: int
     @field_validator("id")
