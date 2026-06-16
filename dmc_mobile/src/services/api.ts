@@ -1,4 +1,4 @@
-export const DEFAULT_API_BASE_URL = "http://192.168.0.9:8000";
+export const DEFAULT_API_BASE_URL = "https://api.dmcstore.shop";
 
 export type ApiRequestOptions = {
     method?: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
