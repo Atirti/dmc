@@ -13,7 +13,7 @@ class OrderProduct(Base):
     order_id: Mapped[int] = mapped_column(ForeignKey('orders.id', ondelete='CASCADE'))
     order: Mapped["Order"] = relationship('Order', back_populates="order_products")
 
-    product_id: Mapped[int | None] = mapped_column(ForeignKey('products.id', ondelete='SET NULL'))
+    product_id: Mapped[int | None] = mapped_column(ForeignKey('products.id'))
     product: Mapped[Optional["Product"]] = relationship('Product')
 
     count: Mapped[int]

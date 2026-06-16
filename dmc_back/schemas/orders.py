@@ -1,9 +1,16 @@
 """Order schemas."""
 
-from pydantic import BaseModel, Field, ValidationInfo, field_validator
+from pydantic import AwareDatetime, BaseModel, Field, ValidationInfo, field_validator
 
 from .products import ProductModel as BaseProductModel
-from .validators import validate_non_empty_string, validate_non_negative_number, validate_positive_int
+from .validators import (
+    validate_limit,
+    validate_non_empty_string,
+    validate_non_negative_int,
+    validate_non_negative_number,
+    validate_optional_order_status,
+    validate_positive_int,
+)
 
 
 class OrderProductModel(BaseProductModel):
@@ -44,6 +51,18 @@ class OrderModel(BaseModel):
     def price_validator(cls, value: float | int, info: ValidationInfo) -> float | int:
         """Validate order price is not negative."""
         return validate_non_negative_number(value, info)
+
+
+class AdminOrderModel(OrderModel):
+    """Order response with user id for admin lists."""
+
+    user_id: int
+
+    @field_validator("user_id")
+    @classmethod
+    def user_id_validator(cls, value: int, info: ValidationInfo) -> int:
+        """Validate user id is positive."""
+        return validate_positive_int(value, info)
 
 
 class OrderUpdateRequest(BaseModel):
@@ -120,6 +139,34 @@ class AdminOrdersRequest(BaseModel):
     def user_id_validator(cls, value: int, info: ValidationInfo) -> int:
         """Validate user id is positive."""
         return validate_positive_int(value, info)
+
+
+class AdminAllOrdersRequest(BaseModel):
+    """Admin query parameters for listing all orders."""
+
+    limit: int = 20
+    offset: int = 0
+    created_at_from: AwareDatetime | None = None
+    created_at_to: AwareDatetime | None = None
+    status: str | None = None
+
+    @field_validator("limit")
+    @classmethod
+    def limit_validator(cls, value: int) -> int:
+        """Validate list limit."""
+        return validate_limit(value)
+
+    @field_validator("offset")
+    @classmethod
+    def offset_validator(cls, value: int, info: ValidationInfo) -> int:
+        """Validate list offset."""
+        return validate_non_negative_int(value, info)
+
+    @field_validator("status")
+    @classmethod
+    def status_validator(cls, value: str | None, info: ValidationInfo) -> str | None:
+        """Validate optional order status filter."""
+        return validate_optional_order_status(value, info)
 
 
 class AdminOrderRequest(AdminOrdersRequest):

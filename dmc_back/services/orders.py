@@ -1,8 +1,10 @@
 """Order business logic."""
 
+from datetime import datetime, timezone
+
 from repositories import OrdersRepository, ProductRepository
 from fastapi import HTTPException, status
-from schemas import CreateOrderRequest
+from schemas import AdminAllOrdersRequest, CreateOrderRequest
 
 
 class OrdersService:
@@ -32,6 +34,24 @@ class OrdersService:
             "address": order.address
         }
 
+    def __admin_order_to_dict(self, order) -> dict:
+        """Return order payload with user id for admin responses."""
+        order_dct = self.__order_to_dict(order)
+        order_dct["user_id"] = order.user_id
+        return order_dct
+
+    def __to_utc_naive(self, dt: datetime | None) -> datetime | None:
+        """Convert offset-aware datetime to naive UTC for current DB columns."""
+        if dt is None:
+            return None
+        return dt.astimezone(timezone.utc).replace(tzinfo=None)
+
+    def __validate_datetime_range(self, created_at_from: datetime | None, created_at_to: datetime | None) -> None:
+        """Validate admin order datetime range."""
+        if created_at_from is not None and created_at_to is not None and created_at_from > created_at_to:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
+                                detail="Created at from must be <= created at to")
+
     async def get_user_orders(self, user_id: int):
         """Return all visible orders for a user."""
         orders = await self.__orders_repository.get_user_orders(user_id)
@@ -45,6 +65,18 @@ class OrdersService:
         if order is None:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Order not found")
         return self.__order_to_dict(order)
+
+    async def get_admin_all_orders(self, request: AdminAllOrdersRequest):
+        """Return all orders for admin with optional datetime range and status filters."""
+        self.__validate_datetime_range(request.created_at_from, request.created_at_to)
+        orders = await self.__orders_repository.get_all_orders(
+            request.limit,
+            request.offset,
+            self.__to_utc_naive(request.created_at_from),
+            self.__to_utc_naive(request.created_at_to),
+            request.status
+        )
+        return [self.__admin_order_to_dict(order) for order in orders]
 
     async def create_order(self, user_id: int, request: CreateOrderRequest):
         """Validate requested products, calculate price, and create an order."""

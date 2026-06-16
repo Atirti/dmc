@@ -1,6 +1,8 @@
 """Database access methods for orders."""
 
-from sqlalchemy import select, insert, update
+from datetime import datetime
+
+from sqlalchemy import desc, select, insert, update
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
@@ -19,6 +21,31 @@ class OrdersRepository:
             select(Order)
             .options(selectinload(Order.order_products).selectinload(OrderProduct.product))
             .where(Order.user_id == user_id, Order.status != "not paid")
+        )
+        return result.scalars().all()
+
+    async def get_all_orders(self, limit: int, offset: int, created_at_from: datetime | None = None,
+                             created_at_to: datetime | None = None, order_status: str | None = None):
+        """Return admin orders filtered by datetime range and/or status, newest first."""
+        query = (
+            select(Order)
+            .options(selectinload(Order.order_products).selectinload(OrderProduct.product))
+        )
+
+        if created_at_from is not None:
+            query = query.where(Order.created_at >= created_at_from)
+
+        if created_at_to is not None:
+            query = query.where(Order.created_at < created_at_to)
+
+        if order_status is not None:
+            query = query.where(Order.status == order_status)
+
+        result = await self.__db.execute(
+            query
+            .order_by(desc(Order.created_at))
+            .offset(offset)
+            .limit(limit)
         )
         return result.scalars().all()
 

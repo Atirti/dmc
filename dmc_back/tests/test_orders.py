@@ -25,6 +25,16 @@ async def get_user_auth(client):
     return {"Authorization": f"Bearer {jwt_token}"}, payload["user_id"]
 
 
+async def get_user_auth_by_username(client, username: str):
+    response = await client.post(
+        "/registration",
+        json={"username": username, "password": "Very_1Pass!"},
+    )
+    jwt_token = response.json()["jwt_token"]
+    payload = jwt.decode(jwt_token, options={"verify_signature": False})
+    return {"Authorization": f"Bearer {jwt_token}"}, payload["user_id"]
+
+
 async def create_product(client, admin_headers, count_in_stock=5, price=10):
     category = await client.post(
         "/categories/category",
@@ -111,6 +121,72 @@ async def test_get_orders_and_update_order_status(client, admin):
     response = await client.get(f"/order?id={order_id}", headers=user_headers)
     assert response.status_code == 200
     assert response.json()["status"] == "shipped"
+
+
+@pytest.mark.asyncio
+async def test_get_admin_all_orders_filters_by_status_and_paginates(client, admin):
+    admin_headers = await get_admin_headers(client, admin)
+    first_user_headers, first_user_id = await get_user_auth(client)
+    second_user_headers, second_user_id = await get_user_auth_by_username(client, "second_order_user")
+    product = await create_product(client, admin_headers, count_in_stock=5, price=10)
+
+    first_order = await client.post(
+        "/order",
+        json={"products": [{"product_id": product["id"], "product_count": 1}], "address": "first address"},
+        headers=first_user_headers,
+    )
+    second_order = await client.post(
+        "/order",
+        json={"products": [{"product_id": product["id"], "product_count": 1}], "address": "second address"},
+        headers=second_user_headers,
+    )
+    assert first_order.status_code == 200
+    assert second_order.status_code == 200
+
+    await client.put(
+        "/order",
+        json={"order_id": second_order.json()["id"], "user_id": second_user_id, "status": "packed"},
+        headers=admin_headers,
+    )
+
+    response = await client.get("/admin/all_orders", headers=admin_headers)
+    assert response.status_code == 200
+    assert {order["user_id"] for order in response.json()} == {first_user_id, second_user_id}
+
+    response = await client.get("/admin/all_orders?status=packed", headers=admin_headers)
+    assert response.status_code == 200
+    assert response.json()[0]["id"] == second_order.json()["id"]
+    assert response.json()[0]["user_id"] == second_user_id
+    assert response.json()[0]["status"] == "packed"
+
+    response = await client.get(
+        "/admin/all_orders",
+        params={"created_at_from": "2100-01-01T00:00:00+05:00"},
+        headers=admin_headers,
+    )
+    assert response.status_code == 200
+    assert response.json() == []
+
+    response = await client.get(
+        "/admin/all_orders",
+        params={"created_at_from": "2026-06-16T00:00:00"},
+        headers=admin_headers,
+    )
+    assert response.status_code == 422
+
+    response = await client.get(
+        "/admin/all_orders",
+        params={
+            "created_at_from": "2026-06-17T00:00:00+05:00",
+            "created_at_to": "2026-06-16T00:00:00+05:00",
+        },
+        headers=admin_headers,
+    )
+    assert response.status_code == 400
+
+    response = await client.get("/admin/all_orders?limit=1&offset=1", headers=admin_headers)
+    assert response.status_code == 200
+    assert len(response.json()) == 1
 
 @pytest.mark.asyncio
 async def test_create_order_rejects_missing_product(client):
