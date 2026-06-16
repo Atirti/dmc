@@ -46,6 +46,12 @@ class OrdersService:
             return None
         return dt.astimezone(timezone.utc).replace(tzinfo=None)
 
+    def __validate_datetime_range(self, created_at_from: datetime | None, created_at_to: datetime | None) -> None:
+        """Validate admin order datetime range."""
+        if created_at_from is not None and created_at_to is not None and created_at_from > created_at_to:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
+                                detail="Created at from must be <= created at to")
+
     async def get_user_orders(self, user_id: int):
         """Return all visible orders for a user."""
         orders = await self.__orders_repository.get_user_orders(user_id)
@@ -62,6 +68,7 @@ class OrdersService:
 
     async def get_admin_all_orders(self, request: AdminAllOrdersRequest):
         """Return all orders for admin with optional datetime range and status filters."""
+        self.__validate_datetime_range(request.created_at_from, request.created_at_to)
         orders = await self.__orders_repository.get_all_orders(
             request.limit,
             request.offset,

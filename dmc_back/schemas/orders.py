@@ -1,7 +1,6 @@
 """Order schemas."""
 
-from datetime import date as dt_date
-from pydantic import BaseModel, Field, ValidationInfo, field_validator
+from pydantic import AwareDatetime, BaseModel, Field, ValidationInfo, field_validator
 
 from .products import ProductModel as BaseProductModel
 from .validators import (
@@ -147,7 +146,8 @@ class AdminAllOrdersRequest(BaseModel):
 
     limit: int = 20
     offset: int = 0
-    date: dt_date | None = None
+    created_at_from: AwareDatetime | None = None
+    created_at_to: AwareDatetime | None = None
     status: str | None = None
 
     @field_validator("limit")

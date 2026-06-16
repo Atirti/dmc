@@ -282,7 +282,7 @@ The quantity must be greater than `0` and must not exceed the product's `count_i
 | `GET` | `/orders` | user JWT | list current user's orders |
 | `POST` | `/order` | user JWT | create an order |
 | `GET` | `/order?id=1` | user JWT | get one current-user order |
-| `GET` | `/admin/all_orders?limit=20&offset=0&date=2026-06-16&status=packed` | admin JWT | list all orders with optional filters |
+| `GET` | `/admin/all_orders?limit=20&offset=0&created_at_from=2026-06-16T00:00:00%2B05:00&created_at_to=2026-06-17T00:00:00%2B05:00&status=packed` | admin JWT | list all orders with optional filters |
 | `GET` | `/admin/orders?user_id=1` | admin JWT | list selected user's orders |
 | `GET` | `/admin/order?user_id=1&order_id=1` | admin JWT | get selected user's order |
 | `PUT` | `/order` | admin JWT | update order status |
@@ -291,10 +291,13 @@ Admin all-orders query parameters:
 
 - `limit`: from `1` to `500`, default `20`
 - `offset`: from `0`, default `0`
-- `date`: optional order creation date in `YYYY-MM-DD` format
+- `created_at_from`: optional range start datetime, must include timezone offset
+- `created_at_to`: optional range end datetime, must include timezone offset
 - `status`: optional order status string
 
-If `date` and `status` are not provided, `/admin/all_orders` returns all orders from newest to oldest. Response items contain regular order fields plus `user_id`.
+The backend converts `created_at_from` and `created_at_to` to UTC before filtering. If you write a raw URL, encode `+` in offsets as `%2B`. If datetime range and `status` are not provided, `/admin/all_orders` returns all orders from newest to oldest. Response items contain regular order fields plus `user_id`.
+
+If `created_at_from` is greater than `created_at_to`, the backend returns `400 Bad Request`.
 
 Create an order:
 
@@ -377,6 +380,7 @@ Main rules:
 | Status | When it occurs |
 | --- | --- |
 | `401 Unauthorized` | incorrect username/password, missing or invalid JWT, expired JWT, invalid refresh token |
+| `400 Bad Request` | invalid admin all-orders datetime range |
 | `404 Not Found` | user, product, category, order, or cart product was not found |
 | `409 Conflict` | username is already taken, category already exists, category is in use, not enough stock |
 | `422 Unprocessable Entity` | Pydantic input validation error |

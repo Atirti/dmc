@@ -176,10 +176,13 @@ async def test_get_admin_all_orders_filters_by_status_and_paginates(client, admi
 
     response = await client.get(
         "/admin/all_orders",
-        params={"limit": 0},
+        params={
+            "created_at_from": "2026-06-17T00:00:00+05:00",
+            "created_at_to": "2026-06-16T00:00:00+05:00",
+        },
         headers=admin_headers,
     )
-    assert response.status_code == 422
+    assert response.status_code == 400
 
     response = await client.get("/admin/all_orders?limit=1&offset=1", headers=admin_headers)
     assert response.status_code == 200
