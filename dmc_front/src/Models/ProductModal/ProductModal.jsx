@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import {Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, MenuItem, TextField, Typography,} from "@mui/material";
 import {createProduct, updateProduct} from "../../Controll/APIStuff/adminStuuf/productApi.js";
 import {getCategories} from "../../Controll/APIStuff/adminStuuf/categotyApi.js";
+import {getNormalErrorMessage} from "../../Controll/errorHandler.js";
 
 const emptyProduct = {
     title: "",
@@ -47,7 +48,7 @@ export default function ProductModal({ open, onClose, onSaved, product }) {
                 setCategories(data);
             }
         } catch (err) {
-            setError(err.message || "Не удалось загрузить категории");
+            setError(getNormalErrorMessage(err));
         }
     }
     //Обновляет одно поле
@@ -124,7 +125,7 @@ export default function ProductModal({ open, onClose, onSaved, product }) {
             setForm(emptyProduct);
             onClose?.();
         } catch (err) {
-            setError(err.message || "Ошибка при сохранении товара");
+            setError(getNormalErrorMessage(err));
         } finally {
             setSubmitting(false);
         }

@@ -3,6 +3,7 @@ import {Box, Button, CircularProgress, IconButton, Typography,} from "@mui/mater
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import {deleteProduct, getProducts} from "../../Controll/APIStuff/adminStuuf/productApi.js";
+import {getNormalErrorMessage} from "../../Controll/errorHandler.js";
 
 export default function ProductList({ reloadKey, onEdit }) {
     const [products, setProducts] = useState([]);
@@ -39,7 +40,7 @@ export default function ProductList({ reloadKey, onEdit }) {
                 setError("Сервер вернул товары не в формате массива");
             }
         } catch (err) {
-            setError(err.message || "Не удалось загрузить товары");
+            setError(getNormalErrorMessage(err));
         } finally {
             setLoading(false);
         }
@@ -55,7 +56,7 @@ export default function ProductList({ reloadKey, onEdit }) {
             await deleteProduct(id);
             await loadProducts(0, false);
         } catch (err) {
-            setError(err.message || "Не удалось удалить товар");
+            setError(getNormalErrorMessage(err));
         }
     }
     //топогинация

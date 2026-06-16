@@ -3,6 +3,7 @@ import {Box, Button, CircularProgress, Dialog, DialogActions, DialogContent, Dia
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import {getCategories, deleteCategory, updateCategory} from "../../Controll/APIStuff/adminStuuf/categotyApi.js";
+import {getNormalErrorMessage} from "../../Controll/errorHandler.js";
 
 export default function CategoryList({ reloadKey }) {
     const [categories, setCategories] = useState([]);//список ктегорий
@@ -27,7 +28,7 @@ export default function CategoryList({ reloadKey }) {
                 setError("Сервер вернул категории не в формате массива");
             }
         } catch (err) {
-            setError(err.message || "Не удалось загрузить категории");
+            setError(getNormalErrorMessage(err));
         } finally {
             setLoading(false);
         }
@@ -66,7 +67,7 @@ export default function CategoryList({ reloadKey }) {
             await loadCategories();
             handleCloseEdit();
         } catch (err) {
-            setEditError(err.message || "Не удалось изменить категорию");
+            setEditError(getNormalErrorMessage(err));
         } finally {
             setEditSubmitting(false);
         }
@@ -77,7 +78,7 @@ export default function CategoryList({ reloadKey }) {
             await deleteCategory(id);
             await loadCategories();
         } catch (err) {
-            setError(err.message || "Не удалось удалить категорию");
+            setError(getNormalErrorMessage(err));
         }
     }
 

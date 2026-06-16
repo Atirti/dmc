@@ -1,6 +1,7 @@
 import { useState } from "react";
 import {Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography,} from "@mui/material";
 import { createCategory } from "../../Controll/APIStuff/adminStuuf/categotyApi.js";
+import {getNormalErrorMessage} from "../../Controll/errorHandler.js";
 
 
 export default function CategoryModal({ open, onClose, onCreated }) {
@@ -35,7 +36,7 @@ export default function CategoryModal({ open, onClose, onCreated }) {
             setTitle("");
             onClose?.();
         } catch (err) {
-            setError(err.message || "Ошибка при создании категории");
+            setError(getNormalErrorMessage(err));
         } finally {
             setSubmitting(false);
         }

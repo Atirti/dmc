@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Box, Button, Card, CardContent, Stack, Typography } from "@mui/material";
 import { getAdminAllOrders, getAdminOrders, getAdminUserIdByUsername, updateOrderStatus, ORDER_STATUSES } from "../../Controll/APIStuff/adminStuuf/orderApi.js";
+import {getNormalErrorMessage} from "../../Controll/errorHandler.js";
 
 function getTimezoneOffsetString() {
     const offsetMinutes = -new Date().getTimezoneOffset();
@@ -69,8 +70,18 @@ function sortOrders(orders, sortBy, sortOrder) {
             return sortOrder === "asc" ? -1 : 1;
         }
 
-        return 0;
+    return 0;
     });
+}
+
+function getAdminOrderErrorMessage(error) {
+    const message = getNormalErrorMessage(error);
+
+    if (message.trim().toLowerCase() === "user not found") {
+        return "Пользователь не найден";
+    }
+
+    return message;
 }
 
 function OrderList({ username = "", limit = 10, offset = 0, status = "", sortBy = "created_at",
@@ -122,7 +133,7 @@ function OrderList({ username = "", limit = 10, offset = 0, status = "", sortBy 
         } catch (error) {
             setCurrentUserId("");
             setOrders([]);
-            setErrorMessage(error.message || "Не удалось загрузить заказы");
+            setErrorMessage(getAdminOrderErrorMessage(error));
         } finally {
             setIsLoading(false);
         }
@@ -150,7 +161,7 @@ function OrderList({ username = "", limit = 10, offset = 0, status = "", sortBy 
 
             await loadOrders();
         } catch (error) {
-            setErrorMessage(error.message || "Не удалось изменить статус заказа");
+            setErrorMessage(getAdminOrderErrorMessage(error));
         }
     }
 

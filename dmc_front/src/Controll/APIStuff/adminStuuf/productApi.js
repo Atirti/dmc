@@ -4,6 +4,10 @@ import {api_url} from "../Autentification/auth.js";
 const API_URL = api_url;
 
 async function getErrorMessage(response, fallback) {
+    if (response.status >= 500) {
+        return "Что-то пошло не так";
+    }
+
     try {
         const data = await response.json();
 
