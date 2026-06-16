@@ -2,6 +2,10 @@ import { adminFetch } from "./adminAuth.js";
 
 export const ORDER_STATUSES = ["paid", "in delivery", "delivered",];
 async function getErrorMessage(response, fallback) {
+    if (response.status >= 500) {
+        return "Что-то пошло не так";
+    }
+
     try {
         const data = await response.json();
 
