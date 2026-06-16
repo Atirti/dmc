@@ -204,7 +204,7 @@ function Cart() {
                                                             <Box sx={{ minWidth: 0, flex: 1 }}>
                                                                 <Typography noWrap sx={{color: "white", fontSize: "1.1rem",
                                                                     fontWeight: 800,}}>{item.title}</Typography>
-                                                                <Typography sx={{color: "#2E4578", fontSize: "1.05rem",
+                                                                <Typography sx={{color: "#6690ff", fontSize: "1.05rem",
                                                                     fontWeight: 800, mt: 0.7,}}>
                                                                     {item.price} ₽
                                                                 </Typography>
@@ -223,7 +223,7 @@ function Cart() {
                                                                         onClick={() => decreaseCount(item)}
                                                                         sx={{width: 34, height: 34, color: "white",
                                                                             bgcolor: "#151922", "&:hover": {
-                                                                                bgcolor: "#2e4477",
+                                                                                bgcolor: "#6690ff",
                                                                             }, "&.Mui-disabled": {color: "#555",},
                                                                         }}
                                                                 >
@@ -239,7 +239,7 @@ function Cart() {
                                                                         item.count_in_stock}
                                                                             onClick={() => increaseCount(item)}
                                                                             sx={{width: 34, height: 34, color: "white",
-                                                                                bgcolor: "#151922", "&:hover": {bgcolor: "#2e4477",
+                                                                                bgcolor: "#151922", "&:hover": {bgcolor: "#6690ff",
                                                                                 }, "&.Mui-disabled": {color: "#555",},
                                                                             }}>
                                                                     <AddIcon fontSize="small" />
@@ -249,13 +249,13 @@ function Cart() {
                                                             <Stack direction="row" alignItems="center" spacing={2}
                                                                    sx={{minWidth: 150, textAlign: "right",
                                                                        flexShrink: 0, height: "50px", justifyContent: "flex-end",}}>
-                                                                <Typography sx={{color: "#2E4578", fontWeight: 800,
+                                                                <Typography sx={{color: "#6690ff", fontWeight: 800,
                                                                     fontSize: "1.1rem", whiteSpace: "nowrap",}}>
                                                                     {itemTotal} ₽
                                                                 </Typography>
 
                                                                 <IconButton disabled={isUpdating} onClick={() => removeItem(item)}
-                                                                            sx={{width: 34, height: 34, "&:hover": {bgcolor: "#2e4477"},background:"#2E4578"}}>
+                                                                            sx={{width: 34, height: 34, "&:hover": {bgcolor: "#6690ff"},background:"#2E4578"}}>
                                                                     <DeleteOutlined/>
                                                                 </IconButton>
                                                             </Stack>
@@ -285,7 +285,7 @@ function Cart() {
                                             <Divider sx={{borderColor: "rgba(255,255,255,0.08)",}}/>
                                             <Stack direction="row" justifyContent="space-between">
                                                 <Typography sx={{ color: "#8f94a3",paddingRight: "5px" }}>Сумма: </Typography>
-                                                <Typography sx={{color: "#2e4477", fontWeight: 800, fontSize: "1.3rem",}}>
+                                                <Typography sx={{color: "#6690ff", fontWeight: 800, fontSize: "1.3rem",}}>
                                                     {totalPrice} ₽
                                                 </Typography>
                                             </Stack>

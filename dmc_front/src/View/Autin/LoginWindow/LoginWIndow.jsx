@@ -50,7 +50,7 @@ export default function LoginWindow() {
                     border: "1px solid rgba(255, 255, 255, 0.06)", boxShadow: "none",}}>
                     <CardContent sx={{p: 4, "&:last-child": {pb: 4,},}}>
                         <Stack direction="row" alignItems="center" spacing={2} className="loginHeader">
-                            <Box sx={{width: 64, height: 64, borderRadius: "50%", bgcolor: "#12141b", color: "#2E4578",
+                            <Box sx={{width: 64, height: 64, borderRadius: "50%", bgcolor: "#12141b", color: "#2e4477",
                                 display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,}}>
                                 <AccountCircleOutlinedIcon sx={{ fontSize: 38 }} />
                             </Box>

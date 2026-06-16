@@ -7,7 +7,7 @@ function BackButton() {
 
     return (
             <Box onClick={() => navigate(-1)}
-                    sx={{width: 64, height: 64, borderRadius: "50%", bgcolor: "#12141b", color: "#2E4578",
+                    sx={{width: 64, height: 64, borderRadius: "50%", bgcolor: "#12141b", color: "#6690ff",
                         display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
                         cursor: "pointer", transition: "0.2s",
                         "&:hover": {bgcolor: "#1a1d27", color: "#3f5fa3",},}}
