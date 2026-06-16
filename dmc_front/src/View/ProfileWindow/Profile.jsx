@@ -151,7 +151,7 @@ function Profile() {
                         <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 4 }}>
                             <Stack direction="row" alignItems="center" spacing={2}>
                                 <Box sx={{width: 64, height: 64, borderRadius: "50%", bgcolor: "#171717",
-                                    color: "#2E4578", display: "flex", alignItems: "center",
+                                    color: "#6690ff", display: "flex", alignItems: "center",
                                     justifyContent: "center", flexShrink: 0,}}>
                                     <BackButton sx={{ fontSize: 34 }} />
                                 </Box>
@@ -223,14 +223,14 @@ function Profile() {
                                                                     Заказ №{orderId}
                                                                 </Typography>
 
-                                                                <Typography sx={{color: "#2E4578", fontSize: "1.05rem",
+                                                                <Typography sx={{color: "#6690ff", fontSize: "1.05rem",
                                                                     fontWeight: 800, mt: 0.6,}}>
                                                                     {orderStatus}
                                                                 </Typography>
                                                             </Box>
 
                                                             <Typography variant="h5"
-                                                                        sx={{color: "#2e4477", fontWeight: 800,
+                                                                        sx={{color: "#6690ff", fontWeight: 800,
                                                                             whiteSpace: "nowrap",}}>Стоимость: {orderPrice} ₽
                                                             </Typography>
                                                         </Stack>

@@ -160,7 +160,7 @@ function OrderplaceWindow() {
                                                             <Box sx={{ minWidth: 0, flex: 1 }}>
                                                                 <Typography noWrap sx={{color: "white", fontSize: "1.1rem",
                                                                     fontWeight: 800,}}>{title}</Typography>
-                                                                <Typography sx={{color: "#2E4578", fontSize: "1.05rem",
+                                                                <Typography sx={{color: "#6690ff", fontSize: "1.05rem",
                                                                     fontWeight: 800, mt: 0.7,}}>
                                                                     {price} ₽
                                                                 </Typography>
@@ -172,7 +172,7 @@ function OrderplaceWindow() {
 
                                                             <Box sx={{minWidth: 100, textAlign: "right",
                                                                 flexShrink: 0,}}>
-                                                                <Typography sx={{color: "#2E4578", fontWeight: 800,
+                                                                <Typography sx={{color: "#6690ff", fontWeight: 800,
                                                                     fontSize: "1.1rem", whiteSpace: "nowrap",}}>
                                                                     {itemTotal} ₽
                                                                 </Typography>
@@ -189,7 +189,7 @@ function OrderplaceWindow() {
                                     height: "fit-content", position: "sticky", top: 120,}}>
                                     <CardContent sx={{p: 3, "&:last-child": {pb: 3,},}}>
                                         <Stack direction="row" alignItems="center" spacing={1.5} sx={{ mb: 2.5 }}>
-                                            <CheckCircleOutlineOutlinedIcon sx={{ color: "#2E4578", fontSize: 30 }} />
+                                            <CheckCircleOutlineOutlinedIcon sx={{ color: "#6690ff", fontSize: 30 }} />
                                             <Typography variant="h5" sx={{fontWeight: 800,}}>Заказ</Typography>
                                         </Stack>
 
@@ -201,7 +201,7 @@ function OrderplaceWindow() {
 
                                             <Stack direction="row" justifyContent="space-between" spacing={2}>
                                                 <Typography sx={{ color: "#8f94a3", paddingRight: "5px" }}>Статус:</Typography>
-                                                <Typography sx={{ color: "#2E4578", fontWeight: 800, textAlign: "right" }}>
+                                                <Typography sx={{ color: "#6690ff", fontWeight: 800, textAlign: "right" }}>
                                                     {orderStatus}
                                                 </Typography>
                                             </Stack>
@@ -229,16 +229,14 @@ function OrderplaceWindow() {
 
                                             <Stack direction="row" justifyContent="space-between" spacing={2}>
                                                 <Typography sx={{ color: "#8f94a3", paddingRight: "5px" }}>Сумма:</Typography>
-                                                <Typography sx={{color: "#2e4477", fontWeight: 800, fontSize: "1.3rem",
+                                                <Typography sx={{color: "#6690ff", fontWeight: 800, fontSize: "1.3rem",
                                                     whiteSpace: "nowrap",}}>
                                                     {totalPrice} ₽
                                                 </Typography>
                                             </Stack>
                                         </Stack>
 
-                                        <Button
-                                                fullWidth
-                                                disabled
+                                        <Button fullWidth disabled
                                                 sx={{mt: 3, py: 1.5, borderRadius: "18px",
                                                     bgcolor: "#2b2f3a", color: "#777", fontWeight: 800, fontSize: "1rem",
                                                     textTransform: "none", "&.Mui-disabled": {bgcolor: "#2b2f3a", color: "#777",},

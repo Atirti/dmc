@@ -25,9 +25,9 @@ function ExpandableText({ text, limit, className, as: Tag = "div" }) {
 
                 {shouldCut && !isExpanded && (
                         <button type="button" className="textDotsButton" onClick={() => setIsExpanded(true)}>
-                            ...</button>)}
+                            ...Развернуть</button>)}
                 {shouldCut && isExpanded && (
-                        <button type="button" className="textCollapseButton" onClick={() => setIsExpanded(false)}>
+                        <button type="button"  className="textCollapseButton" onClick={() => setIsExpanded(false)}>
                             Свернуть</button>
                 )}
             </Tag>
@@ -159,7 +159,7 @@ function ItemWindow() {
                             height: "fit-content",}}>
                             <CardContent sx={{p: 3, "&:last-child": {pb: 3,},}}>
                                 <ExpandableText as="h1" className="itemPageTitle" text={item.title} limit={45}/>
-                                <Typography className="itemPagePrice">{item.price} ₽</Typography>
+                                <Typography className="itemPagePrice" sx={{color: '#6690ff'}}>{item.price} ₽</Typography>
                                 <Stack direction="row" alignItems="center" spacing={1.2}
                                        sx={{bgcolor: "#252a35", borderRadius: "18px", px: 2, py: 1.3, mt: 2.5,}}>
                                     <Inventory2Outlined sx={{ color: "#2E4578", fontSize: 26, flexShrink: 0 }} />

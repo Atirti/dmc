@@ -127,15 +127,30 @@ function MainMenu() {
                                 </Select>
                             </FormControl>
 
-                            <FormControl className="ComboBoxCategory" size="small" sx={{width: 200}}>
-                                <InputLabel id="category-label">Категория</InputLabel>
+                            <FormControl className="ComboBoxCategory" size="small" sx={{ width: 200 }}>
+                                <InputLabel id="category-label" shrink>
+                                    Категория
+                                </InputLabel>
                                 <Select variant="outlined" labelId="category-label" id="category-select"
-                                        value={categoryId} label="Категория" onChange={handleCategoryChange}>
+                                        value={categoryId} label="Категория" displayEmpty
+                                        onChange={handleCategoryChange} renderValue={(selected) => {
+                                            if (selected === "") {
+                                                return "Все категории";
+                                            }
+
+                                            const category = categories.find(
+                                                    (category) => String(category.id) === String(selected)
+                                            );
+
+                                            return category?.title || "Все категории";
+                                        }}>
                                     <MenuItem value="">Все категории</MenuItem>
+
                                     {categories.map((category) => (
                                             <MenuItem key={category.id} value={category.id}>
                                                 {category.title}
-                                            </MenuItem>))}
+                                            </MenuItem>
+                                    ))}
                                 </Select>
                             </FormControl>
                         </div>
@@ -191,7 +206,7 @@ function MainMenu() {
                                                             {item.title}
                                                         </Typography>
 
-                                                        <Typography variant="body1" sx={{color: "#2e4477", fontWeight: 800,
+                                                        <Typography variant="body1" sx={{color: "#6690ff", fontWeight: 800,
                                                             fontSize: "1.2rem", textAlign: "left",}}>
                                                             {item.price} ₽
                                                         </Typography>
