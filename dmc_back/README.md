@@ -282,9 +282,19 @@ The quantity must be greater than `0` and must not exceed the product's `count_i
 | `GET` | `/orders` | user JWT | list current user's orders |
 | `POST` | `/order` | user JWT | create an order |
 | `GET` | `/order?id=1` | user JWT | get one current-user order |
+| `GET` | `/admin/all_orders?limit=20&offset=0&date=2026-06-16&status=packed` | admin JWT | list all orders with optional filters |
 | `GET` | `/admin/orders?user_id=1` | admin JWT | list selected user's orders |
 | `GET` | `/admin/order?user_id=1&order_id=1` | admin JWT | get selected user's order |
 | `PUT` | `/order` | admin JWT | update order status |
+
+Admin all-orders query parameters:
+
+- `limit`: from `1` to `500`, default `20`
+- `offset`: from `0`, default `0`
+- `date`: optional order creation date in `YYYY-MM-DD` format
+- `status`: optional order status string
+
+If `date` and `status` are not provided, `/admin/all_orders` returns all orders from newest to oldest. Response items contain regular order fields plus `user_id`.
 
 Create an order:
 
