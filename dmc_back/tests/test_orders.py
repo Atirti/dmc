@@ -159,9 +159,27 @@ async def test_get_admin_all_orders_filters_by_status_and_paginates(client, admi
     assert response.json()[0]["user_id"] == second_user_id
     assert response.json()[0]["status"] == "packed"
 
-    response = await client.get("/admin/all_orders?date=2100-01-01", headers=admin_headers)
+    response = await client.get(
+        "/admin/all_orders",
+        params={"created_at_from": "2100-01-01T00:00:00+05:00"},
+        headers=admin_headers,
+    )
     assert response.status_code == 200
     assert response.json() == []
+
+    response = await client.get(
+        "/admin/all_orders",
+        params={"created_at_from": "2026-06-16T00:00:00"},
+        headers=admin_headers,
+    )
+    assert response.status_code == 422
+
+    response = await client.get(
+        "/admin/all_orders",
+        params={"limit": 0},
+        headers=admin_headers,
+    )
+    assert response.status_code == 422
 
     response = await client.get("/admin/all_orders?limit=1&offset=1", headers=admin_headers)
     assert response.status_code == 200

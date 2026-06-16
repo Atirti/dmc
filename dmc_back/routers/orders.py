@@ -71,7 +71,7 @@ async def get_admin_all_orders(request: AdminAllOrdersRequest = Depends(),
                                orders_service: OrdersService = Depends(dependencies.get_order_service)) -> list[
     AdminOrderModel]:
     """
-    Return orders by date and/or status for admin.
+    Return orders by datetime range and/or status for admin.
     with limit and offset
     """
     return await orders_service.get_admin_all_orders(request)

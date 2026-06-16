@@ -1,6 +1,6 @@
 """Database access methods for orders."""
 
-from datetime import date as dt_date, datetime, time, timedelta
+from datetime import datetime
 
 from sqlalchemy import desc, select, insert, update
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -24,18 +24,19 @@ class OrdersRepository:
         )
         return result.scalars().all()
 
-    async def get_all_orders(self, limit: int, offset: int, order_date: dt_date | None = None,
-                             order_status: str | None = None):
-        """Return admin orders filtered by date and/or status, newest first."""
+    async def get_all_orders(self, limit: int, offset: int, created_at_from: datetime | None = None,
+                             created_at_to: datetime | None = None, order_status: str | None = None):
+        """Return admin orders filtered by datetime range and/or status, newest first."""
         query = (
             select(Order)
             .options(selectinload(Order.order_products).selectinload(OrderProduct.product))
         )
 
-        if order_date is not None:
-            start_date = datetime.combine(order_date, time.min)
-            end_date = start_date + timedelta(days=1)
-            query = query.where(Order.created_at >= start_date, Order.created_at < end_date)
+        if created_at_from is not None:
+            query = query.where(Order.created_at >= created_at_from)
+
+        if created_at_to is not None:
+            query = query.where(Order.created_at < created_at_to)
 
         if order_status is not None:
             query = query.where(Order.status == order_status)

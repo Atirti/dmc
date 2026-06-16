@@ -31,11 +31,6 @@ def validate_optional_non_empty_string(value: str | None, info: ValidationInfo) 
     return validate_non_empty_string(value, info)
 
 
-def validate_optional_order_status(value: str | None, info: ValidationInfo) -> str | None:
-    """Validate optional order status filter."""
-    return validate_optional_non_empty_string(value, info)
-
-
 def validate_auth_content(value: str, info: ValidationInfo) -> str:
     """Ensure auth field contains only allowed ASCII characters."""
     for ch in value:
