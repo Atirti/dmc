@@ -3,6 +3,8 @@
 from .auth import LoginRequest, LogoutRequest, TokenRequest, TokenResponse, UserIdRequest, UserIdResponse
 from .cart import CartProductChangeRequest, CartProductDeleteRequest, CartProductModel
 from .orders import (
+    AdminAllOrdersRequest,
+    AdminOrderModel,
     AdminOrderRequest,
     AdminOrdersRequest,
     CreateOrderRequest,
@@ -20,6 +22,8 @@ from .products import (
 )
 
 __all__ = [
+    "AdminAllOrdersRequest",
+    "AdminOrderModel",
     "AdminOrderRequest",
     "AdminOrdersRequest",
     "CartProductChangeRequest",

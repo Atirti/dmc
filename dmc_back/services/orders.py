@@ -2,7 +2,7 @@
 
 from repositories import OrdersRepository, ProductRepository
 from fastapi import HTTPException, status
-from schemas import CreateOrderRequest
+from schemas import AdminAllOrdersRequest, CreateOrderRequest
 
 
 class OrdersService:
@@ -32,6 +32,12 @@ class OrdersService:
             "address": order.address
         }
 
+    def __admin_order_to_dict(self, order) -> dict:
+        """Return order payload with user id for admin responses."""
+        order_dct = self.__order_to_dict(order)
+        order_dct["user_id"] = order.user_id
+        return order_dct
+
     async def get_user_orders(self, user_id: int):
         """Return all visible orders for a user."""
         orders = await self.__orders_repository.get_user_orders(user_id)
@@ -45,6 +51,12 @@ class OrdersService:
         if order is None:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Order not found")
         return self.__order_to_dict(order)
+
+    async def get_admin_all_orders(self, request: AdminAllOrdersRequest):
+        """Return all orders for admin with optional date and status filters."""
+        orders = await self.__orders_repository.get_all_orders(request.limit, request.offset, request.date,
+                                                               request.status)
+        return [self.__admin_order_to_dict(order) for order in orders]
 
     async def create_order(self, user_id: int, request: CreateOrderRequest):
         """Validate requested products, calculate price, and create an order."""

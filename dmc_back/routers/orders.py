@@ -2,7 +2,16 @@
 
 from fastapi import APIRouter, Depends
 
-from schemas import AdminOrderRequest, AdminOrdersRequest, CreateOrderRequest, IdRequest, OrderModel, OrderUpdateRequest
+from schemas import (
+    AdminAllOrdersRequest,
+    AdminOrderModel,
+    AdminOrderRequest,
+    AdminOrdersRequest,
+    CreateOrderRequest,
+    IdRequest,
+    OrderModel,
+    OrderUpdateRequest,
+)
 from services.orders import OrdersService
 
 import dependencies
@@ -34,7 +43,7 @@ async def get_order(request: IdRequest = Depends(),
 
 
 @router.get("/admin/orders", response_model=list[OrderModel])
-async def get_admin_orders(request: AdminOrdersRequest = Depends(),
+async def get_admin_user_orders(request: AdminOrdersRequest = Depends(),
                            admin=Depends(dependencies.get_admin_user),
                            orders_service: OrdersService = Depends(dependencies.get_order_service)) -> list[OrderModel]:
     """Return all visible orders for a user selected by admin."""
@@ -55,3 +64,14 @@ async def update_order_status(request: OrderUpdateRequest,
                        admin = Depends(dependencies.get_admin_user)):
     """Update order status as admin."""
     return await order_service.update_status(request)
+
+@router.get("/admin/all_orders", response_model=list[AdminOrderModel])
+async def get_admin_all_orders(request: AdminAllOrdersRequest = Depends(),
+                               admin=Depends(dependencies.get_admin_user),
+                               orders_service: OrdersService = Depends(dependencies.get_order_service)) -> list[
+    AdminOrderModel]:
+    """
+    Return orders by date and/or status for admin.
+    with limit and offset
+    """
+    return await orders_service.get_admin_all_orders(request)
