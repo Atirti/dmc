@@ -1,181 +1,261 @@
-import { useEffect, useMemo, useState } from "react";
-import {Alert, Box, Button, CircularProgress, Divider, MenuItem, Pagination, Select, Stack, Typography,} from "@mui/material";
-import {getAdminOrders, updateOrderStatus,} from "../../Controll/APIStuff/adminStuuf/orderApi.js";
+import { useEffect, useState } from "react";
+import { Box, Button, Card, CardContent, Stack, Typography } from "@mui/material";
+import { getAdminAllOrders, getAdminOrders, getAdminUserIdByUsername, updateOrderStatus, ORDER_STATUSES } from "../../Controll/APIStuff/adminStuuf/orderApi.js";
 
-const ORDER_STATUSES = [
-    "paid",
-    "in delivery",
-    "delivered",
-];
+function getTimezoneOffsetString() {
+    const offsetMinutes = -new Date().getTimezoneOffset();
+    const sign = offsetMinutes >= 0 ? "+" : "-";
+    const absoluteOffset = Math.abs(offsetMinutes);
+    const hours = String(Math.floor(absoluteOffset / 60)).padStart(2, "0");
+    const minutes = String(absoluteOffset % 60).padStart(2, "0");
 
-function OrderList({ userId, reloadKey = 0 }) {
-    const [orders, setOrders] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
-    const [errorText, setErrorText] = useState("");
-    const [page, setPage] = useState(1);
-    const [updatingOrderId, setUpdatingOrderId] = useState(null);
-    const ordersPerPage = 5;
-    const pageCount = Math.ceil(orders.length / ordersPerPage);
+    return `${sign}${hours}:${minutes}`;
+}
 
-    const visibleOrders = useMemo(() => {
-        const startIndex = (page - 1) * ordersPerPage;
-        const endIndex = startIndex + ordersPerPage;
-        return orders.slice(startIndex, endIndex);
-    }, [orders, page]);
+function toDateTimeOffset(value) {
+    if (!value) {
+        return "";
+    }
 
-    async function loadOrders() {
-        if (!userId) {
-            setErrorText("Не найден user_id для загрузки заказов");
-            return;
+    if (/(Z|[+-]\d{2}:\d{2})$/.test(value)) {
+        return value;
+    }
+
+    const [date, time = "00:00"] = value.split("T");
+    const timeWithSeconds = time.length === 5 ? `${time}:00` : time;
+
+    return `${date}T${timeWithSeconds}${getTimezoneOffsetString()}`;
+}
+
+function getOrderId(order) {
+    return order.order_id ?? order.id;
+}
+
+function getOrderUserId(order) {
+    return order.user_id ?? order.userId ?? order.user?.id;
+}
+
+function getOrderDate(order) {
+    return order.created_at || order.createdAt || order.date || "";
+}
+
+function getOrderProducts(order) {
+    if (Array.isArray(order.products)) {
+        return order.products;
+    }
+
+    if (Array.isArray(order.items)) {
+        return order.items;
+    }
+
+    return [];
+}
+
+function sortOrders(orders, sortBy, sortOrder) {
+    return [...orders].sort((firstOrder, secondOrder) => {
+        let firstValue = firstOrder[sortBy];
+        let secondValue = secondOrder[sortBy];
+
+        if (sortBy === "created_at") {
+            firstValue = new Date(getOrderDate(firstOrder)).getTime() || 0;
+            secondValue = new Date(getOrderDate(secondOrder)).getTime() || 0;
         }
 
+        if (firstValue > secondValue) {
+            return sortOrder === "asc" ? 1 : -1;
+        }
+
+        if (firstValue < secondValue) {
+            return sortOrder === "asc" ? -1 : 1;
+        }
+
+        return 0;
+    });
+}
+
+function OrderList({ username = "", limit = 10, offset = 0, status = "", sortBy = "created_at",
+                       sortOrder = "desc", createdAtFrom = "", createdAtTo = "" }) {
+    const [orders, setOrders] = useState([]);
+    const [currentUserId, setCurrentUserId] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
+
+    async function loadOrders() {
         try {
             setIsLoading(true);
-            setErrorText("");
+            setErrorMessage("");
 
-            const loadedOrders = await getAdminOrders(userId);
+            const normalizedUsername = username.trim();
+            const normalizedLimit = Math.max(Number(limit) || 10, 1);
+            const normalizedOffset = Math.max(Number(offset) || 0, 0);
 
-            setOrders(loadedOrders);
-            setPage(1);
+            if (normalizedUsername) {
+                const userId = await getAdminUserIdByUsername(normalizedUsername);
+                const data = await getAdminOrders(userId);
+                let filteredData = data;
+
+                setCurrentUserId(userId);
+
+                if (status) {
+                    filteredData = filteredData.filter((order) => order.status === status);
+                }
+
+                filteredData = sortOrders(filteredData, sortBy, sortOrder);
+
+                setOrders(filteredData.slice(normalizedOffset, normalizedOffset + normalizedLimit));
+                return;
+            }
+
+            setCurrentUserId("");
+
+            const data = await getAdminAllOrders({
+                limit: normalizedLimit,
+                offset: normalizedOffset,
+                status,
+                sortBy,
+                sortOrder,
+                createdAtFrom: toDateTimeOffset(createdAtFrom),
+                createdAtTo: toDateTimeOffset(createdAtTo),
+            });
+
+            setOrders(data);
         } catch (error) {
-            console.log(error);
-            setErrorText(error.message || "Не удалось загрузить заказы");
+            setCurrentUserId("");
+            setOrders([]);
+            setErrorMessage(error.message || "Не удалось загрузить заказы");
         } finally {
             setIsLoading(false);
         }
     }
 
-    async function handleChangeStatus(order, newStatus) {
-        const orderId = order.order_id ?? order.id;
+    useEffect(() => {
+        loadOrders();
+    }, [username, limit, offset, status, sortBy, sortOrder, createdAtFrom, createdAtTo]);
 
-        if (!orderId) {
-            setErrorText("Не найден order_id заказа");
+    async function handleStatusChange(order, status) {
+        const orderId = getOrderId(order);
+        const userId = getOrderUserId(order);
+
+        if (!orderId || !userId) {
+            setErrorMessage("Не найден order_id или user_id заказа");
             return;
         }
 
         try {
-            setUpdatingOrderId(orderId);
-            setErrorText("");
-
             await updateOrderStatus({
                 userId,
                 orderId,
-                status: newStatus,
+                status,
             });
 
-            setOrders((prevOrders) =>
-                    prevOrders.map((currentOrder) => {
-                        const currentOrderId = currentOrder.order_id ?? currentOrder.id;
-
-                        if (currentOrderId !== orderId) {return currentOrder;}
-                        return {...currentOrder, status: newStatus,};
-                    })
-            );
+            await loadOrders();
         } catch (error) {
-            console.log(error);
-            setErrorText(error.message || "Не удалось изменить статус заказа");
-        } finally {
-            setUpdatingOrderId(null);
+            setErrorMessage(error.message || "Не удалось изменить статус заказа");
         }
     }
 
-    useEffect(() => {
-        loadOrders();
-    }, [userId, reloadKey]);
-
     if (isLoading) {
         return (
-                <Box sx={{ py: 4, display: "flex", justifyContent: "center" }}><CircularProgress /></Box>
+                <Typography sx={{ color: "#8f94a3" }}>
+                    Загрузка заказов...
+                </Typography>
+        );
+    }
+
+    if (errorMessage) {
+        return (
+                <Typography sx={{ color: "#ff6b6b" }}>
+                    {errorMessage}
+                </Typography>
+        );
+    }
+
+    if (!orders.length) {
+        return (
+                <Typography sx={{ color: "#8f94a3" }}>
+                    Заказы не найдены
+                </Typography>
         );
     }
 
     return (
-            <Box>{errorText && (<Alert severity="error" sx={{ mb: 2 }}>{errorText}</Alert>)}
-                {orders.length === 0 ? (
-                        <Typography sx={{ color: "#8f94a3" }}>Заказов пока нет</Typography>
-                ) : (
-                        <Stack spacing={2}>
-                            {visibleOrders.map((order) => {
-                                const orderId = order.order_id ?? order.id;
-                                const orderUserId = order.user_id ?? userId;
-                                const isUpdating = updatingOrderId === orderId;
+            <Box sx={{height: "620px", overflowY: "auto", pr: 1, minWidth: 0,
+                scrollbarWidth: "thin",
+                "&::-webkit-scrollbar": {width: "8px",},
+                "&::-webkit-scrollbar-track": {bgcolor: "#151922", borderRadius: "8px",},
+                "&::-webkit-scrollbar-thumb": {bgcolor: "#2E4578", borderRadius: "8px",},
+                "&::-webkit-scrollbar-thumb:hover": {bgcolor: "#3c589f",},}}>
+                <Stack spacing={2}>
+                    {orders.map((order) => {
+                        const orderId = getOrderId(order);
+                        const orderUserId = getOrderUserId(order);
+                        const products = getOrderProducts(order);
 
-                                return (
-                                        <Box key={orderId} sx={{p: 2, borderRadius: "20px", bgcolor: "#1d2230",
-                                                    border: "1px solid rgba(255,255,255,0.08)",}}>
-                                            <Stack direction="row" spacing={2}>
-                                                <Box>
-                                                    <Typography sx={{ color: "white", fontWeight: 800 }}>
-                                                        Заказ #{orderId}
-                                                    </Typography>
-                                                    <Typography sx={{ color: "#8f94a3", mt: 0.4 }}>
-                                                        Пользователь: {orderUserId}
-                                                    </Typography>
-                                                    {order.created_at && (
-                                                            <Typography sx={{ color: "#8f94a3" }}>
-                                                                Дата: {new Date(order.created_at).toLocaleString()}
-                                                            </Typography>)}
+                        return (
+                                <Card key={orderId} sx={{bgcolor: "#1d2230", color: "white", borderRadius: "20px",
+                                    border: "1px solid rgba(255, 255, 255, 0.06)", boxShadow: "none",
+                                    height: "300px", minHeight: "300px", maxHeight: "300px",
+                                    width: "100%", overflow: "hidden", display: "flex", flexDirection: "column",}}>
+                                    <CardContent sx={{height: "100%", overflow: "hidden", display: "flex",
+                                        flexDirection: "column", boxSizing: "border-box",
+                                        "&:last-child": { pb: 2 },}}>
+                                        <Stack spacing={1} sx={{height: "100%", minHeight: 0}}>
+                                            <Typography sx={{ fontWeight: 800, flexShrink: 0 }}>
+                                                Заказ #{orderId}
+                                            </Typography>
 
-                                                    {(order.total_price || order.total || order.price) && (
-                                                            <Typography sx={{ color: "#8f94a3" }}>
-                                                                Сумма: {order.total_price || order.total || order.price}
-                                                            </Typography>)}
-                                                </Box>
-                                                <Select size="small" value={order.status || ""} disabled={isUpdating}
-                                                        onChange={(event) => handleChangeStatus(order, event.target.value)}
-                                                        displayEmpty
-                                                        sx={{minWidth: 170, bgcolor: "#151922", color: "white",
-                                                            borderRadius: "14px", ".MuiOutlinedInput-notchedOutline": {
-                                                                borderColor: "rgba(255,255,255,0.14)",},
-                                                            ".MuiSvgIcon-root": {color: "white",},
-                                                        }}>
-                                                    <MenuItem value="" disabled>Статус</MenuItem>
-                                                    {ORDER_STATUSES.map((status) => (
-                                                            <MenuItem key={status} value={status}>{status}</MenuItem>))}
-                                                </Select>
+                                            <Typography sx={{ color: "#8f94a3", flexShrink: 0, overflow: "hidden",
+                                                textOverflow: "ellipsis", whiteSpace: "nowrap",}}>
+                                                username: {username || "не указан"} {currentUserId ? `(ID ${currentUserId})` : orderUserId ? `(ID ${orderUserId})` : ""}
+                                            </Typography>
+
+                                            <Typography sx={{ color: "#8f94a3", flexShrink: 0, overflow: "hidden",
+                                                textOverflow: "ellipsis", whiteSpace: "nowrap",}}>
+                                                Статус: {order.status}
+                                            </Typography>
+
+                                            <Typography sx={{ color: "#8f94a3", flexShrink: 0, overflow: "hidden",
+                                                textOverflow: "ellipsis", whiteSpace: "nowrap",}}>
+                                                Цена: {order.price ?? order.total_price ?? order.total}
+                                            </Typography>
+
+                                            <Typography sx={{ color: "#8f94a3", flexShrink: 0, overflow: "hidden",
+                                                textOverflow: "ellipsis", whiteSpace: "nowrap",}}>
+                                                Адрес: {order.address || "не указан"}
+                                            </Typography>
+
+                                            <Box sx={{flex: 1, minHeight: 0, overflowY: "auto", pr: 1,
+                                                scrollbarWidth: "thin",
+                                                "&::-webkit-scrollbar": {width: "6px",},
+                                                "&::-webkit-scrollbar-track": {bgcolor: "#1d2230", borderRadius: "8px",},
+                                                "&::-webkit-scrollbar-thumb": {bgcolor: "#2E4578", borderRadius: "8px",},}}>
+                                                {products.map((product, index) => (
+                                                        <Typography key={product.id ?? product.product_id ?? index}
+                                                                    sx={{ color: "#8f94a3" }}>
+                                                            {product.title || product.name || product.product_name ||
+                                                                    `Товар ${index + 1}`} × {product.count ||
+                                                                product.quantity || product.product_count || 1}
+                                                        </Typography>
+                                                ))}
+                                            </Box>
+
+                                            <Stack direction="row" spacing={1} sx={{pt: 1, flexShrink: 0,
+                                                flexWrap: "wrap", rowGap: 1,}}>
+                                                {ORDER_STATUSES.map((status) => (
+                                                        <Button key={status} onClick={() => handleStatusChange(order, status)}
+                                                                sx={{borderRadius: "14px", bgcolor: "#2E4578", color: "white",
+                                                                    fontWeight: 800, textTransform: "none",
+                                                                    "&:hover": { bgcolor: "#3c589f" },}}>
+                                                            {status}
+                                                        </Button>
+                                                ))}
                                             </Stack>
-
-                                            {order.items && order.items.length > 0 && (
-                                                    <>
-                                                        <Divider sx={{borderColor: "rgba(255,255,255,0.08)", my: 1.5,}}/>
-                                                        <Stack spacing={0.7}>
-                                                            {order.items.map((item, index) => (
-                                                                    <Typography key={index}
-                                                                            sx={{color: "#c7cad3", fontSize: "0.95rem",}}>
-                                                                        {item.name || item.product_name || item.title ||
-                                                                                `Товар ${index + 1}`}
-                                                                        {item.quantity ? ` × ${item.quantity}` : ""}
-                                                                    </Typography>
-                                                            ))}
-                                                        </Stack>
-                                                    </>
-                                            )}
-
-                                            {isUpdating && (<Typography sx={{ color: "#8f94a3", mt: 1 }}>
-                                                        Обновление статуса...
-                                                    </Typography>
-                                            )}
-                                        </Box>
-                                );
-                            })}
-
-                            {pageCount > 1 && (
-                                    <Stack direction="row"sx={{ pt: 1 }}>
-                                        <Pagination count={pageCount} page={page}
-                                                onChange={(_, value) => setPage(value)}
-                                                sx={{".MuiPaginationItem-root": {color: "white", borderColor: "rgba(255,255,255,0.16)",},
-                                                    ".Mui-selected": {bgcolor: "#2E4578 !important",},}}
-                                        />
-                                    </Stack>
-                            )}
-                        </Stack>
-                )}
-
-                <Button fullWidth onClick={loadOrders}
-                        sx={{mt: 2, py: 1.2, borderRadius: "16px", bgcolor: "#252a35", color: "white", fontWeight: 800,
-                            textTransform: "none", "&:hover": { bgcolor: "#303644" },}}>
-                    Обновить заказы
-                </Button>
+                                        </Stack>
+                                    </CardContent>
+                                </Card>
+                        );
+                    })}
+                </Stack>
             </Box>
     );
 }
